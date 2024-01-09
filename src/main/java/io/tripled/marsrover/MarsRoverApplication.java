@@ -22,6 +22,7 @@ public class MarsRoverApplication {
 
 
     public static void readInput() {
+        showWorldInitText();
         System.out.println("> q to quit");
         try (Scanner scanner = new Scanner(System.in)) {
             String input;
@@ -40,4 +41,10 @@ public class MarsRoverApplication {
         return "q".equalsIgnoreCase(input);
     }
 
+    public static String showWorldInitText() {
+        String worldInitText = "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]";
+
+        System.out.println(worldInitText);
+        return worldInitText;
+    }
 }
