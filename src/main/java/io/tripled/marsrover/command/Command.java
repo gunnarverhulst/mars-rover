@@ -21,7 +21,7 @@ public enum Command {
             return EMPTY_INPUT;
         if(input.equalsIgnoreCase("P"))
             return PRINT;
-        if(input.contains("land"))
+        if(input.toLowerCase().contains("land"))
             return LAND;
 
         return UNKNOWN_COMMAND;

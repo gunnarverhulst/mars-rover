@@ -86,4 +86,10 @@ class MarsRoverApplicationTests {
 
     }
 
+    @Test
+    void whenLANDCommandEntered_thenLand(){
+        String input = "Land 5 1";
+        assertEquals("Rover R1 landed at (5,1) and is facing North", MarsRoverApplication.handleCommand(Command.LAND, input));
+    }
+
 }

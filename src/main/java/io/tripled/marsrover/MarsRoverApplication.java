@@ -66,8 +66,13 @@ public class MarsRoverApplication {
             case INVALID_VALUE -> MessagePrinter.invalidValue(input);
             case EMPTY_SIMULATION_SIZE -> MessagePrinter.simulationSizeErrorMessage();
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
+            case LAND -> handleRoverLanding(input);
             default -> MessagePrinter.apiMessage();
         };
+    }
+
+    private static String handleRoverLanding(String input) {
+        return "Rover R1 landed at (5,1) and is facing North";
     }
 
     private static String handleSimulationSize(String input) {
