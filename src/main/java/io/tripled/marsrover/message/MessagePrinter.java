@@ -7,7 +7,7 @@ public enum MessagePrinter {
         return "Quitting application";
     }
 
-    public static String simulationSizeSetMessage(String input, String simulationSize) {
+    public static String simulationSizeSetMessage(String input, int simulationSize) {
 
         return "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + simulationSize + "] coordinates\n\n"+
                        "[Please enter a command]";

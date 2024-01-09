@@ -1,11 +1,10 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
+import io.tripled.marsrover.input.InputParser;
 import io.tripled.marsrover.message.MessagePrinter;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
 
@@ -68,10 +67,7 @@ public class MarsRoverApplication {
     public static String handleCommand(Command command, String input) {
         return switch (command){
             case QUIT -> MessagePrinter.quit();
-            case COORDS_VALUE -> {
-                simulationSize = parseCoordinateValue(extractCoordValue(input));
-                yield MessagePrinter.simulationSizeSetMessage(input, calculateTotalAmountOfCoords(input));
-            }
+            case SIMULATIONSIZE -> handleSimulationSize(input);
             case INVALID_VALUE -> MessagePrinter.invalidValue(input);
             case EMPTY_SIMULATION_SIZE -> MessagePrinter.simulationSizeErrorMessage();
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
@@ -79,28 +75,18 @@ public class MarsRoverApplication {
         };
     }
 
-    private static String extractCoordValue(String input) {
-        Pattern pattern = Pattern.compile("\\d*");
-        Matcher matcher = pattern.matcher(input);
-        if(matcher.find()){
-            return matcher.group();
-        }
-        return MessagePrinter.simulationSizeErrorMessage();
+    private static String handleSimulationSize(String input) {
+        simulationSize = InputParser.parseInputForSimulationSize(input);
+        return MessagePrinter.simulationSizeSetMessage(input, simulationSize);
     }
-
 
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);
     }
 
-    public static int parseCoordinateValue(String inputValueString) {
+    public static int parseSimulationSize(String inputValueString) {
         return  Integer.parseInt(inputValueString);
     }
-
-    public static String calculateTotalAmountOfCoords(String amountOfCoords) {
-        return ""+ (Integer.parseInt(amountOfCoords) + 1) * (Integer.parseInt(amountOfCoords) + 1);
-    }
-
     public static boolean maxCoordsHasValue() {
         return simulationSize > 0;
     }

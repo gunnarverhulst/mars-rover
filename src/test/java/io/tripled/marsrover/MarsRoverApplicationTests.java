@@ -1,6 +1,7 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
+import io.tripled.marsrover.input.InputParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,16 +30,10 @@ class MarsRoverApplicationTests {
     void givenWaitingForCoordinateAmount_whenValidValueEntered_thenParseValue(){
 
 
-        String inputValueString = "5";
-        assertEquals(5,MarsRoverApplication.parseCoordinateValue(inputValueString));
+        String input = "5";
+        assertEquals("Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + InputParser.parseInputForSimulationSize(input) + "] coordinates\n\n"+
+                "[Please enter a command]",MarsRoverApplication.handleCommand(Command.SIMULATIONSIZE, input));
     }
-
-    @Test
-    void whenValidCoordValueEntered_thenCalculateTotalAmountOfCoords(){
-        assertEquals("36", MarsRoverApplication.calculateTotalAmountOfCoords("5"));
-        assertEquals("121", MarsRoverApplication.calculateTotalAmountOfCoords("10"));
-    }
-
     @Test
     void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
         String input = "bad";
@@ -58,7 +53,7 @@ class MarsRoverApplicationTests {
     @Test
     void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
         String input = "5";
-        MarsRoverApplication.handleCommand(Command.COORDS_VALUE, input);
+        MarsRoverApplication.handleCommand(Command.SIMULATIONSIZE, input);
         assertTrue(MarsRoverApplication.maxCoordsHasValue());
     }
 
@@ -73,14 +68,14 @@ class MarsRoverApplicationTests {
     @Test
     void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
         String input = "";
-        MarsRoverApplication.handleCommand(Command.COORDS_VALUE, "5");
+        MarsRoverApplication.handleCommand(Command.SIMULATIONSIZE, "5");
         assertTrue(MarsRoverApplication.handleCommand(Command.EMPTY_INPUT, input).contains("{P}"));
     }
 
     @Test
     void whenPCommandEntered_thenShowHelpApi(){
         String input = "";
-        MarsRoverApplication.handleCommand(Command.COORDS_VALUE, "5");
+        MarsRoverApplication.handleCommand(Command.SIMULATIONSIZE, "5");
         assertTrue(MarsRoverApplication.handleCommand(Command.PRINT, input).contains("{P}"));
     }
 

@@ -2,31 +2,31 @@ package io.tripled.marsrover.validators;
 
 import org.junit.jupiter.api.Test;
 
-import static io.tripled.marsrover.validators.WorldInitCoordsInputValidator.COORDS_INPUT_VALIDATOR;
+import static io.tripled.marsrover.validators.WorldInitCoordsInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WorldInitCoordsInputValidatorTest {
 
     @Test
     void checkIfInputValidCoordValue(){
-        assertTrue(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue("5"));
+        assertTrue(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize("5"));
     }
 
     @Test
     void checkIfInputWord(){
-        assertFalse(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue("text"));
-        assertFalse(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue("teaaxt"));
-        assertFalse(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue("bad"));
+        assertFalse(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize("text"));
+        assertFalse(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize("teaaxt"));
+        assertFalse(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize("bad"));
     }
 
     @Test
     void checkIfInputNegative(){
-        assertFalse(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue("-45"));
+        assertFalse(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize("-45"));
     }
 
     @Test
     void checkIfInputEmpty(){
-        assertFalse(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(""));
+        assertFalse(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(""));
     }
 
 

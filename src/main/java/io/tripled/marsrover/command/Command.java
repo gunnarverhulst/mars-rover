@@ -1,11 +1,11 @@
 package io.tripled.marsrover.command;
 
-import static io.tripled.marsrover.validators.WorldInitCoordsInputValidator.COORDS_INPUT_VALIDATOR;
+import static io.tripled.marsrover.validators.WorldInitCoordsInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
 
 public enum Command {
     QUIT,
     PRINT,
-    COORDS_VALUE,
+    SIMULATIONSIZE,
     INVALID_VALUE,
     EMPTY_INPUT,
     LAND,
@@ -31,9 +31,9 @@ public enum Command {
 
         if(input.isEmpty())
             return EMPTY_SIMULATION_SIZE;
-        if(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
-            return COORDS_VALUE;
-        if(!COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
+        if(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(input))
+            return SIMULATIONSIZE;
+        if(!SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(input))
             return INVALID_VALUE;
 
         return UNKNOWN_COMMAND;

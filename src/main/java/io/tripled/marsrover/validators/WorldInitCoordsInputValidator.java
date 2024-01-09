@@ -4,9 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum WorldInitCoordsInputValidator {
-    COORDS_INPUT_VALIDATOR;
+    SIMULATIONSIZE_INPUT_VALIDATOR;
 
-    public boolean isValidMaxCoordValue(String input) {
+    public boolean isValidSimulationSize(String input) {
         Pattern pattern = Pattern.compile("^\\d+$");
         Matcher matcher = pattern.matcher(input);
 

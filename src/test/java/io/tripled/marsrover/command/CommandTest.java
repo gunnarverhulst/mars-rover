@@ -14,7 +14,7 @@ class CommandTest {
 
     @Test
     void canParseSimulationSize(){
-        assertEquals(Command.COORDS_VALUE, COMMAND.parseSimulationSize("5"));
+        assertEquals(Command.SIMULATIONSIZE, COMMAND.parseSimulationSize("5"));
     }
 
     @Test
