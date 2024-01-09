@@ -9,20 +9,22 @@ public enum Command {
     COORDS_VALUE,
     INVALID_VALUE,
     EMPTY_INPUT,
+    UNKNOWN_COMMAND,
     COMMAND;
 
-    public Command parse(String input){
+    public Command parse(String input, int worldInitCoords){
         if(input.equalsIgnoreCase("Q"))
             return QUIT;
         if(input.isEmpty())
             return EMPTY_INPUT;
-        if(input.equalsIgnoreCase("P"))
+        if(worldInitCoords > 0 && input.equalsIgnoreCase("P"))
             return PRINT;
-        if(isValidValue(input))
+        if(worldInitCoords == 0 && isValidValue(input))
             return COORDS_VALUE;
-        else
+        if(worldInitCoords == 0 && !isValidValue(input))
             return INVALID_VALUE;
 
+        return UNKNOWN_COMMAND;
     }
 
     private boolean isValidValue(String input) {

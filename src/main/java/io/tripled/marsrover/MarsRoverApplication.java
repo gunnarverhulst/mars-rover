@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.tripled.marsrover.command.Command.COMMAND;
 import static io.tripled.marsrover.message.MessagePrinter.MESSAGE_PRINTER;
 
 public class MarsRoverApplication {
@@ -37,7 +38,7 @@ public class MarsRoverApplication {
 
                 String output = "";
                 if (!isQuit(input)){
-                    Command command = Command.COMMAND.parse(input);
+                    Command command = COMMAND.parse(input, maxCoords);
                     output = handleCommand(command, input);
                 }
                 System.out.println(output);
