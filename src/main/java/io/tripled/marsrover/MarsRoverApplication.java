@@ -7,6 +7,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.tripled.marsrover.message.MessagePrinter.MESSAGE_PRINTER;
+
 public class MarsRoverApplication {
 
 
@@ -51,11 +53,12 @@ public class MarsRoverApplication {
         return switch (command){
 //            case QUIT -> "Quitting application";
 
-            case QUIT -> MessagePrinter.MESSAGE_PRINTER.quit();
+            case QUIT -> MESSAGE_PRINTER.quit();
             case COORDS_VALUE -> {
                 maxCoords = Integer.parseInt(extractCoordValue(input));
-                yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates\n\n"+
-                       "[Please enter a command]" ;
+//                yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates\n\n"+
+//                       "[Please enter a command]" ;
+                yield MESSAGE_PRINTER.WorldInitCoordsSet(input, calculateTotalAmountOfCoords(input));
             }
             case INVALID_VALUE ->"[" + input + "] is an invalid Simulation maxCoordinate\n" +
                         showWorldInitText();

@@ -6,4 +6,10 @@ public enum MessagePrinter {
     public String quit(){
         return "Quitting application";
     }
+
+    public String WorldInitCoordsSet(String input, String amountOfCoordinates) {
+
+        return "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + amountOfCoordinates + "] coordinates\n\n"+
+                       "[Please enter a command]";
+    }
 }
