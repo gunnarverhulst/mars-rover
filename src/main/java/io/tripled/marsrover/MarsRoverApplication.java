@@ -59,7 +59,7 @@ public class MarsRoverApplication {
             case INVALID_VALUE ->MESSAGE_PRINTER.invalidValue(input, showWorldInitText());
             case EMPTY_INPUT -> {
                 if(maxCoords > 0)
-                    yield showHelpMessage();
+                    yield MessagePrinter.apiMessage();
                 else
                     yield showWorldInitText();
             }

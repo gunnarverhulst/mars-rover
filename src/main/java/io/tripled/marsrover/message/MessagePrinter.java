@@ -23,4 +23,14 @@ public enum MessagePrinter {
         return "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
                 "[Enter max coordinate] : ";
     }
+
+    public static String apiMessage() {
+        return """
+                ***************************************************************************************************************************************************
+                *   Print state of simulation     | {state}                                                   | ex: state                                         *
+                *   Land a new rover              | {land {x} {y}}                                            | ex: land 1 5                                      *
+                *   Quit the application          | {Q}                                                                                                           *
+                *   Print API overview            | {P}                                                                                                           *
+                ***************************************************************************************************************************************************""";
+    }
 }
