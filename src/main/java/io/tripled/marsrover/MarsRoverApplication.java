@@ -1,6 +1,10 @@
 package io.tripled.marsrover;
 
+import io.tripled.marsrover.command.Command;
+
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MarsRoverApplication {
 
@@ -21,19 +25,46 @@ public class MarsRoverApplication {
     }
 
 
-    public static void readInput() {
+    public static String readInput() {
         showWorldInitText();
-        System.out.println("> q to quit");
+        String input;
         try (Scanner scanner = new Scanner(System.in)) {
-            String input;
             do {
                 input = scanner.nextLine();
-                System.out.println("I read :" + input);
+
+                String output = "";
+                if (!isQuit(input)){
+                    Command command = Command.COMMAND.parse(input);
+                    output = handleCommand(command, input);
+                }
+                System.out.println(output);
 
             }
             while (!isQuit(input));
         }
         System.out.println("*********END*****************");
+        return input;
+    }
+
+    private static String handleCommand(Command command, String input) {
+        return switch (command){
+            case QUIT -> "Quitting application";
+            case COORDS_VALUE -> extractCoordValue(input);
+            default -> showHelpMessage();
+        };
+    }
+
+    private static String extractCoordValue(String input) {
+        Pattern pattern = Pattern.compile("\\d*");
+        Matcher matcher = pattern.matcher(input);
+        if(matcher.find()){
+            return matcher.group();
+        }
+        return showWorldInitText();
+    }
+
+    private static String showHelpMessage() {
+        return "help";
     }
 
 
@@ -46,5 +77,9 @@ public class MarsRoverApplication {
 
         System.out.println(worldInitText);
         return worldInitText;
+    }
+
+    public static int parseCoordinateValue(String inputValueString) {
+        return  Integer.parseInt(inputValueString);
     }
 }
