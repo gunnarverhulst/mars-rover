@@ -20,8 +20,7 @@ public class MarsRoverApplication {
         String logo = """
                 **************************"
                 **    Gunz Rover        **"
-                **************************
-                """;
+                **************************""";
         System.out.println(logo);
         return logo;
     }
@@ -53,7 +52,8 @@ public class MarsRoverApplication {
             case QUIT -> "Quitting application";
             case COORDS_VALUE -> {
                 maxCoords = Integer.parseInt(extractCoordValue(input));
-                yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates";
+                yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates\n\n"+
+                       "[Please enter a command]" ;
             }
             case INVALID_VALUE ->"[" + input + "] is an invalid Simulation maxCoordinate\n" +
                         showWorldInitText();
@@ -77,7 +77,13 @@ public class MarsRoverApplication {
     }
 
     private static String showHelpMessage() {
-        return "help";
+        return """
+                ***************************************************************************************************************************************************
+                *   Print state of simulation     | {state}                                                   | ex: state                                         *
+                *   Land a new rover              | {land {x} {y}}                                            | ex: land 1 5                                      *
+                *   Quit the application          | {Q}                                                                                                           *
+                *   Print API overview            | {P}                                                                                                           *
+                ***************************************************************************************************************************************************""";
     }
 
 

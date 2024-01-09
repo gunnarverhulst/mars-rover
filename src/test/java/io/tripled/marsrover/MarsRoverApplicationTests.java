@@ -68,4 +68,11 @@ class MarsRoverApplicationTests {
         assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
                 "[Enter max coordinate] : ", MarsRoverApplication.handleCommand(Command.EMPTY_INPUT, input));
     }
+
+    @Test
+    void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
+        String input = "";
+        MarsRoverApplication.handleCommand(Command.COORDS_VALUE, "5");
+        assertTrue(MarsRoverApplication.handleCommand(Command.EMPTY_INPUT, input).contains("{P}"));
+    }
 }
