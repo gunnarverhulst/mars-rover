@@ -51,17 +51,12 @@ public class MarsRoverApplication {
 
     public static String handleCommand(Command command, String input) {
         return switch (command){
-//            case QUIT -> "Quitting application";
-
             case QUIT -> MESSAGE_PRINTER.quit();
             case COORDS_VALUE -> {
                 maxCoords = Integer.parseInt(extractCoordValue(input));
-//                yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates\n\n"+
-//                       "[Please enter a command]" ;
                 yield MESSAGE_PRINTER.WorldInitCoordsSet(input, calculateTotalAmountOfCoords(input));
             }
-            case INVALID_VALUE ->"[" + input + "] is an invalid Simulation maxCoordinate\n" +
-                        showWorldInitText();
+            case INVALID_VALUE ->MESSAGE_PRINTER.invalidValue(input, showWorldInitText());
             case EMPTY_INPUT -> {
                 if(maxCoords > 0)
                     yield showHelpMessage();

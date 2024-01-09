@@ -12,4 +12,15 @@ public enum MessagePrinter {
         return "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + amountOfCoordinates + "] coordinates\n\n"+
                        "[Please enter a command]";
     }
+
+    public String invalidValue(String input,String showWorldInitMessage) {
+        return "[" + input + "] is an invalid Simulation maxCoordinate\n" +
+                showWorldInitText();
+    }
+
+    public static String showWorldInitText() {
+
+        return "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
+                "[Enter max coordinate] : ";
+    }
 }
