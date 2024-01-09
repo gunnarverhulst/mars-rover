@@ -16,8 +16,8 @@ class InputParserTest {
     void whenValidLandInput_thenParseCoordinate(){
         Coordinate coordinate = new Coordinate(5,1);
         String input = "Land 5 1";
-        assertEquals(coordinate.x(), InputParser.parseInputForCoordinate(input).x());
-        assertEquals(coordinate.y(), InputParser.parseInputForCoordinate(input).y());
+        assertEquals(coordinate.x(), InputParser.parseInputForCoordinate(input).get().x());
+        assertEquals(coordinate.y(), InputParser.parseInputForCoordinate(input).get().y());
     }
 
 

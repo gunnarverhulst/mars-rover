@@ -47,5 +47,12 @@ class CommandTest {
         assertEquals(Command.LAND, COMMAND.parse("lAND 10 10"));
     }
 
+    @Test
+    void whenInputState_thenParsedState(){
+
+        LAND_INPUT_VALIDATOR.setSimulationSize(121);
+        assertEquals(Command.STATE, COMMAND.parse("state"));
+    }
+
 
 }

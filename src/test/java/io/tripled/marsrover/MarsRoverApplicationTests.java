@@ -89,7 +89,17 @@ class MarsRoverApplicationTests {
     @Test
     void whenLANDCommandEntered_thenLand(){
         String input = "Land 5 1";
-        assertEquals("Rover R1 landed at (5,1) and is facing North", MarsRoverApplication.handleCommand(Command.LAND, input));
+        assertEquals("Rover R1 landed at (" + 5 + "," + 1 +") and is facing North\n\n[Please enter a command]", MarsRoverApplication.handleCommand(Command.LAND, input));
+    }
+
+    @Test
+    void whenStateCommandEntered_thenPrintState(){
+
+        String input = "state";
+        MarsRoverApplication.handleCommand(Command.SIMULATIONSIZE, "10");
+        MarsRoverApplication.handleCommand(Command.LAND, "land 5 5");
+        assertEquals("Simulation has maxCoordinate 11.0 with a total of 121 coordinates.\n" +
+                "Rover at Coordinates[x=5, y=5] is facing NORTH", MarsRoverApplication.handleCommand(Command.STATE, input));
     }
 
 }

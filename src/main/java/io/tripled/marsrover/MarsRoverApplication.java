@@ -3,6 +3,7 @@ package io.tripled.marsrover;
 import io.tripled.marsrover.command.Command;
 import io.tripled.marsrover.input.InputParser;
 import io.tripled.marsrover.message.MessagePrinter;
+import io.tripled.marsrover.rover.RoverState;
 import io.tripled.marsrover.validators.LandInputValidator;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ public class MarsRoverApplication {
 
     private static int simulationSize = 0;
     private static Coordinate rover1Coordinate;
+    private static RoverState roverState = null;
 
     public static void main(String[] args) {
         printLogo();
@@ -72,6 +74,7 @@ public class MarsRoverApplication {
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
             case LAND -> handleRoverLanding(input);
             case INVALID_LANDING -> handleFailedLanding(input);
+            case STATE -> MessagePrinter.stateMessage(roverState);
             default -> MessagePrinter.apiMessage();
         };
     }
@@ -90,8 +93,9 @@ public class MarsRoverApplication {
     private static String handleRoverLanding(String input) {
         LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
         Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input);
-        if(parsedInput.isPresent()){
+        if(parsedInput.isPresent() && roverState == null){
             rover1Coordinate = parsedInput.get();
+            roverState = new RoverState(simulationSize,rover1Coordinate);
             return MessagePrinter.landingMessage(rover1Coordinate);
         }
 

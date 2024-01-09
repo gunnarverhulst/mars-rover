@@ -14,12 +14,11 @@ public enum Command {
     LAND,
     EMPTY_SIMULATION_SIZE,
     INVALID_LANDING,
+    STATE,
     UNKNOWN_COMMAND,
     COMMAND;
 
     public Command parse(String input){
-
-
 
         if(input.equalsIgnoreCase("Q"))
             return QUIT;
@@ -27,6 +26,8 @@ public enum Command {
             return EMPTY_INPUT;
         if(input.equalsIgnoreCase("P"))
             return PRINT;
+        if(input.equalsIgnoreCase("STATE"))
+            return STATE;
         if(LAND_INPUT_VALIDATOR.isValidLandInput(input))
             return LAND;
         if(!LAND_INPUT_VALIDATOR.isValidLandInput(input))
