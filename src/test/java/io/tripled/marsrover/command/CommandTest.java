@@ -17,4 +17,9 @@ class CommandTest {
         assertEquals(Command.COORDS_VALUE, COMMAND.parse("5"));
     }
 
+    @Test
+    void canDetectInvalidValue_Text(){
+        assertEquals(Command.INVALID_VALUE, COMMAND.parse("bad"));
+    }
+
 }

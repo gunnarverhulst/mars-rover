@@ -7,6 +7,7 @@ public enum Command {
     QUIT,
     UNKNOWN_COMMAND,
     COORDS_VALUE,
+    INVALID_VALUE,
     COMMAND;
 
 
@@ -15,11 +16,14 @@ public enum Command {
             return QUIT;
         if(isValue(input))
             return COORDS_VALUE;
-        return UNKNOWN_COMMAND;
+        else
+            return INVALID_VALUE;
+
+//        return UNKNOWN_COMMAND;
     }
 
     private boolean isValue(String input) {
-        Pattern pattern = Pattern.compile("\\d*");
+        Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(input);
 
         return matcher.find();
