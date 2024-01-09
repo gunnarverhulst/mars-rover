@@ -86,10 +86,9 @@ public class MarsRoverApplication {
     }
 
     public static String showWorldInitText() {
-        String worldInitText = "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
-                "[Enter max coordinate] : ";
 
-        return worldInitText;
+        return "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
+                "[Enter max coordinate] : ";
     }
 
     public static int parseCoordinateValue(String inputValueString) {
