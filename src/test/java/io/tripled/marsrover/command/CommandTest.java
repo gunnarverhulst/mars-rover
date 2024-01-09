@@ -32,4 +32,5 @@ class CommandTest {
         assertEquals(Command.EMPTY_INPUT, COMMAND.parse(""));
     }
 
+
 }

@@ -11,7 +11,6 @@ public enum Command {
     EMPTY_INPUT,
     COMMAND;
 
-
     public Command parse(String input){
         if(input.equalsIgnoreCase("Q"))
             return QUIT;
