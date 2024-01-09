@@ -1,6 +1,7 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,6 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class MarsRoverApplicationTests {
+
+    @BeforeEach
+    void init(){
+        MarsRoverApplication.resetWorld();
+    }
 
     @Test
     void helloWorld() {
@@ -81,6 +87,13 @@ class MarsRoverApplicationTests {
         String input = "";
         MarsRoverApplication.handleCommand(Command.COORDS_VALUE, "5");
         assertTrue(MarsRoverApplication.handleCommand(Command.PRINT, input).contains("{P}"));
+    }
+
+    @Test
+    void whenQCommandEntered_thenQuit(){
+        String input = "Q";
+        assertEquals("Quitting application", MarsRoverApplication.handleCommand(Command.QUIT, input));
+
     }
 
 }

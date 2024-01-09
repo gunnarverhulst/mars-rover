@@ -1,6 +1,7 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
+import io.tripled.marsrover.message.MessagePrinter;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -48,7 +49,9 @@ public class MarsRoverApplication {
 
     public static String handleCommand(Command command, String input) {
         return switch (command){
-            case QUIT -> "Quitting application";
+//            case QUIT -> "Quitting application";
+
+            case QUIT -> MessagePrinter.MESSAGE_PRINTER.quit();
             case COORDS_VALUE -> {
                 maxCoords = Integer.parseInt(extractCoordValue(input));
                 yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates\n\n"+
@@ -108,5 +111,9 @@ public class MarsRoverApplication {
 
     public static boolean maxCoordsHasValue() {
         return maxCoords > 0;
+    }
+
+    public static void resetWorld(){
+        maxCoords = 0;
     }
 }
