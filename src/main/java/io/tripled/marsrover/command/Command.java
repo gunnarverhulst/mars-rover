@@ -14,7 +14,7 @@ public enum Command {
     public Command parse(String input){
         if(input.equalsIgnoreCase("Q"))
             return QUIT;
-        if(isValue(input))
+        if(isValidValue(input))
             return COORDS_VALUE;
         else
             return INVALID_VALUE;
@@ -22,10 +22,10 @@ public enum Command {
 //        return UNKNOWN_COMMAND;
     }
 
-    private boolean isValue(String input) {
+    private boolean isValidValue(String input) {
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(input);
 
-        return matcher.find();
+        return matcher.find() && Integer.parseInt(input) > 0;
     }
 }

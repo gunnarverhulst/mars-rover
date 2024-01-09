@@ -22,4 +22,9 @@ class CommandTest {
         assertEquals(Command.INVALID_VALUE, COMMAND.parse("bad"));
     }
 
+    @Test
+    void canDetectInvalidCoordsValue_NegativeNumber(){
+        assertEquals(Command.INVALID_VALUE, COMMAND.parse("-45"));
+    }
+
 }
