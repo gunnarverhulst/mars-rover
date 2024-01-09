@@ -1,5 +1,6 @@
 package io.tripled.marsrover;
 
+import io.tripled.marsrover.command.Command;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +21,7 @@ class MarsRoverApplicationTests {
 
     @Test
     void showWorldInitTextOnBoot(){
-        assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]", MarsRoverApplication.showWorldInitText());
+        assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n[Enter max coordinate] : ", MarsRoverApplication.showWorldInitText());
     }
 
     @Test
@@ -37,4 +38,34 @@ class MarsRoverApplicationTests {
         assertEquals("121", MarsRoverApplication.calculateTotalAmountOfCoords("10"));
     }
 
+    @Test
+    void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
+        String input = "bad";
+        assertEquals("[" + input + "] is an invalid Simulation maxCoordinate\n" +
+                        "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
+                        "[Enter max coordinate] : ", MarsRoverApplication.handleCommand(Command.INVALID_VALUE,input));
+    }
+
+    @Test
+    void whenInvalidCoordValueEntered_NegativeNumber_thenHandleCommand(){
+        String input = "-45";
+        assertEquals("[" + input + "] is an invalid Simulation maxCoordinate\n" +
+                "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
+                "[Enter max coordinate] : ", MarsRoverApplication.handleCommand(Command.INVALID_VALUE,input));
+    }
+
+    @Test
+    void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
+        String input = "5";
+        MarsRoverApplication.handleCommand(Command.COORDS_VALUE, input);
+        assertTrue(MarsRoverApplication.maxCoordsHasValue());
+    }
+
+    @Test
+    void whenEmptyCoordValueEntered_thenHandleCommand(){
+        String input = "";
+
+        assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
+                "[Enter max coordinate] : ", MarsRoverApplication.handleCommand(Command.EMPTY_INPUT, input));
+    }
 }

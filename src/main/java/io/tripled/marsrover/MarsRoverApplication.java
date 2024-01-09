@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 public class MarsRoverApplication {
 
 
+    private static int maxCoords = 0;
+
     public static void main(String[] args) {
         printLogo();
         readInput();
@@ -26,7 +28,7 @@ public class MarsRoverApplication {
 
 
     public static String readInput() {
-        showWorldInitText();
+        System.out.println(showWorldInitText());
         String input;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
@@ -46,14 +48,24 @@ public class MarsRoverApplication {
         return input;
     }
 
-    private static String handleCommand(Command command, String input) {
+    public static String handleCommand(Command command, String input) {
         return switch (command){
             case QUIT -> "Quitting application";
             case COORDS_VALUE -> {
-                extractCoordValue(input);
+                maxCoords = Integer.parseInt(extractCoordValue(input));
                 yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates";
             }
-            case INVALID_VALUE -> "[" + input + "] is an invalid Simulation maxCoordinate";
+            case INVALID_VALUE -> {
+                yield "[" + input + "] is an invalid Simulation maxCoordinate\n" +
+                        showWorldInitText();
+            }
+            case EMPTY_INPUT -> {
+                maxCoords = 0;
+                if(maxCoords > 0)
+                    yield showHelpMessage();
+                else
+                    yield showWorldInitText();
+            }
             default -> showHelpMessage();
         };
     }
@@ -80,7 +92,6 @@ public class MarsRoverApplication {
         String worldInitText = "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
                 "[Enter max coordinate] : ";
 
-        System.out.println(worldInitText);
         return worldInitText;
     }
 
@@ -90,5 +101,9 @@ public class MarsRoverApplication {
 
     public static String calculateTotalAmountOfCoords(String amountOfCoords) {
         return ""+ (Integer.parseInt(amountOfCoords) + 1) * (Integer.parseInt(amountOfCoords) + 1);
+    }
+
+    public static boolean maxCoordsHasValue() {
+        return maxCoords > 0;
     }
 }
