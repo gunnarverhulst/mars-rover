@@ -13,7 +13,7 @@ import static io.tripled.marsrover.message.MessagePrinter.MESSAGE_PRINTER;
 public class MarsRoverApplication {
 
 
-    private static int maxCoords = 0;
+    private static int worldInitCoords = 0;
 
     public static void main(String[] args) {
         printLogo();
@@ -38,7 +38,7 @@ public class MarsRoverApplication {
 
                 String output = "";
                 if (!isQuit(input)){
-                    Command command = COMMAND.parse(input, maxCoords);
+                    Command command = COMMAND.parse(input, worldInitCoords);
                     output = handleCommand(command, input);
                 }
                 System.out.println(output);
@@ -54,12 +54,12 @@ public class MarsRoverApplication {
         return switch (command){
             case QUIT -> MESSAGE_PRINTER.quit();
             case COORDS_VALUE -> {
-                maxCoords = parseCoordinateValue(extractCoordValue(input));
+                worldInitCoords = parseCoordinateValue(extractCoordValue(input));
                 yield MessagePrinter.WorldInitCoordsSet(input, calculateTotalAmountOfCoords(input));
             }
             case INVALID_VALUE ->MessagePrinter.invalidValue(input);
             case EMPTY_INPUT -> {
-                if(maxCoords > 0)
+                if(worldInitCoords > 0)
                     yield MessagePrinter.apiMessage();
                 else
                     yield MessagePrinter.worldCoordsInitMessage();
@@ -93,10 +93,10 @@ public class MarsRoverApplication {
     }
 
     public static boolean maxCoordsHasValue() {
-        return maxCoords > 0;
+        return worldInitCoords > 0;
     }
 
     public static void resetWorld(){
-        maxCoords = 0;
+        worldInitCoords = 0;
     }
 }
