@@ -10,7 +10,7 @@ class MessagePrinterTest {
 
     @Test
     void showWorldInitTextOnBoot(){
-        assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n[Enter max coordinate] : ", MessagePrinter.worldCoordsInitMessage());
+        assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n[Enter max coordinate] : ", MessagePrinter.simulationSizeErrorMessage());
     }
 
     @Test
@@ -33,7 +33,7 @@ class MessagePrinterTest {
     void whenEmptyCoordValueEntered_thenHandleCommand(){
 
         assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
-                "[Enter max coordinate] : ", MessagePrinter.worldCoordsInitMessage());
+                "[Enter max coordinate] : ", MessagePrinter.simulationSizeErrorMessage());
     }
 
     @Test

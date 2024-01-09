@@ -3,22 +3,22 @@ package io.tripled.marsrover.message;
 public enum MessagePrinter {
     MESSAGE_PRINTER;
 
-    public String quit(){
+    public static String quit(){
         return "Quitting application";
     }
 
-    public static String WorldInitCoordsSet(String input, String amountOfCoordinates) {
+    public static String simulationSizeSetMessage(String input, String simulationSize) {
 
-        return "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + amountOfCoordinates + "] coordinates\n\n"+
+        return "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + simulationSize + "] coordinates\n\n"+
                        "[Please enter a command]";
     }
 
     public static String invalidValue(String input) {
         return "[" + input + "] is an invalid Simulation maxCoordinate\n" +
-                worldCoordsInitMessage();
+                simulationSizeErrorMessage();
     }
 
-    public static String worldCoordsInitMessage() {
+    public static String simulationSizeErrorMessage() {
 
         return "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
                 "[Enter max coordinate] : ";

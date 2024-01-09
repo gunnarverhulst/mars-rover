@@ -8,12 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
-import static io.tripled.marsrover.message.MessagePrinter.MESSAGE_PRINTER;
 
 public class MarsRoverApplication {
 
 
-    private static int worldInitCoords = 0;
+    private static int simulationSize = 0;
 
     public static void main(String[] args) {
         printLogo();
@@ -30,7 +29,7 @@ public class MarsRoverApplication {
     }
 
     public static String readInput() {
-        System.out.println(MessagePrinter.worldCoordsInitMessage());
+        System.out.println(MessagePrinter.simulationSizeErrorMessage());
         String input;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
@@ -42,8 +41,16 @@ public class MarsRoverApplication {
                     //Command command = COMMAND.parse(input);
                     // command. doe uw ding
                     // print boodschappen van commanda af voor ebruiker
-                    Command command = COMMAND.parse(input);
-                    output = handleCommand(command, input);
+
+
+                    if(!isSimulationSizeSet()){
+                        Command command = COMMAND.parseSimulationSize(input);
+                        output = handleCommand(command, input);
+                    } else {
+                        Command command = COMMAND.parse(input);
+                        output = handleCommand(command, input);
+                    }
+
                 }
                 System.out.println(output);
 
@@ -54,22 +61,20 @@ public class MarsRoverApplication {
         return input;
     }
 
+    private static boolean isSimulationSizeSet() {
+        return simulationSize > 0;
+    }
+
     public static String handleCommand(Command command, String input) {
         return switch (command){
-            case QUIT -> MESSAGE_PRINTER.quit();
+            case QUIT -> MessagePrinter.quit();
             case COORDS_VALUE -> {
-                worldInitCoords = parseCoordinateValue(extractCoordValue(input));
-                yield MessagePrinter.WorldInitCoordsSet(input, calculateTotalAmountOfCoords(input));
+                simulationSize = parseCoordinateValue(extractCoordValue(input));
+                yield MessagePrinter.simulationSizeSetMessage(input, calculateTotalAmountOfCoords(input));
             }
-            case INVALID_VALUE ->MessagePrinter.invalidValue(input);
-            case EMPTY_INPUT -> {
-                if(worldInitCoords > 0)
-                    yield MessagePrinter.apiMessage();
-                else
-                    yield MessagePrinter.worldCoordsInitMessage();
-            }
-            case PRINT -> MessagePrinter.apiMessage();
-
+            case INVALID_VALUE -> MessagePrinter.invalidValue(input);
+            case EMPTY_SIMULATION_SIZE -> MessagePrinter.simulationSizeErrorMessage();
+            case EMPTY_INPUT -> MessagePrinter.apiMessage();
             default -> MessagePrinter.apiMessage();
         };
     }
@@ -80,7 +85,7 @@ public class MarsRoverApplication {
         if(matcher.find()){
             return matcher.group();
         }
-        return MessagePrinter.worldCoordsInitMessage();
+        return MessagePrinter.simulationSizeErrorMessage();
     }
 
 
@@ -97,10 +102,10 @@ public class MarsRoverApplication {
     }
 
     public static boolean maxCoordsHasValue() {
-        return worldInitCoords > 0;
+        return simulationSize > 0;
     }
 
     public static void resetWorld(){
-        worldInitCoords = 0;
+        simulationSize = 0;
     }
 }

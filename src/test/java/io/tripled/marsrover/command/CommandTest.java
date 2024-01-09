@@ -29,7 +29,7 @@ class CommandTest {
 
     @Test
     void canDetectInvalidCoordsValue_EmptyString(){
-        assertEquals(Command.EMPTY_INPUT, COMMAND.parseSimulationSize(""));
+        assertEquals(Command.EMPTY_SIMULATION_SIZE, COMMAND.parseSimulationSize(""));
     }
 
     @Test

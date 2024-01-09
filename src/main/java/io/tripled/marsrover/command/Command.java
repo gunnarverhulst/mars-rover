@@ -9,6 +9,7 @@ public enum Command {
     INVALID_VALUE,
     EMPTY_INPUT,
     LAND,
+    EMPTY_SIMULATION_SIZE,
     UNKNOWN_COMMAND,
     COMMAND;
 
@@ -29,7 +30,7 @@ public enum Command {
     public Command parseSimulationSize(String input){
 
         if(input.isEmpty())
-            return EMPTY_INPUT;
+            return EMPTY_SIMULATION_SIZE;
         if(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
             return COORDS_VALUE;
         if(!COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
