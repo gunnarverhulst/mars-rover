@@ -10,6 +10,6 @@ public enum WorldInitCoordsInputValidator {
         Pattern pattern = Pattern.compile("^\\d+$");
         Matcher matcher = pattern.matcher(input);
 
-        return matcher.find() && Integer.parseInt(input) > 0;
+        return matcher.find() && Integer.parseInt(input) > 0 && Integer.parseInt(input) < 101;
     }
 }

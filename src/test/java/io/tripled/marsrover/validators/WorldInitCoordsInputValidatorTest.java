@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WorldInitCoordsInputValidatorTest {
 
     @Test
-    void checkIfInputValidCoordValue(){
+    void checkForValidSimulationSize(){
         assertTrue(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize("5"));
     }
 
@@ -29,6 +29,9 @@ class WorldInitCoordsInputValidatorTest {
         assertFalse(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(""));
     }
 
-
+    @Test
+    void checkForValidSimulationSize_whenInputTooBig(){
+        assertFalse(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize("101"));
+    }
 
 }
