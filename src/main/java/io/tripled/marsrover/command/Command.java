@@ -8,6 +8,7 @@ public enum Command {
     COORDS_VALUE,
     INVALID_VALUE,
     EMPTY_INPUT,
+    LAND,
     UNKNOWN_COMMAND,
     COMMAND;
 
@@ -22,6 +23,8 @@ public enum Command {
             return COORDS_VALUE;
         if(worldInitCoords == 0 && !COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
             return INVALID_VALUE;
+        if(worldInitCoords > 0 && input.contains("land"))
+            return LAND;
 
         return UNKNOWN_COMMAND;
     }

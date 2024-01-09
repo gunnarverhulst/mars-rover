@@ -40,4 +40,9 @@ class CommandTest {
         assertEquals(Command.INVALID_VALUE, COMMAND.parse("P",0));
     }
 
+    @Test
+    void whenInputLandWithinSim_thenParsedLAND(){
+        assertEquals(Command.LAND, COMMAND.parse("land 10 10", 1));
+    }
+
 }
