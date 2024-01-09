@@ -49,7 +49,10 @@ public class MarsRoverApplication {
     private static String handleCommand(Command command, String input) {
         return switch (command){
             case QUIT -> "Quitting application";
-            case COORDS_VALUE -> extractCoordValue(input);
+            case COORDS_VALUE -> {
+                extractCoordValue(input);
+                yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates";
+            }
             default -> showHelpMessage();
         };
     }
@@ -81,5 +84,9 @@ public class MarsRoverApplication {
 
     public static int parseCoordinateValue(String inputValueString) {
         return  Integer.parseInt(inputValueString);
+    }
+
+    public static String calculateTotalAmountOfCoords(String amountOfCoords) {
+        return ""+ (Integer.parseInt(amountOfCoords) + 1) * (Integer.parseInt(amountOfCoords) + 1);
     }
 }

@@ -31,4 +31,10 @@ class MarsRoverApplicationTests {
         assertEquals(5,MarsRoverApplication.parseCoordinateValue(inputValueString));
     }
 
+    @Test
+    void whenValidCoordValueEntered_thenCalculateTotalAmountOfCoords(){
+        assertEquals("36", MarsRoverApplication.calculateTotalAmountOfCoords("5"));
+        assertEquals("121", MarsRoverApplication.calculateTotalAmountOfCoords("10"));
+    }
+
 }
