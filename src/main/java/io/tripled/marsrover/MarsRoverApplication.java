@@ -54,14 +54,14 @@ public class MarsRoverApplication {
             case QUIT -> MESSAGE_PRINTER.quit();
             case COORDS_VALUE -> {
                 maxCoords = Integer.parseInt(extractCoordValue(input));
-                yield MESSAGE_PRINTER.WorldInitCoordsSet(input, calculateTotalAmountOfCoords(input));
+                yield MessagePrinter.WorldInitCoordsSet(input, calculateTotalAmountOfCoords(input));
             }
-            case INVALID_VALUE ->MESSAGE_PRINTER.invalidValue(input, showWorldInitText());
+            case INVALID_VALUE ->MessagePrinter.invalidValue(input, showWorldInitText());
             case EMPTY_INPUT -> {
                 if(maxCoords > 0)
                     yield MessagePrinter.apiMessage();
                 else
-                    yield showWorldInitText();
+                    yield MessagePrinter.worldCoordsInitMessage();
             }
             case PRINT -> showHelpMessage();
 
