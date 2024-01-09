@@ -9,40 +9,38 @@ class CommandTest {
 
     @Test
     void canParseQuitString(){
-        assertEquals(Command.QUIT, COMMAND.parse("q",1));
+        assertEquals(Command.QUIT, COMMAND.parse("q"));
     }
 
     @Test
-    void canParseCoordsValue(){
-        assertEquals(Command.COORDS_VALUE, COMMAND.parse("5",0));
+    void canParseSimulationSize(){
+        assertEquals(Command.COORDS_VALUE, COMMAND.parseSimulationSize("5"));
     }
 
     @Test
     void canDetectInvalidValue_Text(){
-        assertEquals(Command.INVALID_VALUE, COMMAND.parse("bad",0));
+        assertEquals(Command.INVALID_VALUE, COMMAND.parseSimulationSize("bad"));
     }
 
     @Test
     void canDetectInvalidCoordsValue_NegativeNumber(){
-        assertEquals(Command.INVALID_VALUE, COMMAND.parse("-45",0));
+        assertEquals(Command.INVALID_VALUE, COMMAND.parseSimulationSize("-45"));
     }
 
     @Test
     void canDetectInvalidCoordsValue_EmptyString(){
-        assertEquals(Command.EMPTY_INPUT, COMMAND.parse("",0));
+        assertEquals(Command.EMPTY_INPUT, COMMAND.parseSimulationSize(""));
     }
 
     @Test
     void whenInputP_thenParsedPRINT(){
-        assertEquals(Command.PRINT, COMMAND.parse("p",1));
-        assertEquals(Command.PRINT, COMMAND.parse("P",1));
-        assertEquals(Command.INVALID_VALUE, COMMAND.parse("p",0));
-        assertEquals(Command.INVALID_VALUE, COMMAND.parse("P",0));
+        assertEquals(Command.PRINT, COMMAND.parse("p"));
+        assertEquals(Command.PRINT, COMMAND.parse("P"));
     }
 
     @Test
     void whenInputLandWithinSim_thenParsedLAND(){
-        assertEquals(Command.LAND, COMMAND.parse("land 10 10", 1));
+        assertEquals(Command.LAND, COMMAND.parse("land 10 10"));
     }
 
 }

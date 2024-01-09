@@ -38,7 +38,11 @@ public class MarsRoverApplication {
 
                 String output = "";
                 if (!isQuit(input)){
-                    Command command = COMMAND.parse(input, worldInitCoords);
+                    //Vraag simulatie groote
+                    //Command command = COMMAND.parse(input);
+                    // command. doe uw ding
+                    // print boodschappen van commanda af voor ebruiker
+                    Command command = COMMAND.parse(input);
                     output = handleCommand(command, input);
                 }
                 System.out.println(output);

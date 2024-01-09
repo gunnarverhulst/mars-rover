@@ -12,19 +12,28 @@ public enum Command {
     UNKNOWN_COMMAND,
     COMMAND;
 
-    public Command parse(String input, int worldInitCoords){
+    public Command parse(String input){
+
         if(input.equalsIgnoreCase("Q"))
             return QUIT;
         if(input.isEmpty())
             return EMPTY_INPUT;
-        if(worldInitCoords > 0 && input.equalsIgnoreCase("P"))
+        if(input.equalsIgnoreCase("P"))
             return PRINT;
-        if(worldInitCoords == 0 && COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
-            return COORDS_VALUE;
-        if(worldInitCoords == 0 && !COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
-            return INVALID_VALUE;
-        if(worldInitCoords > 0 && input.contains("land"))
+        if(input.contains("land"))
             return LAND;
+
+        return UNKNOWN_COMMAND;
+    }
+
+    public Command parseSimulationSize(String input){
+
+        if(input.isEmpty())
+            return EMPTY_INPUT;
+        if(COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
+            return COORDS_VALUE;
+        if(!COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
+            return INVALID_VALUE;
 
         return UNKNOWN_COMMAND;
     }
