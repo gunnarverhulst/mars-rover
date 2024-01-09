@@ -13,7 +13,7 @@ public enum MessagePrinter {
                        "[Please enter a command]";
     }
 
-    public static String invalidValue(String input,String showWorldInitMessage) {
+    public static String invalidValue(String input) {
         return "[" + input + "] is an invalid Simulation maxCoordinate\n" +
                 worldCoordsInitMessage();
     }
@@ -33,6 +33,7 @@ public enum MessagePrinter {
                 *   Print API overview            | {P}                                                                                                           *
                 ***************************************************************************************************************************************************""";
     }
+
 
 
 }

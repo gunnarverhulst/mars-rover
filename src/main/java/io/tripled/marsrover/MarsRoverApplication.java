@@ -29,7 +29,7 @@ public class MarsRoverApplication {
     }
 
     public static String readInput() {
-        System.out.println(showWorldInitText());
+        System.out.println(MessagePrinter.worldCoordsInitMessage());
         String input;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
@@ -53,19 +53,19 @@ public class MarsRoverApplication {
         return switch (command){
             case QUIT -> MESSAGE_PRINTER.quit();
             case COORDS_VALUE -> {
-                maxCoords = Integer.parseInt(extractCoordValue(input));
+                maxCoords = parseCoordinateValue(extractCoordValue(input));
                 yield MessagePrinter.WorldInitCoordsSet(input, calculateTotalAmountOfCoords(input));
             }
-            case INVALID_VALUE ->MessagePrinter.invalidValue(input, showWorldInitText());
+            case INVALID_VALUE ->MessagePrinter.invalidValue(input);
             case EMPTY_INPUT -> {
                 if(maxCoords > 0)
                     yield MessagePrinter.apiMessage();
                 else
                     yield MessagePrinter.worldCoordsInitMessage();
             }
-            case PRINT -> showHelpMessage();
+            case PRINT -> MessagePrinter.apiMessage();
 
-            default -> showHelpMessage();
+            default -> MessagePrinter.apiMessage();
         };
     }
 
@@ -75,28 +75,12 @@ public class MarsRoverApplication {
         if(matcher.find()){
             return matcher.group();
         }
-        return showWorldInitText();
-    }
-
-    private static String showHelpMessage() {
-        return """
-                ***************************************************************************************************************************************************
-                *   Print state of simulation     | {state}                                                   | ex: state                                         *
-                *   Land a new rover              | {land {x} {y}}                                            | ex: land 1 5                                      *
-                *   Quit the application          | {Q}                                                                                                           *
-                *   Print API overview            | {P}                                                                                                           *
-                ***************************************************************************************************************************************************""";
+        return MessagePrinter.worldCoordsInitMessage();
     }
 
 
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);
-    }
-
-    public static String showWorldInitText() {
-
-        return "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
-                "[Enter max coordinate] : ";
     }
 
     public static int parseCoordinateValue(String inputValueString) {

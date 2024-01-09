@@ -26,11 +26,6 @@ class MarsRoverApplicationTests {
     }
 
     @Test
-    void showWorldInitTextOnBoot(){
-        assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n[Enter max coordinate] : ", MarsRoverApplication.showWorldInitText());
-    }
-
-    @Test
     void givenWaitingForCoordinateAmount_whenValidValueEntered_thenParseValue(){
 
 
