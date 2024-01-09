@@ -1,7 +1,6 @@
 package io.tripled.marsrover.command;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static io.tripled.marsrover.validators.WorldInitCoordsInputValidator.COORDS_INPUT_VALIDATOR;
 
 public enum Command {
     QUIT,
@@ -19,18 +18,12 @@ public enum Command {
             return EMPTY_INPUT;
         if(worldInitCoords > 0 && input.equalsIgnoreCase("P"))
             return PRINT;
-        if(worldInitCoords == 0 && isValidValue(input))
+        if(worldInitCoords == 0 && COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
             return COORDS_VALUE;
-        if(worldInitCoords == 0 && !isValidValue(input))
+        if(worldInitCoords == 0 && !COORDS_INPUT_VALIDATOR.isValidMaxCoordValue(input))
             return INVALID_VALUE;
 
         return UNKNOWN_COMMAND;
     }
 
-    private boolean isValidValue(String input) {
-        Pattern pattern = Pattern.compile("^\\d+$");
-        Matcher matcher = pattern.matcher(input);
-
-        return matcher.find() && Integer.parseInt(input) > 0;
-    }
 }
