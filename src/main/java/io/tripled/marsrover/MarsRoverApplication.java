@@ -36,11 +36,6 @@ public class MarsRoverApplication {
 
                 String output = "";
                 if (!isQuit(input)){
-                    //Vraag simulatie groote
-                    //Command command = COMMAND.parse(input);
-                    // command. doe uw ding
-                    // print boodschappen van commanda af voor ebruiker
-
 
                     if(!isSimulationSizeSet()){
                         Command command = COMMAND.parseSimulationSize(input);
@@ -60,7 +55,7 @@ public class MarsRoverApplication {
         return input;
     }
 
-    private static boolean isSimulationSizeSet() {
+    public static boolean isSimulationSizeSet() {
         return simulationSize > 0;
     }
 
@@ -82,13 +77,6 @@ public class MarsRoverApplication {
 
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);
-    }
-
-    public static int parseSimulationSize(String inputValueString) {
-        return  Integer.parseInt(inputValueString);
-    }
-    public static boolean maxCoordsHasValue() {
-        return simulationSize > 0;
     }
 
     public static void resetWorld(){

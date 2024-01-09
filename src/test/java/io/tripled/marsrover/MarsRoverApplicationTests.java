@@ -54,7 +54,7 @@ class MarsRoverApplicationTests {
     void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
         String input = "5";
         MarsRoverApplication.handleCommand(Command.SIMULATIONSIZE, input);
-        assertTrue(MarsRoverApplication.maxCoordsHasValue());
+        assertTrue(MarsRoverApplication.isSimulationSizeSet());
     }
 
     @Test
