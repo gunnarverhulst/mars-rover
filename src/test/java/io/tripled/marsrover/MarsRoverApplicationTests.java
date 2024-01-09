@@ -12,4 +12,9 @@ class MarsRoverApplicationTests {
         assertTrue(true, "A dummy test right here");
     }
 
+    @Test
+    void logoIsGunzLogo(){
+        assertTrue(MarsRoverApplication.printLogo().contains("Gunz"));
+    }
+
 }

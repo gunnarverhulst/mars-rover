@@ -6,10 +6,18 @@ public class MarsRoverApplication {
 
 
     public static void main(String[] args) {
-        System.out.println("**************************");
-        System.out.println("**    Mars Rover        **");
-        System.out.println("**************************");
+        printLogo();
         readInput();
+    }
+
+    public static String printLogo() {
+        String logo = """
+                **************************"
+                **    Gunz Rover        **"
+                **************************
+                """;
+        System.out.println(logo);
+        return logo;
     }
 
 
@@ -31,4 +39,5 @@ public class MarsRoverApplication {
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);
     }
+
 }
