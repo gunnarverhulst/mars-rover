@@ -25,16 +25,20 @@ public enum InputParser {
         return new Coordinate(x,y);
     }
 
-    private static int parseInputForXValue(String input) {
+    public static int parseInputForXValue(String input) {
         Pattern pattern = Pattern.compile("^land (\\d*) ");
         Matcher matcher = pattern.matcher(input.toLowerCase());
 
-        if(matcher.find())
-            return Integer.parseInt(matcher.group(1));
+        if(matcher.find()){
+            int valuex =Integer.parseInt(matcher.group(1));
+            return valuex;
+
+        }
+
         return 0;
     }
 
-    private static int parseInputForYValue(String input) {
+    public static int parseInputForYValue(String input) {
         Pattern pattern = Pattern.compile(" (\\d*)$");
         Matcher matcher = pattern.matcher(input.toLowerCase());
         if(matcher.find())

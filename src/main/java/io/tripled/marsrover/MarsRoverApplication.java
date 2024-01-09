@@ -3,15 +3,18 @@ package io.tripled.marsrover;
 import io.tripled.marsrover.command.Command;
 import io.tripled.marsrover.input.InputParser;
 import io.tripled.marsrover.message.MessagePrinter;
+import io.tripled.marsrover.validators.LandInputValidator;
 
 import java.util.Scanner;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
+import static io.tripled.marsrover.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
 
 public class MarsRoverApplication {
 
 
     private static int simulationSize = 0;
+    private static Coordinate rover1Coordinate;
 
     public static void main(String[] args) {
         printLogo();
@@ -72,12 +75,14 @@ public class MarsRoverApplication {
     }
 
     private static String handleRoverLanding(String input) {
-        Coordinate rover1Coordinate = InputParser.parseInputForCoordinate(input);
+        LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
+        rover1Coordinate = InputParser.parseInputForCoordinate(input);
         return "Rover R1 landed at (" + rover1Coordinate.x() + "," + rover1Coordinate.y() + ") and is facing North";
     }
 
     private static String handleSimulationSize(String input) {
         simulationSize = InputParser.parseInputForSimulationSize(input);
+        LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
         return MessagePrinter.simulationSizeSetMessage(input, simulationSize);
     }
 

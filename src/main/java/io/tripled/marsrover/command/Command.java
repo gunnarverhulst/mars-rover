@@ -1,5 +1,8 @@
 package io.tripled.marsrover.command;
 
+import io.tripled.marsrover.validators.LandInputValidator;
+
+import static io.tripled.marsrover.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
 import static io.tripled.marsrover.validators.WorldInitCoordsInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
 
 public enum Command {
@@ -15,13 +18,15 @@ public enum Command {
 
     public Command parse(String input){
 
+
+
         if(input.equalsIgnoreCase("Q"))
             return QUIT;
         if(input.isEmpty())
             return EMPTY_INPUT;
         if(input.equalsIgnoreCase("P"))
             return PRINT;
-        if(input.toLowerCase().contains("land"))
+        if(LAND_INPUT_VALIDATOR.isValidLandInput(input))
             return LAND;
 
         return UNKNOWN_COMMAND;
