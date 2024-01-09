@@ -1,5 +1,7 @@
 package io.tripled.marsrover.message;
 
+import io.tripled.marsrover.Coordinate;
+
 public enum MessagePrinter {
     MESSAGE_PRINTER;
 
@@ -36,5 +38,14 @@ public enum MessagePrinter {
     }
 
 
+    public static String landingMessage(Coordinate roverCoordinate) {
+        
+        return "Rover R1 landed at (" + roverCoordinate.x() + "," + roverCoordinate.y() + ") and is facing North\n\n" +
+                "[Please enter a command]";
+    }
 
+    public static String landingErrorMessage(Coordinate roverCoordinate) {
+        return "The coordinate [" + roverCoordinate.x() + "," + roverCoordinate.y() + "] is not a valid coordinate for the planet with max coordinate\n\n"+
+                "[Please enter a command]";
+    }
 }

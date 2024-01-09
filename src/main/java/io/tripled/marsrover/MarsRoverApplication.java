@@ -5,6 +5,7 @@ import io.tripled.marsrover.input.InputParser;
 import io.tripled.marsrover.message.MessagePrinter;
 import io.tripled.marsrover.validators.LandInputValidator;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
@@ -70,14 +71,32 @@ public class MarsRoverApplication {
             case EMPTY_SIMULATION_SIZE -> MessagePrinter.simulationSizeErrorMessage();
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
             case LAND -> handleRoverLanding(input);
+            case INVALID_LANDING -> handleFailedLanding(input);
             default -> MessagePrinter.apiMessage();
         };
     }
 
+    private static String handleFailedLanding(String input) {
+        LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
+        Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input);
+        if(parsedInput.isPresent()){
+            rover1Coordinate = parsedInput.get();
+            return MessagePrinter.landingErrorMessage(rover1Coordinate);
+        }
+
+        return MessagePrinter.apiMessage();
+    }
+
     private static String handleRoverLanding(String input) {
         LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
-        rover1Coordinate = InputParser.parseInputForCoordinate(input);
-        return "Rover R1 landed at (" + rover1Coordinate.x() + "," + rover1Coordinate.y() + ") and is facing North";
+        Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input);
+        if(parsedInput.isPresent()){
+            rover1Coordinate = parsedInput.get();
+            return MessagePrinter.landingMessage(rover1Coordinate);
+        }
+
+        return MessagePrinter.apiMessage();
+
     }
 
     private static String handleSimulationSize(String input) {

@@ -2,6 +2,7 @@ package io.tripled.marsrover.input;
 
 import io.tripled.marsrover.Coordinate;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,10 +20,10 @@ public enum InputParser {
         return 0;
     }
 
-    public static Coordinate parseInputForCoordinate(String input) {
+    public static Optional<Coordinate> parseInputForCoordinate(String input) {
         int x = parseInputForXValue(input);
         int y = parseInputForYValue(input);
-        return new Coordinate(x,y);
+        return Optional.of(new Coordinate(x,y));
     }
 
     public static int parseInputForXValue(String input) {
@@ -30,8 +31,7 @@ public enum InputParser {
         Matcher matcher = pattern.matcher(input.toLowerCase());
 
         if(matcher.find()){
-            int valuex =Integer.parseInt(matcher.group(1));
-            return valuex;
+            return Integer.parseInt(matcher.group(1));
 
         }
 
