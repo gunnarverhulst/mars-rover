@@ -8,12 +8,15 @@ public enum Command {
     UNKNOWN_COMMAND,
     COORDS_VALUE,
     INVALID_VALUE,
+    EMPTY_INPUT,
     COMMAND;
 
 
     public Command parse(String input){
         if(input.equalsIgnoreCase("Q"))
             return QUIT;
+        if(input.isEmpty())
+            return EMPTY_INPUT;
         if(isValidValue(input))
             return COORDS_VALUE;
         else

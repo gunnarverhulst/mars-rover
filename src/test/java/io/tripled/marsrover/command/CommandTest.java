@@ -27,4 +27,9 @@ class CommandTest {
         assertEquals(Command.INVALID_VALUE, COMMAND.parse("-45"));
     }
 
+    @Test
+    void canDetectInvalidCoordsValue_EmptyString(){
+        assertEquals(Command.EMPTY_INPUT, COMMAND.parse(""));
+    }
+
 }

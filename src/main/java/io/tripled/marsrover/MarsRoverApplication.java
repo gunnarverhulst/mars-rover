@@ -53,6 +53,7 @@ public class MarsRoverApplication {
                 extractCoordValue(input);
                 yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates";
             }
+            case INVALID_VALUE -> "[" + input + "] is an invalid Simulation maxCoordinate";
             default -> showHelpMessage();
         };
     }
@@ -76,7 +77,8 @@ public class MarsRoverApplication {
     }
 
     public static String showWorldInitText() {
-        String worldInitText = "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]";
+        String worldInitText = "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
+                "[Enter max coordinate] : ";
 
         System.out.println(worldInitText);
         return worldInitText;
