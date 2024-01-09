@@ -1,6 +1,6 @@
 package io.tripled.marsrover.validators;
 
-import io.tripled.marsrover.LandCoordinates;
+import io.tripled.marsrover.Coordinate;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -16,23 +16,8 @@ public enum LandInputValidator {
         if(numberOfEncounteredValues(input) != 2)
             return false;
 
-//        if(!encounteredLandCoordinatesInSim(input, worldInitCoords))
-//            return false;
 
         return true;
-    }
-
-    private Optional<LandCoordinates> encounteredLandCoordinatesInSim(String input, int worldInitCoords) {
-        Pattern patter = Pattern.compile("\\d+");
-        Matcher matcher = patter.matcher(input);
-
-
-
-        while(matcher.find()){
-            if(Integer.parseInt(matcher.group()) < 1 || Integer.parseInt(matcher.group()) > worldInitCoords)
-                return Optional.empty();
-        }
-        return Optional.empty();
     }
 
     private int numberOfEncounteredValues(String input) {

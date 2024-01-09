@@ -72,7 +72,8 @@ public class MarsRoverApplication {
     }
 
     private static String handleRoverLanding(String input) {
-        return "Rover R1 landed at (5,1) and is facing North";
+        Coordinate rover1Coordinate = InputParser.parseInputForCoordinate(input);
+        return "Rover R1 landed at (" + rover1Coordinate.x() + "," + rover1Coordinate.y() + ") and is facing North";
     }
 
     private static String handleSimulationSize(String input) {
