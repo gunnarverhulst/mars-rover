@@ -25,7 +25,6 @@ public class MarsRoverApplication {
         return logo;
     }
 
-
     public static String readInput() {
         System.out.println(showWorldInitText());
         String input;

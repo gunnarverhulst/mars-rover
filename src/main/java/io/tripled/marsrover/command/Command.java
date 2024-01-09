@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 public enum Command {
     QUIT,
-    UNKNOWN_COMMAND,
     PRINT,
     COORDS_VALUE,
     INVALID_VALUE,
@@ -24,7 +23,6 @@ public enum Command {
         else
             return INVALID_VALUE;
 
-//        return UNKNOWN_COMMAND;
     }
 
     private boolean isValidValue(String input) {
