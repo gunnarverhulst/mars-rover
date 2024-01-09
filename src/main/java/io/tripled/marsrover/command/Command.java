@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public enum Command {
     QUIT,
     UNKNOWN_COMMAND,
+    PRINT,
     COORDS_VALUE,
     INVALID_VALUE,
     EMPTY_INPUT,
@@ -16,6 +17,8 @@ public enum Command {
             return QUIT;
         if(input.isEmpty())
             return EMPTY_INPUT;
+        if(input.equalsIgnoreCase("P"))
+            return PRINT;
         if(isValidValue(input))
             return COORDS_VALUE;
         else
@@ -25,7 +28,7 @@ public enum Command {
     }
 
     private boolean isValidValue(String input) {
-        Pattern pattern = Pattern.compile("\\d+");
+        Pattern pattern = Pattern.compile("^\\d+$");
         Matcher matcher = pattern.matcher(input);
 
         return matcher.find() && Integer.parseInt(input) > 0;

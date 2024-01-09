@@ -63,6 +63,8 @@ public class MarsRoverApplication {
                 else
                     yield showWorldInitText();
             }
+            case PRINT -> showHelpMessage();
+
             default -> showHelpMessage();
         };
     }

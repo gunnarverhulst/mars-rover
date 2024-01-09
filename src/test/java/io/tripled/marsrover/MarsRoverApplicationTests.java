@@ -75,4 +75,12 @@ class MarsRoverApplicationTests {
         MarsRoverApplication.handleCommand(Command.COORDS_VALUE, "5");
         assertTrue(MarsRoverApplication.handleCommand(Command.EMPTY_INPUT, input).contains("{P}"));
     }
+
+    @Test
+    void whenPCommandEntered_thenShowHelpApi(){
+        String input = "";
+        MarsRoverApplication.handleCommand(Command.COORDS_VALUE, "5");
+        assertTrue(MarsRoverApplication.handleCommand(Command.PRINT, input).contains("{P}"));
+    }
+
 }

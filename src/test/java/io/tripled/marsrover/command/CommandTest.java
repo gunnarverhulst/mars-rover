@@ -32,5 +32,10 @@ class CommandTest {
         assertEquals(Command.EMPTY_INPUT, COMMAND.parse(""));
     }
 
+    @Test
+    void whenInputP_thenParsedPRINT(){
+        assertEquals(Command.PRINT, COMMAND.parse("p"));
+        assertEquals(Command.PRINT, COMMAND.parse("P"));
+    }
 
 }
