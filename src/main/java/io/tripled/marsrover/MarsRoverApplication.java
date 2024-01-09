@@ -55,12 +55,9 @@ public class MarsRoverApplication {
                 maxCoords = Integer.parseInt(extractCoordValue(input));
                 yield "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalAmountOfCoords(input) + "] coordinates";
             }
-            case INVALID_VALUE -> {
-                yield "[" + input + "] is an invalid Simulation maxCoordinate\n" +
+            case INVALID_VALUE ->"[" + input + "] is an invalid Simulation maxCoordinate\n" +
                         showWorldInitText();
-            }
             case EMPTY_INPUT -> {
-                maxCoords = 0;
                 if(maxCoords > 0)
                     yield showHelpMessage();
                 else
