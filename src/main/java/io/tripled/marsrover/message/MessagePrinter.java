@@ -27,19 +27,18 @@ public enum MessagePrinter {
         return new ApiMessage();
     }
 
-    public static String landingMessage(Coordinate roverCoordinate) {
+    public static Message landingMessage(Coordinate roverCoordinate) {
 
-        return "Rover R1 landed at (" + roverCoordinate.x() + "," + roverCoordinate.y() + ") and is facing North\n\n" +
-                "[Please enter a command]";
+        return new LandingMessage(roverCoordinate);
     }
 
-    public static String landingErrorMessage(Coordinate roverCoordinate) {
+    public static Message landingErrorMessage(Coordinate roverCoordinate) {
         if(roverCoordinate != null){
-            return "The coordinate [" + roverCoordinate.x() + "," + roverCoordinate.y() + "] is not a valid coordinate for the planet with max coordinate\n\n"+
-                    "[Please enter a command]";
+            return new LandingErrorMessage(roverCoordinate);
+
 
         } else
-            return"Unable to parse coordinates for landing. Expected two positive numbers [x y]";
+            return new LandingErrorEmptyCoordinateMessage();
     }
 
     public static Message stateMessage(RoverState roverState) {

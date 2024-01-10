@@ -74,13 +74,14 @@ public class MarsRoverApplication {
             case QUIT -> MessagePrinter.quitMessage();
             case SIMULATION_SIZE -> handleSimulationSize(input);
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
-//            case LAND -> handleRoverLanding(input);
+            case LAND -> handleRoverLanding(input);
+            case PRINT -> MessagePrinter.apiMessage();
             case STATE -> MessagePrinter.stateMessage(rover1State);
             default -> MessagePrinter.apiMessage();
         };
     }
 
-    private static String handleRoverLanding(String input) {
+    private static Message handleRoverLanding(String input) {
 
 
         Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input.toLowerCase(), simulationSize);

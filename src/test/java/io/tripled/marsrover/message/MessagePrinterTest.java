@@ -12,31 +12,29 @@ class MessagePrinterTest {
 
     @Test
     void requestSimulationSizeOnBoot(){
-        assertEquals("Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n[Enter max coordinate] : ", MessagePrinter.requestSimulationSize());
+        assertEquals(new RequestSimulationSizeMessage().messageToBePrinted(),
+                MessagePrinter.requestSimulationSize().messageToBePrinted());
     }
 
     @Test
     void whenInvalidCoordValueEntered_Text_thenMessagePrinterPrints(){
         input = "bad";
-        assertEquals("[" + input + "] is an invalid Simulation maxCoordinate\n" +
-                "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
-                "[Enter max coordinate] : ", MessagePrinter.simulationSizeErrorMessage(input));
+        assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
+                MessagePrinter.simulationSizeErrorMessage(input).messageToBePrinted());
     }
 
     @Test
     void whenInvalidCoordValueEntered_NegativeNumber_thenHandleCommand(){
         input = "-45";
-        assertEquals("[" + input + "] is an invalid Simulation maxCoordinate\n" +
-                "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
-                "[Enter max coordinate] : ", MessagePrinter.simulationSizeErrorMessage(input));
+        assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
+                MessagePrinter.simulationSizeErrorMessage(input).messageToBePrinted());
     }
 
     @Test
     void whenEmptySimulationSizeEntered_thenHandleCommand(){
         input = "";
-        assertEquals("[" + input + "] is an invalid Simulation maxCoordinate\n" +
-                "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
-                "[Enter max coordinate] : ", MessagePrinter.simulationSizeErrorMessage(""));
+        assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
+                MessagePrinter.simulationSizeErrorMessage("").messageToBePrinted());
     }
 
     @Test
