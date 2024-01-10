@@ -1,7 +1,7 @@
 package io.tripled.marsrover.command;
 
 import io.tripled.marsrover.input.InputParser;
-import io.tripled.marsrover.message.Message;
+import io.tripled.marsrover.message.messages.Message;
 import io.tripled.marsrover.message.MessagePrinter;
 import io.tripled.marsrover.rover.Coordinate;
 import io.tripled.marsrover.rover.RoverState;

@@ -2,7 +2,7 @@ package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
 import io.tripled.marsrover.input.InputParser;
-import io.tripled.marsrover.message.*;
+import io.tripled.marsrover.message.messages.*;
 import io.tripled.marsrover.rover.Coordinate;
 import io.tripled.marsrover.rover.RoverState;
 import org.junit.jupiter.api.BeforeEach;

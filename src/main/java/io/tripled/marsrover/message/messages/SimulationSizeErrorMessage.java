@@ -1,4 +1,4 @@
-package io.tripled.marsrover.message;
+package io.tripled.marsrover.message.messages;
 
 public class SimulationSizeErrorMessage implements Message{
 

@@ -1,7 +1,6 @@
-package io.tripled.marsrover.message;
+package io.tripled.marsrover.message.messages;
 
 import io.tripled.marsrover.rover.Coordinate;
-import io.tripled.marsrover.rover.RoverState;
 
 public class LandingErrorMessage implements Message{
 

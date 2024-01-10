@@ -1,5 +1,6 @@
 package io.tripled.marsrover.message;
 
+import io.tripled.marsrover.message.messages.*;
 import io.tripled.marsrover.rover.Coordinate;
 import io.tripled.marsrover.rover.RoverState;
 

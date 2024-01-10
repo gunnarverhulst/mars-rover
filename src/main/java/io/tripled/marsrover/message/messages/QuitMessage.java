@@ -1,4 +1,4 @@
-package io.tripled.marsrover.message;
+package io.tripled.marsrover.message.messages;
 
 public class QuitMessage implements Message{
     private final String message = "Quitting application";

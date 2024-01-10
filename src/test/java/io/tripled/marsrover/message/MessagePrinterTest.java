@@ -2,6 +2,9 @@ package io.tripled.marsrover.message;
 
 import io.tripled.marsrover.MarsRoverApplication;
 import io.tripled.marsrover.command.Command;
+import io.tripled.marsrover.message.messages.ApiMessage;
+import io.tripled.marsrover.message.messages.RequestSimulationSizeMessage;
+import io.tripled.marsrover.message.messages.SimulationSizeErrorMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

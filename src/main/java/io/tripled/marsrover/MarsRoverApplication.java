@@ -1,11 +1,9 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
-import io.tripled.marsrover.command.CommandHandler;
-import io.tripled.marsrover.message.LogoMessage;
-import io.tripled.marsrover.message.Message;
+import io.tripled.marsrover.message.messages.LogoMessage;
+import io.tripled.marsrover.message.messages.Message;
 import io.tripled.marsrover.message.MessagePrinter;
-import io.tripled.marsrover.rover.Rover;
 import io.tripled.marsrover.simulation.Simulation;
 
 import java.util.Scanner;
