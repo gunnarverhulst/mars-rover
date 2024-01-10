@@ -51,6 +51,9 @@ public class MarsRoverApplication {
                         output = handleCommand(command, input);
                     }
 
+                } else {
+                    Command command = COMMAND.parse(input);
+                    output = handleCommand(command, input);
                 }
                 System.out.println(output);
 
@@ -67,7 +70,8 @@ public class MarsRoverApplication {
 
     public static String handleCommand(Command command, String input) {
         return switch (command){
-            case QUIT -> MessagePrinter.quit();
+//            case QUIT -> MessagePrinter.quit();
+            case QUIT -> MessagePrinter.quitMessage().messageToBePrinted();
             case SIMULATION_SIZE -> handleSimulationSize(input);
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
             case LAND -> handleRoverLanding(input);

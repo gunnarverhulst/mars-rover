@@ -10,6 +10,10 @@ public enum MessagePrinter {
         return "Quitting application";
     }
 
+    public static Message quitMessage(){
+        return  new QuitMessage();
+    }
+
     public static String simulationSizeSetMessage(String input, int simulationSize) {
 
         return "Simulation with max coordinate [" + input + "] created successfully. Simulation contains [" + calculateTotalNumberOfCoordinates(simulationSize) + "] coordinates\n\n"+
