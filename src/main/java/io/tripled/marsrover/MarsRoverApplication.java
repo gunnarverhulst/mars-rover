@@ -13,7 +13,7 @@ import static io.tripled.marsrover.command.CommandHandler.COMMAND_HANDLER;
 
 public class MarsRoverApplication {
 
-    private Simulation simulation = new Simulation();
+    private final Simulation simulation = new Simulation();
 
     public static void main(String[] args) {
         printLogo();
@@ -62,9 +62,8 @@ public class MarsRoverApplication {
     }
 
     public Message handleCommand(Command command, String input) {
-        COMMAND_HANDLER.setSimulation(simulation);
 
-        return COMMAND_HANDLER.handleCommand(command, input);
+        return COMMAND_HANDLER.handleCommand(command, input, simulation);
     }
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);

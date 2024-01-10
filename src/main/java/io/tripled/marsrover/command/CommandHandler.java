@@ -12,22 +12,19 @@ import java.util.Optional;
 public enum CommandHandler {
     COMMAND_HANDLER;
 
-    private Simulation simulation;
-
-
-    public Message handleCommand(Command command, String input) {
+    public Message handleCommand(Command command, String input, Simulation simulation) {
         return switch (command){
             case QUIT -> MessagePrinter.quitMessage();
-            case SIMULATION_SIZE -> handleSimulationSize(input);
+            case SIMULATION_SIZE -> handleSimulationSize(input, simulation);
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
-            case LAND -> handleRoverLanding(input);
+            case LAND -> handleRoverLanding(input, simulation);
             case PRINT -> MessagePrinter.apiMessage();
             case STATE -> MessagePrinter.stateMessage(simulation.getSimulationSize(), simulation.getRoverState());
             default -> MessagePrinter.apiMessage();
         };
     }
 
-    public Message handleSimulationSize(String input) {
+    public Message handleSimulationSize(String input, Simulation simulation) {
         Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(input);
         if(simulationSizeOptional.isPresent()){
             simulation.setSimulationSize(simulationSizeOptional.get());
@@ -37,7 +34,7 @@ public enum CommandHandler {
         return MessagePrinter.simulationSizeErrorMessage(input);
     }
 
-    public Message handleRoverLanding(String input) {
+    public Message handleRoverLanding(String input, Simulation simulation) {
 
         if(simulation.getRoverState() == null) {
 
@@ -51,9 +48,5 @@ public enum CommandHandler {
             return MessagePrinter.landingErrorMessage(simulation.getRover1Coordinates());
         }
         return MessagePrinter.landingAlreadyLandedMessage();
-
-    }
-    public void setSimulation(Simulation simulation) {
-        this.simulation = simulation;
     }
 }
