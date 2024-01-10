@@ -8,28 +8,21 @@ import java.util.Optional;
 
 public class Rover {
 
-
-    private int simulationSize = 0;
-    private Coordinate roverCoordinate = null;
-
-
     private RoverState roverState = null;
 
 
     public Message handleRoverLanding(String input) {
 
-        if(roverCoordinate == null) {
+        if(roverState.roverCoordinate() == null) {
 
-            Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input.toLowerCase(), simulationSize);
+            Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input.toLowerCase(), roverState.simulationSize());
             if(parsedInput.isPresent() ){
-                roverCoordinate = parsedInput.get();
-                if(roverState == null){
-                    roverState = new RoverState(simulationSize, roverCoordinate);
-                    return MessagePrinter.landingMessage(roverCoordinate);
-                }
+                Coordinate roverCoordinate = parsedInput.get();
+                roverState = new RoverState(roverState.simulationSize(), roverCoordinate);
+                return MessagePrinter.landingMessage(roverState.roverCoordinate());
             }
 
-            return MessagePrinter.landingErrorMessage(roverCoordinate);
+            return MessagePrinter.landingErrorMessage(roverState.roverCoordinate());
         }
         return MessagePrinter.landingAlreadyLandedMessage();
 
@@ -38,9 +31,9 @@ public class Rover {
     public Message handleSimulationSize(String input) {
         Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(input);
         if(simulationSizeOptional.isPresent()){
-            simulationSize = simulationSizeOptional.get();
+            roverState = new RoverState(simulationSizeOptional.get(), null);
 
-            return MessagePrinter.simulationSizeSetMessage(simulationSize);
+            return MessagePrinter.simulationSizeSetMessage(roverState.simulationSize());
         }
         return MessagePrinter.simulationSizeErrorMessage(input);
     }
@@ -49,6 +42,6 @@ public class Rover {
     }
 
     public int getSimulationSize() {
-        return simulationSize;
+        return roverState.simulationSize();
     }
 }
