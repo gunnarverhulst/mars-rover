@@ -1,6 +1,7 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
+import io.tripled.marsrover.command.CommandHandler;
 import io.tripled.marsrover.message.LogoMessage;
 import io.tripled.marsrover.message.Message;
 import io.tripled.marsrover.message.MessagePrinter;
@@ -10,6 +11,7 @@ import io.tripled.marsrover.simulation.Simulation;
 import java.util.Scanner;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
+import static io.tripled.marsrover.command.CommandHandler.COMMAND_HANDLER;
 
 public class MarsRoverApplication {
 
@@ -62,15 +64,9 @@ public class MarsRoverApplication {
     }
 
     public Message handleCommand(Command command, String input) {
-        return switch (command){
-            case QUIT -> MessagePrinter.quitMessage();
-            case SIMULATION_SIZE -> simulation.handleSimulationSize(input);
-            case EMPTY_INPUT -> MessagePrinter.apiMessage();
-            case LAND -> simulation.handleRoverLanding(input);
-            case PRINT -> MessagePrinter.apiMessage();
-            case STATE -> MessagePrinter.stateMessage(simulation.getSimulationSize(), simulation.getRoverState());
-            default -> MessagePrinter.apiMessage();
-        };
+        COMMAND_HANDLER.setSimulation(simulation);
+
+        return COMMAND_HANDLER.handleCommand(command, input);
     }
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);
