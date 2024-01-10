@@ -29,10 +29,9 @@ class MarsRoverApplicationTests {
 
         input = "5";
         Optional<Integer> optionalSimulationSize = InputParser.parseInputForSimulationSize(input);
-        if(! optionalSimulationSize.isEmpty()){
-            assertEquals(new SimulationSizeSetMessage(optionalSimulationSize.get()).messageToBePrinted(),
-                    marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input).messageToBePrinted());
-        }
+        optionalSimulationSize.ifPresent(integer ->
+                assertEquals(new SimulationSizeSetMessage(integer).messageToBePrinted(),
+                marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input).messageToBePrinted()));
     }
     @Test
     void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
