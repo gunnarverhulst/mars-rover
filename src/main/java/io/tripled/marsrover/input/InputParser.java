@@ -1,48 +1,51 @@
 package io.tripled.marsrover.input;
 
-import io.tripled.marsrover.Coordinate;
+import io.tripled.marsrover.rover.Coordinate;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static io.tripled.marsrover.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
+import static io.tripled.marsrover.validators.SimulationSizeInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
+
 public enum InputParser {
     INPUT_PARSER;
 
-    public static int parseInputForSimulationSize(String input) {
-        Pattern pattern = Pattern.compile("\\d*");
+    public static Optional<Integer> parseInputForSimulationSize(String input) {
+        Optional<Integer> optionalSimulationSize = extractSimulationSize(input);
+        if(optionalSimulationSize.isPresent() && SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(input)){
+            return optionalSimulationSize;
+        }
+
+        return Optional.empty();
+    }
+
+    public static Optional<Coordinate> parseInputForCoordinate(String input, int simulationSize) {
+
+        Optional<Coordinate> optionalCoordinate = extractCoordinate(input);
+        if(optionalCoordinate.isPresent() && LAND_INPUT_VALIDATOR.isValidCoordinateInput(optionalCoordinate.get(), simulationSize))
+            return optionalCoordinate;
+
+        return Optional.empty();
+    }
+
+    private static Optional<Integer> extractSimulationSize(String input) {
+        Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(input);
-        int simulationSizeWithoutOffset;
         if(matcher.find()){
-            simulationSizeWithoutOffset = Integer.parseInt(matcher.group());
-            return (simulationSizeWithoutOffset + 1) * (simulationSizeWithoutOffset + 1);
+            return Optional.of(Integer.parseInt(matcher.group()));
         }
-        return 0;
+        return Optional.empty();
     }
 
-    public static Optional<Coordinate> parseInputForCoordinate(String input) {
-        int x = parseInputForXValue(input);
-        int y = parseInputForYValue(input);
-        return Optional.of(new Coordinate(x,y));
-    }
 
-    public static int parseInputForXValue(String input) {
-        Pattern pattern = Pattern.compile("^land (\\d*) ");
-        Matcher matcher = pattern.matcher(input.toLowerCase());
-
+    private static Optional<Coordinate> extractCoordinate(String input) {
+        Pattern pattern = Pattern.compile("^land (\\d+) (\\d+)$");
+        Matcher matcher = pattern.matcher(input);
         if(matcher.find()){
-            return Integer.parseInt(matcher.group(1));
-
+            return Optional.of(new Coordinate(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2))));
         }
-
-        return 0;
-    }
-
-    public static int parseInputForYValue(String input) {
-        Pattern pattern = Pattern.compile(" (\\d*)$");
-        Matcher matcher = pattern.matcher(input.toLowerCase());
-        if(matcher.find())
-            return Integer.parseInt(matcher.group(1));
-        return 0;
+        return Optional.empty();
     }
 }

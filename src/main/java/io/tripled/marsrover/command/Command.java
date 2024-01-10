@@ -1,19 +1,11 @@
 package io.tripled.marsrover.command;
 
-import io.tripled.marsrover.validators.LandInputValidator;
-
-import static io.tripled.marsrover.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
-import static io.tripled.marsrover.validators.WorldInitCoordsInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
-
 public enum Command {
     QUIT,
     PRINT,
-    SIMULATIONSIZE,
-    INVALID_VALUE,
+    SIMULATION_SIZE,
     EMPTY_INPUT,
     LAND,
-    EMPTY_SIMULATION_SIZE,
-    INVALID_LANDING,
     STATE,
     UNKNOWN_COMMAND,
     COMMAND;
@@ -28,24 +20,15 @@ public enum Command {
             return PRINT;
         if(input.equalsIgnoreCase("STATE"))
             return STATE;
-        if(LAND_INPUT_VALIDATOR.isValidLandInput(input))
+
+        if(input.toLowerCase().startsWith("land"))
             return LAND;
-        if(!LAND_INPUT_VALIDATOR.isValidLandInput(input))
-            return INVALID_LANDING;
 
         return UNKNOWN_COMMAND;
     }
 
     public Command parseSimulationSize(String input){
-
-        if(input.isEmpty())
-            return EMPTY_SIMULATION_SIZE;
-        if(SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(input))
-            return SIMULATIONSIZE;
-        if(!SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(input))
-            return INVALID_VALUE;
-
-        return UNKNOWN_COMMAND;
+        return SIMULATION_SIZE;
     }
 
 }

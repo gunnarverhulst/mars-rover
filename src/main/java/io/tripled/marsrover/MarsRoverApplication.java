@@ -3,8 +3,8 @@ package io.tripled.marsrover;
 import io.tripled.marsrover.command.Command;
 import io.tripled.marsrover.input.InputParser;
 import io.tripled.marsrover.message.MessagePrinter;
+import io.tripled.marsrover.rover.Coordinate;
 import io.tripled.marsrover.rover.RoverState;
-import io.tripled.marsrover.validators.LandInputValidator;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -17,7 +17,7 @@ public class MarsRoverApplication {
 
     private static int simulationSize = 0;
     private static Coordinate rover1Coordinate;
-    private static RoverState roverState = null;
+    private static RoverState rover1State = null;
 
     public static void main(String[] args) {
         printLogo();
@@ -34,7 +34,7 @@ public class MarsRoverApplication {
     }
 
     public static String readInput() {
-        System.out.println(MessagePrinter.simulationSizeErrorMessage());
+        System.out.println(MessagePrinter.requestSimulationSize());
         String input;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
@@ -68,45 +68,38 @@ public class MarsRoverApplication {
     public static String handleCommand(Command command, String input) {
         return switch (command){
             case QUIT -> MessagePrinter.quit();
-            case SIMULATIONSIZE -> handleSimulationSize(input);
-            case INVALID_VALUE -> MessagePrinter.invalidValue(input);
-            case EMPTY_SIMULATION_SIZE -> MessagePrinter.simulationSizeErrorMessage();
+            case SIMULATION_SIZE -> handleSimulationSize(input);
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
             case LAND -> handleRoverLanding(input);
-            case INVALID_LANDING -> handleFailedLanding(input);
-            case STATE -> MessagePrinter.stateMessage(roverState);
+            case STATE -> MessagePrinter.stateMessage(rover1State);
             default -> MessagePrinter.apiMessage();
         };
     }
 
-    private static String handleFailedLanding(String input) {
-        LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
-        Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input);
-        if(parsedInput.isPresent()){
-            rover1Coordinate = parsedInput.get();
-            return MessagePrinter.landingErrorMessage(rover1Coordinate);
-        }
-
-        return MessagePrinter.apiMessage();
-    }
-
     private static String handleRoverLanding(String input) {
-        LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
-        Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input);
-        if(parsedInput.isPresent() && roverState == null){
+
+
+        Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input.toLowerCase(), simulationSize);
+        if(parsedInput.isPresent() ){
             rover1Coordinate = parsedInput.get();
-            roverState = new RoverState(simulationSize,rover1Coordinate);
-            return MessagePrinter.landingMessage(rover1Coordinate);
+            if(rover1State == null){
+                rover1State = new RoverState(simulationSize,rover1Coordinate);
+                return MessagePrinter.landingMessage(rover1Coordinate);
+            }
         }
 
-        return MessagePrinter.apiMessage();
+        return MessagePrinter.landingErrorMessage(rover1Coordinate);
 
     }
 
     private static String handleSimulationSize(String input) {
-        simulationSize = InputParser.parseInputForSimulationSize(input);
-        LAND_INPUT_VALIDATOR.setSimulationSize(simulationSize);
-        return MessagePrinter.simulationSizeSetMessage(input, simulationSize);
+        Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(input);
+        if(simulationSizeOptional.isPresent()){
+            simulationSize = simulationSizeOptional.get();
+
+            return MessagePrinter.simulationSizeSetMessage(input, simulationSize);
+        }
+        return MessagePrinter.simulationSizeErrorMessage(input);
     }
 
     private static boolean isQuit(String input) {
@@ -115,5 +108,6 @@ public class MarsRoverApplication {
 
     public static void resetWorld(){
         simulationSize = 0;
+        rover1State = null;
     }
 }

@@ -1,11 +1,10 @@
 package io.tripled.marsrover.command;
 
-import io.tripled.marsrover.validators.LandInputValidator;
+import io.tripled.marsrover.MarsRoverApplication;
 import org.junit.jupiter.api.Test;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
-import static io.tripled.marsrover.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CommandTest {
 
@@ -16,22 +15,22 @@ class CommandTest {
 
     @Test
     void canParseSimulationSize(){
-        assertEquals(Command.SIMULATIONSIZE, COMMAND.parseSimulationSize("5"));
+        assertEquals(Command.SIMULATION_SIZE, COMMAND.parseSimulationSize("5"));
     }
 
     @Test
-    void canDetectInvalidValue_Text(){
-        assertEquals(Command.INVALID_VALUE, COMMAND.parseSimulationSize("bad"));
+    void canDetectInvalidSimulationSizeValue_Text(){
+        assertEquals(Command.SIMULATION_SIZE, COMMAND.parseSimulationSize("bad"));
     }
 
     @Test
     void canDetectInvalidCoordsValue_NegativeNumber(){
-        assertEquals(Command.INVALID_VALUE, COMMAND.parseSimulationSize("-45"));
+        assertEquals(Command.SIMULATION_SIZE, COMMAND.parseSimulationSize("-45"));
     }
 
     @Test
     void canDetectInvalidCoordsValue_EmptyString(){
-        assertEquals(Command.EMPTY_SIMULATION_SIZE, COMMAND.parseSimulationSize(""));
+        assertEquals(Command.SIMULATION_SIZE, COMMAND.parseSimulationSize(""));
     }
 
     @Test
@@ -43,14 +42,14 @@ class CommandTest {
     @Test
     void whenInputLandWithinSim_thenParsedLAND(){
 
-        LAND_INPUT_VALIDATOR.setSimulationSize(121);
+        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "11");
         assertEquals(Command.LAND, COMMAND.parse("lAND 10 10"));
     }
 
     @Test
     void whenInputState_thenParsedState(){
 
-        LAND_INPUT_VALIDATOR.setSimulationSize(121);
+        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "11");
         assertEquals(Command.STATE, COMMAND.parse("state"));
     }
 
