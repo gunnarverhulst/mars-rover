@@ -102,7 +102,7 @@ class MarsRoverApplicationTests {
         marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "10");
         marsRoverApplication.handleCommand(Command.LAND, "land 5 5");
 
-        assertEquals(new StateMessage(new RoverState(10, new Coordinate(5,5))).messageToBePrinted(),
+        assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5))).messageToBePrinted(),
                 marsRoverApplication.handleCommand(Command.STATE, input).messageToBePrinted());
     }
 

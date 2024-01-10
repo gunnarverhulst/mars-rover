@@ -41,13 +41,13 @@ public enum MessagePrinter {
             return new LandingErrorEmptyCoordinateMessage();
     }
 
-    public static Message stateMessage(RoverState roverState) {
+    public static Message stateMessage(int simulationSize, RoverState roverState) {
 
         if(roverState == null){
             return new StateErrorMessage();
         }
 
-        return new StateMessage(roverState);
+        return new StateMessage(simulationSize,roverState);
     }
 
     public static Message landingAlreadyLandedMessage() {

@@ -1,21 +1,19 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
-import io.tripled.marsrover.input.InputParser;
 import io.tripled.marsrover.message.LogoMessage;
 import io.tripled.marsrover.message.Message;
 import io.tripled.marsrover.message.MessagePrinter;
-import io.tripled.marsrover.rover.Coordinate;
 import io.tripled.marsrover.rover.Rover;
-import io.tripled.marsrover.rover.RoverState;
+import io.tripled.marsrover.simulation.Simulation;
 
-import java.util.Optional;
 import java.util.Scanner;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
 
 public class MarsRoverApplication {
-    private Rover rover1 = new Rover();
+
+    private Simulation simulation = new Simulation();
 
     public static void main(String[] args) {
         printLogo();
@@ -60,17 +58,17 @@ public class MarsRoverApplication {
     }
 
     public boolean isSimulationSizeSet() {
-        return rover1.getSimulationSize() > 0;
+        return simulation.getSimulationSize() > 0;
     }
 
     public Message handleCommand(Command command, String input) {
         return switch (command){
             case QUIT -> MessagePrinter.quitMessage();
-            case SIMULATION_SIZE -> rover1.handleSimulationSize(input);
+            case SIMULATION_SIZE -> simulation.handleSimulationSize(input);
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
-            case LAND -> rover1.handleRoverLanding(input);
+            case LAND -> simulation.handleRoverLanding(input);
             case PRINT -> MessagePrinter.apiMessage();
-            case STATE -> MessagePrinter.stateMessage(rover1.getRoverState());
+            case STATE -> MessagePrinter.stateMessage(simulation.getSimulationSize(), simulation.getRoverState());
             default -> MessagePrinter.apiMessage();
         };
     }
