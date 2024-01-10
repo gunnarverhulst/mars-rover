@@ -42,13 +42,13 @@ class MessagePrinterTest {
     @Test
     void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
         MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
-        assertTrue(MessagePrinter.apiMessage().contains("{P}"));
+        assertEquals(new ApiMessage().messageToBePrinted(),MessagePrinter.apiMessage().messageToBePrinted() );
     }
 
     @Test
     void whenPCommandEntered_thenShowHelpApi(){
         MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
-        assertTrue(MessagePrinter.apiMessage().contains("{P}"));
+        assertEquals(new ApiMessage().messageToBePrinted(),MessagePrinter.apiMessage().messageToBePrinted() );
     }
 
 }

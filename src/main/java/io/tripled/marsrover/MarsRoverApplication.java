@@ -2,6 +2,7 @@ package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
 import io.tripled.marsrover.input.InputParser;
+import io.tripled.marsrover.message.Message;
 import io.tripled.marsrover.message.MessagePrinter;
 import io.tripled.marsrover.rover.Coordinate;
 import io.tripled.marsrover.rover.RoverState;
@@ -40,7 +41,7 @@ public class MarsRoverApplication {
             do {
                 input = scanner.nextLine();
 
-                String output = "";
+                Message output;
                 if (!isQuit(input)){
 
                     if(!isSimulationSizeSet()){
@@ -55,7 +56,7 @@ public class MarsRoverApplication {
                     Command command = COMMAND.parse(input);
                     output = handleCommand(command, input);
                 }
-                System.out.println(output);
+                System.out.println(output.messageToBePrinted());
 
             }
             while (!isQuit(input));
@@ -68,14 +69,13 @@ public class MarsRoverApplication {
         return simulationSize > 0;
     }
 
-    public static String handleCommand(Command command, String input) {
+    public static Message handleCommand(Command command, String input) {
         return switch (command){
-//            case QUIT -> MessagePrinter.quit();
-            case QUIT -> MessagePrinter.quitMessage().messageToBePrinted();
+            case QUIT -> MessagePrinter.quitMessage();
             case SIMULATION_SIZE -> handleSimulationSize(input);
-            case EMPTY_INPUT -> MessagePrinter.apiMessage();
-            case LAND -> handleRoverLanding(input);
-            case STATE -> MessagePrinter.stateMessage(rover1State);
+//            case EMPTY_INPUT -> MessagePrinter.apiMessage();
+//            case LAND -> handleRoverLanding(input);
+//            case STATE -> MessagePrinter.stateMessage(rover1State);
             default -> MessagePrinter.apiMessage();
         };
     }
@@ -96,12 +96,12 @@ public class MarsRoverApplication {
 
     }
 
-    private static String handleSimulationSize(String input) {
+    private static Message handleSimulationSize(String input) {
         Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(input);
         if(simulationSizeOptional.isPresent()){
             simulationSize = simulationSizeOptional.get();
 
-            return MessagePrinter.simulationSizeSetMessage(input, simulationSize);
+            return MessagePrinter.simulationSizeSetMessage(simulationSize);
         }
         return MessagePrinter.simulationSizeErrorMessage(input);
     }
