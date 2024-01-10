@@ -13,6 +13,10 @@ import static io.tripled.marsrover.command.CommandHandler.COMMAND_HANDLER;
 
 public class MarsRoverApplication {
 
+    public Simulation getSimulation() {
+        return simulation;
+    }
+
     private final Simulation simulation = new Simulation();
 
     public static void main(String[] args) {
