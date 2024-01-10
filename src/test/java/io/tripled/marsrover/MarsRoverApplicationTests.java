@@ -18,9 +18,10 @@ class MarsRoverApplicationTests {
 
     private String input;
 
+    private final MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
+
     @BeforeEach
     void init(){
-        MarsRoverApplication.resetWorld();
     }
 
     @Test
@@ -30,28 +31,28 @@ class MarsRoverApplicationTests {
         Optional<Integer> optionalSimulationSize = InputParser.parseInputForSimulationSize(input);
         if(! optionalSimulationSize.isEmpty()){
             assertEquals(new SimulationSizeSetMessage(optionalSimulationSize.get()).messageToBePrinted(),
-                    MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input).messageToBePrinted());
+                    marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input).messageToBePrinted());
         }
     }
     @Test
     void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
         input = "bad";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE,input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.SIMULATION_SIZE,input).messageToBePrinted());
     }
 
     @Test
     void whenInvalidCoordValueEntered_NegativeNumber_thenHandleCommand(){
         input = "-45";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE,input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.SIMULATION_SIZE,input).messageToBePrinted());
     }
 
     @Test
     void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
         input = "5";
-        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input);
-        assertTrue(MarsRoverApplication.isSimulationSizeSet());
+        marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input);
+        assertTrue(marsRoverApplication.isSimulationSizeSet());
     }
 
     @Test
@@ -59,51 +60,50 @@ class MarsRoverApplicationTests {
         input = "";
 
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, input).messageToBePrinted());
     }
 
     @Test
     void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
         input = "";
-        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
+        marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
         assertEquals(new ApiMessage().messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.EMPTY_INPUT, input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.EMPTY_INPUT, input).messageToBePrinted());
     }
 
     @Test
     void whenPCommandEntered_thenShowHelpApi(){
         input = "P";
-        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
+        marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
         assertEquals(new ApiMessage().messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.PRINT, input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.PRINT, input).messageToBePrinted());
     }
 
     @Test
     void whenQCommandEntered_thenQuit(){
         input = "Q";
         assertEquals(new QuitMessage().messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.QUIT, input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.QUIT, input).messageToBePrinted());
 
     }
 
     @Test
     void whenLANDCommandEntered_thenLand(){
-        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "10");
+        marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "10");
         input = "Land 5 1";
-//        assertEquals("Rover R1 landed at (" + 5 + "," + 1 +") and is facing North\n\n[Please enter a command]", MarsRoverApplication.handleCommand(Command.LAND, input));
         assertEquals(new LandingMessage(new Coordinate(5,1)).messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.LAND, input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.LAND, input).messageToBePrinted());
     }
 
     @Test
     void whenStateCommandEntered_thenPrintState(){
 
         input = "state";
-        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "10");
-        MarsRoverApplication.handleCommand(Command.LAND, "land 5 5");
+        marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "10");
+        marsRoverApplication.handleCommand(Command.LAND, "land 5 5");
 
         assertEquals(new StateMessage(new RoverState(10, new Coordinate(5,5))).messageToBePrinted(),
-                MarsRoverApplication.handleCommand(Command.STATE, input).messageToBePrinted());
+                marsRoverApplication.handleCommand(Command.STATE, input).messageToBePrinted());
     }
 
 }

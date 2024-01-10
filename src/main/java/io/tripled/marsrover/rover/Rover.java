@@ -8,9 +8,13 @@ import java.util.Optional;
 
 public class Rover {
 
-    private static int simulationSize = 0;
-    private static Coordinate roverCoordinate = null;
-    private static RoverState roverState = null;
+
+    private int simulationSize = 0;
+    private Coordinate roverCoordinate = null;
+
+
+    private RoverState roverState = null;
+
 
     public Message handleRoverLanding(String input) {
 
@@ -39,5 +43,12 @@ public class Rover {
             return MessagePrinter.simulationSizeSetMessage(simulationSize);
         }
         return MessagePrinter.simulationSizeErrorMessage(input);
+    }
+    public RoverState getRoverState() {
+        return roverState;
+    }
+
+    public int getSimulationSize() {
+        return simulationSize;
     }
 }

@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MessagePrinterTest {
 
+    MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
+
     private String input;
 
     @Test
@@ -39,13 +41,13 @@ class MessagePrinterTest {
 
     @Test
     void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
-        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
+        marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
         assertEquals(new ApiMessage().messageToBePrinted(),MessagePrinter.apiMessage().messageToBePrinted() );
     }
 
     @Test
     void whenPCommandEntered_thenShowHelpApi(){
-        MarsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
+        marsRoverApplication.handleCommand(Command.SIMULATION_SIZE, "5");
         assertEquals(new ApiMessage().messageToBePrinted(),MessagePrinter.apiMessage().messageToBePrinted() );
     }
 
