@@ -1,15 +1,13 @@
 package io.tripled.marsrover;
 
-import io.tripled.marsrover.command.Command;
-import io.tripled.marsrover.message.messages.LogoMessage;
-import io.tripled.marsrover.message.messages.Message;
-import io.tripled.marsrover.message.MessagePrinter;
-import io.tripled.marsrover.simulation.Simulation;
+import io.tripled.marsrover.cli.message.messages.LogoMessage;
+import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.cli.message.MessagePrinter;
+import io.tripled.marsrover.service.simulation.Simulation;
 
 import java.util.Scanner;
 
-import static io.tripled.marsrover.command.Command.COMMAND;
-import static io.tripled.marsrover.command.CommandHandler.COMMAND_HANDLER;
+import static io.tripled.marsrover.cli.command.CommandHandler.COMMAND_HANDLER;
 
 public class MarsRoverApplication {
 
@@ -37,21 +35,8 @@ public class MarsRoverApplication {
             do {
                 input = scanner.nextLine();
 
-                Message output;
-                if (!isQuit(input)){
+                Message output = marsRoverApplication.handleCommand(input, marsRoverApplication);
 
-                    if(!marsRoverApplication.isSimulationSizeSet()){
-                        Command command = COMMAND.parseSimulationSize(input);
-                        output = marsRoverApplication.handleCommand(command, input);
-                    } else {
-                        Command command = COMMAND.parse(input);
-                        output = marsRoverApplication.handleCommand(command, input);
-                    }
-
-                } else {
-                    Command command = COMMAND.parse(input);
-                    output = marsRoverApplication.handleCommand(command, input);
-                }
                 System.out.println(output.messageToBePrinted());
 
             }
@@ -61,14 +46,32 @@ public class MarsRoverApplication {
         return input;
     }
 
+    public Message handleCommand(String input, MarsRoverApplication marsRoverApplication) {
+        Message output;
+        if (!isQuit(input)){
+
+            if(!marsRoverApplication.isSimulationSizeSet()){
+
+                output = COMMAND_HANDLER.handlerBeforeSimulationSizeSet(input, marsRoverApplication.getSimulation());
+
+            } else {
+                output = COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation());
+            }
+
+        } else {
+            output = COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation());
+        }
+        return output;
+    }
+
     public boolean isSimulationSizeSet() {
         return simulation.getSimulationSize() > 0;
     }
 
-    public Message handleCommand(Command command, String input) {
-
-        return COMMAND_HANDLER.handleCommand(command, input, simulation);
-    }
+//    public Message handleCommand(Command command, String input) {
+//
+//        return COMMAND_HANDLER.handleCommand(command, input, simulation);
+//    }
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);
     }
