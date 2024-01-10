@@ -65,7 +65,7 @@ public class MarsRoverApplication {
     }
 
     public boolean isSimulationSizeSet() {
-        return simulation.getSimulationSize() > 0;
+        return simulation.getSimulationSize() > -1;
     }
 
 //    public Message handleCommand(Command command, String input) {

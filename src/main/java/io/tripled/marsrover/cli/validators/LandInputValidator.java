@@ -7,9 +7,9 @@ public enum LandInputValidator {
 
     public boolean isValidCoordinateInput(Coordinate coordinate, int simulationSize){
 
-        if(coordinate.x() < 0 || coordinate.x() > simulationSize)
+        if(coordinate.x() < 0 || coordinate.x() > simulationSize + 1)
             return false;
 
-        return coordinate.y() >= 0 && coordinate.y() <= simulationSize;
+        return coordinate.y() >= 0 && coordinate.y() <= simulationSize + 1;
     }
 }

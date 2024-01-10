@@ -37,13 +37,14 @@ public enum CommandHandler {
     }
 
     public Message handleSimulationSize(String input, Simulation simulation) {
-        Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(input);
+        String trimmedInput = input.trim();
+        Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(trimmedInput);
         if(simulationSizeOptional.isPresent()){
             simulation.setSimulationSize(simulationSizeOptional.get());
 
             return MessagePrinter.simulationSizeSetMessage(simulation.getSimulationSize());
         }
-        return MessagePrinter.simulationSizeErrorMessage(input);
+        return MessagePrinter.simulationSizeErrorMessage(trimmedInput);
     }
 
     public Message handleRoverLanding(String input, Simulation simulation) {
@@ -57,7 +58,7 @@ public enum CommandHandler {
                 return MessagePrinter.landingMessage(simulation.getRover1Coordinates());
             }
 
-            return MessagePrinter.landingErrorMessage(simulation.getRover1Coordinates());
+                return MessagePrinter.landingErrorMessage(simulation.getRoverState());
         }
         return MessagePrinter.landingAlreadyLandedMessage();
     }

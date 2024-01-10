@@ -33,9 +33,9 @@ public enum MessagePrinter {
         return new LandingMessage(roverCoordinate);
     }
 
-    public static Message landingErrorMessage(Coordinate roverCoordinate) {
-        if(roverCoordinate != null){
-            return new LandingErrorMessage(roverCoordinate);
+    public static Message landingErrorMessage(RoverState roverState) {
+        if(roverState != null){
+            return new LandingErrorMessage(roverState.roverCoordinate());
         } else
             return new LandingErrorEmptyCoordinateMessage();
     }

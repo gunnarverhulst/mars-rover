@@ -6,7 +6,7 @@ import io.tripled.marsrover.service.rover.RoverState;
 
 public class Simulation {
 
-    private int simulationSize = 0;
+    private int simulationSize = -1;
 
     private final Rover rover1 = new Rover();
 
