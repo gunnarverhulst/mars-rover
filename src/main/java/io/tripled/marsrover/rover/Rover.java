@@ -12,4 +12,7 @@ public class Rover {
         return roverState;
     }
 
+    public Coordinate getRoverCoordinates() {
+        return roverState.roverCoordinate();
+    }
 }
