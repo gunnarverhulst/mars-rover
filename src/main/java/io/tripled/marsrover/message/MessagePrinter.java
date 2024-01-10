@@ -15,16 +15,12 @@ public enum MessagePrinter {
     }
 
     public static Message requestSimulationSize() {
-        return new RequestSimulationSIzeMessage();
+        return new RequestSimulationSizeMessage();
     }
 
     public static Message simulationSizeErrorMessage(String input) {
 
-//        return "[" + input + "] is an invalid Simulation maxCoordinate\n" +
-//                "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n" +
-//                "[Enter max coordinate] : ";
-
-        return new SimulationSIzeErrorMessage(input);
+        return new SimulationSizeErrorMessage(input);
     }
 
     public static Message apiMessage() {
@@ -46,18 +42,12 @@ public enum MessagePrinter {
             return"Unable to parse coordinates for landing. Expected two positive numbers [x y]";
     }
 
-    public static String stateMessage(RoverState roverState) {
+    public static Message stateMessage(RoverState roverState) {
 
         if(roverState == null){
-            return "Rover has not landed yet.\n\n"+
-            "[Please enter a command]";
+            return new StateErrorMessage();
         }
 
-        return "Simulation has maxCoordinate " + roverState.simulationSize() + " with a total of " + calculateTotalNumberOfCoordinates(roverState.simulationSize()) + " coordinates.\n" +
-                "Rover at Coordinates[x=" + roverState.roverCoordinate().x() + ", y=" + roverState.roverCoordinate().y() + "] is facing NORTH";
-    }
-
-    private static int calculateTotalNumberOfCoordinates(int simulationSize) {
-        return (simulationSize + 1) * (simulationSize + 1);
+        return new StateMessage(roverState);
     }
 }

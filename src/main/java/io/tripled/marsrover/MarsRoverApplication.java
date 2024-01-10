@@ -35,7 +35,7 @@ public class MarsRoverApplication {
     }
 
     public static String readInput() {
-        System.out.println(MessagePrinter.requestSimulationSize());
+        System.out.println(MessagePrinter.requestSimulationSize().messageToBePrinted());
         String input;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
@@ -73,9 +73,9 @@ public class MarsRoverApplication {
         return switch (command){
             case QUIT -> MessagePrinter.quitMessage();
             case SIMULATION_SIZE -> handleSimulationSize(input);
-//            case EMPTY_INPUT -> MessagePrinter.apiMessage();
+            case EMPTY_INPUT -> MessagePrinter.apiMessage();
 //            case LAND -> handleRoverLanding(input);
-//            case STATE -> MessagePrinter.stateMessage(rover1State);
+            case STATE -> MessagePrinter.stateMessage(rover1State);
             default -> MessagePrinter.apiMessage();
         };
     }
