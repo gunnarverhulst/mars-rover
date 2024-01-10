@@ -2,6 +2,7 @@ package io.tripled.marsrover;
 
 import io.tripled.marsrover.command.Command;
 import io.tripled.marsrover.input.InputParser;
+import io.tripled.marsrover.message.LogoMessage;
 import io.tripled.marsrover.message.Message;
 import io.tripled.marsrover.message.MessagePrinter;
 import io.tripled.marsrover.rover.Coordinate;
@@ -11,13 +12,12 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import static io.tripled.marsrover.command.Command.COMMAND;
-import static io.tripled.marsrover.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
 
 public class MarsRoverApplication {
 
 
     private static int simulationSize = 0;
-    private static Coordinate rover1Coordinate;
+    private static Coordinate rover1Coordinate = null;
     private static RoverState rover1State = null;
 
     public static void main(String[] args) {
@@ -25,13 +25,9 @@ public class MarsRoverApplication {
         readInput();
     }
 
-    public static String printLogo() {
-        String logo = """
-                **************************"
-                **    Gunz Rover        **"
-                **************************""";
-        System.out.println(logo);
-        return logo;
+    public static void printLogo() {
+        Message logo = new LogoMessage();
+        System.out.println(logo.messageToBePrinted());
     }
 
     public static String readInput() {
@@ -83,17 +79,20 @@ public class MarsRoverApplication {
 
     private static Message handleRoverLanding(String input) {
 
+        if(rover1Coordinate == null) {
 
-        Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input.toLowerCase(), simulationSize);
-        if(parsedInput.isPresent() ){
-            rover1Coordinate = parsedInput.get();
-            if(rover1State == null){
-                rover1State = new RoverState(simulationSize,rover1Coordinate);
-                return MessagePrinter.landingMessage(rover1Coordinate);
+            Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input.toLowerCase(), simulationSize);
+            if(parsedInput.isPresent() ){
+                rover1Coordinate = parsedInput.get();
+                if(rover1State == null){
+                    rover1State = new RoverState(simulationSize,rover1Coordinate);
+                    return MessagePrinter.landingMessage(rover1Coordinate);
+                }
             }
-        }
 
-        return MessagePrinter.landingErrorMessage(rover1Coordinate);
+            return MessagePrinter.landingErrorMessage(rover1Coordinate);
+        }
+        return MessagePrinter.landingAlreadyLandedMessage();
 
     }
 

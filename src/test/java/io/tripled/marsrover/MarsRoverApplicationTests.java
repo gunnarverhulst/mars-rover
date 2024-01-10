@@ -24,16 +24,6 @@ class MarsRoverApplicationTests {
     }
 
     @Test
-    void helloWorld() {
-        assertTrue(true, "A dummy test right here");
-    }
-
-    @Test
-    void logoIsGunzLogo(){
-        assertTrue(MarsRoverApplication.printLogo().contains("Gunz"));
-    }
-
-    @Test
     void whenValidSimulationSizeValueEntered_thenParseValue(){
 
         input = "5";

@@ -20,7 +20,6 @@ public enum Command {
             return PRINT;
         if(input.equalsIgnoreCase("STATE"))
             return STATE;
-
         if(input.toLowerCase().startsWith("land"))
             return LAND;
 

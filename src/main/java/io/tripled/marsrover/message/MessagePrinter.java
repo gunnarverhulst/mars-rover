@@ -49,4 +49,8 @@ public enum MessagePrinter {
 
         return new StateMessage(roverState);
     }
+
+    public static Message landingAlreadyLandedMessage() {
+       return new LandingAlreadyLandedMessage();
+    }
 }
