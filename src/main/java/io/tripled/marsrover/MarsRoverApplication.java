@@ -6,6 +6,7 @@ import io.tripled.marsrover.message.LogoMessage;
 import io.tripled.marsrover.message.Message;
 import io.tripled.marsrover.message.MessagePrinter;
 import io.tripled.marsrover.rover.Coordinate;
+import io.tripled.marsrover.rover.Rover;
 import io.tripled.marsrover.rover.RoverState;
 
 import java.util.Optional;
@@ -19,6 +20,8 @@ public class MarsRoverApplication {
     private static int simulationSize = 0;
     private static Coordinate rover1Coordinate = null;
     private static RoverState rover1State = null;
+
+    private static Rover rover1 = new Rover();
 
     public static void main(String[] args) {
         printLogo();
@@ -69,8 +72,10 @@ public class MarsRoverApplication {
         return switch (command){
             case QUIT -> MessagePrinter.quitMessage();
             case SIMULATION_SIZE -> handleSimulationSize(input);
+//            case SIMULATION_SIZE -> rover1.handleSimulationSize(input);
             case EMPTY_INPUT -> MessagePrinter.apiMessage();
             case LAND -> handleRoverLanding(input);
+//            case LAND -> rover1.handleRoverLanding(input);
             case PRINT -> MessagePrinter.apiMessage();
             case STATE -> MessagePrinter.stateMessage(rover1State);
             default -> MessagePrinter.apiMessage();
@@ -113,5 +118,6 @@ public class MarsRoverApplication {
     public static void resetWorld(){
         simulationSize = 0;
         rover1State = null;
+        rover1Coordinate = null;
     }
 }
