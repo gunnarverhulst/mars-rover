@@ -3,6 +3,7 @@ package io.tripled.marsrover;
 import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.messages.*;
 import io.tripled.marsrover.service.rover.Coordinate;
+import io.tripled.marsrover.service.rover.Heading;
 import io.tripled.marsrover.service.rover.RoverState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,7 +101,7 @@ class MarsRoverApplicationTests {
         marsRoverApplication.handleCommand("10", marsRoverApplication).messageToBePrinted();
         marsRoverApplication.handleCommand("land 5 5", marsRoverApplication).messageToBePrinted();
 
-        assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5))).messageToBePrinted(),
+        assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5), Heading.NORTH)).messageToBePrinted(),
                 marsRoverApplication.handleCommand(input, marsRoverApplication).messageToBePrinted());
     }
 

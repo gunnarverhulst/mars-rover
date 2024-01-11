@@ -8,6 +8,7 @@ public class Simulation {
 
     private int simulationSize = -1;
 
+
     private final Rover rover1 = new Rover();
 
     public RoverState getRoverState() {
@@ -26,5 +27,8 @@ public class Simulation {
 
     public void setRover1State(RoverState roverState){
         rover1.setRoverState(roverState);
+    }
+    public Rover getRover1() {
+        return rover1;
     }
 }

@@ -4,6 +4,7 @@ import io.tripled.marsrover.MarsRoverApplication;
 import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.messages.*;
 import io.tripled.marsrover.service.rover.Coordinate;
+import io.tripled.marsrover.service.rover.Heading;
 import io.tripled.marsrover.service.rover.RoverState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,8 +103,103 @@ class CommandHandlerTest {
         COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
         COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
 
-        assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5))).messageToBePrinted(),
+        assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5), Heading.NORTH)).messageToBePrinted(),
                 COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
     }
+
+    @Test
+    void whenValidDriveCommandEntered_MoveOneForward_thenMoveRover(){
+        input = "R1 f1";
+
+        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
+        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+
+        String expectedMessageString = """
+                                       Rover R1 received instructions
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [5,6]
+                                       Rover R1 executed all instructions. Awaiting new ones...
+                                       """;
+
+        assertEquals(expectedMessageString,
+                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+    }
+
+    @Test
+    void whenValidDriveCommandEntered_MoveOneForward_OneLeft_thenMoveRover(){
+        input = "R1 f1 l";
+
+        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
+        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+
+        String expectedMessageString = """
+                                       Rover R1 received instructions
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [5,6]
+                                       Rover R1 is turning left
+                                       Rover R1 is now facing WEST
+                                       Rover R1 executed all instructions. Awaiting new ones...
+                                       """;
+
+        assertEquals(expectedMessageString,
+                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+    }
+
+    @Test
+    void whenValidDriveCommandEntered_MoveTwoForward_OneLeft_thenMoveRover(){
+        input = "R1 f2 l";
+
+        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
+        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+
+        String expectedMessageString = """
+                                       Rover R1 received instructions
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [5,6]
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [5,7]
+                                       Rover R1 is turning left
+                                       Rover R1 is now facing WEST
+                                       Rover R1 executed all instructions. Awaiting new ones...
+                                       """;
+
+        assertEquals(expectedMessageString,
+                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+    }
+
+    @Test
+    void whenValidDriveCommandEntered_Movef4lb2r_thenMoveRover(){
+        input = "R1 f4 l b2 r";
+
+        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
+        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+
+        String expectedMessageString = """
+            Rover R1 received instructions
+            Rover R1 is moving forward
+            Rover R1 is now located at [5,6]
+            Rover R1 is moving forward
+            Rover R1 is now located at [5,7]
+            Rover R1 is moving forward
+            Rover R1 is now located at [5,8]
+            Rover R1 is moving forward
+            Rover R1 is now located at [5,9]
+            Rover R1 is turning left
+            Rover R1 is now facing WEST
+            Rover R1 is moving backward
+            Rover R1 is now located at [6,9]
+            Rover R1 is moving backward
+            Rover R1 is now located at [7,9]
+            Rover R1 is turning right
+            Rover R1 is now facing NORTH
+            Rover R1 executed all instructions. Awaiting new ones...
+            """;
+
+        assertEquals(expectedMessageString,
+                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+    }
+
+
+
 
 }
