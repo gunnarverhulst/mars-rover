@@ -1,6 +1,6 @@
 package io.tripled.marsrover.cli.message;
 
-import io.tripled.marsrover.MarsRoverApplication;
+import io.tripled.marsrover.cli.input.InputReader;
 import io.tripled.marsrover.cli.message.messages.ApiMessage;
 import io.tripled.marsrover.cli.message.messages.RequestSimulationSizeMessage;
 import io.tripled.marsrover.cli.message.messages.SimulationSizeErrorMessage;
@@ -8,17 +8,18 @@ import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MessagePrinterTest {
 
-    private final MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
-    private final SimulationRepository simulationRepository;
     private final MessagePrinter messagePrinter;
 
+    private final InputReader inputReader;
+
     public MessagePrinterTest() {
-        simulationRepository = new InMemorySimulationRepository();
+        SimulationRepository simulationRepository = new InMemorySimulationRepository();
         messagePrinter = new MessagePrinter(simulationRepository);
+        inputReader = new InputReader(simulationRepository);
     }
 
     private String input;
@@ -52,13 +53,13 @@ class MessagePrinterTest {
 
     @Test
     void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
-        marsRoverApplication.handleCommand("5", marsRoverApplication);
+        inputReader.handleCommand("5");
         assertEquals(new ApiMessage().messageToBePrinted(),messagePrinter.apiMessage().messageToBePrinted() );
     }
 
     @Test
     void whenPCommandEntered_thenShowHelpApi(){
-        marsRoverApplication.handleCommand("5", marsRoverApplication);
+        inputReader.handleCommand("5");
         assertEquals(new ApiMessage().messageToBePrinted(),messagePrinter.apiMessage().messageToBePrinted() );
     }
 
