@@ -3,53 +3,59 @@ package io.tripled.marsrover.cli.message;
 import io.tripled.marsrover.cli.message.messages.*;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.RoverState;
+import io.tripled.marsrover.service.simulation.SimulationRepository;
 
-public enum MessagePrinter {
-    MESSAGE_PRINTER;
+public class MessagePrinter {
 
-   public static Message quitMessage(){
+    private final SimulationRepository simulationRepository;
+
+    public MessagePrinter(SimulationRepository simulationRepository) {
+        this.simulationRepository = simulationRepository;
+    }
+
+    public Message quitMessage(){
         return new QuitMessage();
     }
 
-    public static Message simulationSizeSetMessage( int simulationSize) {
+    public Message simulationSizeSetMessage( int simulationSize) {
         return new SimulationSizeSetMessage(simulationSize);
     }
 
-    public static Message requestSimulationSize() {
+    public Message requestSimulationSize() {
         return new RequestSimulationSizeMessage();
     }
 
-    public static Message simulationSizeErrorMessage(String input) {
+    public Message simulationSizeErrorMessage(String input) {
 
         return new SimulationSizeErrorMessage(input);
     }
 
-    public static Message apiMessage() {
+    public Message apiMessage() {
         return new ApiMessage();
     }
 
-    public static Message landingMessage(Coordinate roverCoordinate) {
+    public Message landingMessage() {
 
-        return new LandingMessage(roverCoordinate);
+        return new LandingMessage(simulationRepository.getSimulation().getRover1Coordinates());
     }
 
-    public static Message landingErrorMessage(RoverState roverState) {
-        if(roverState != null){
-            return new LandingErrorMessage(roverState.roverCoordinate());
+    public Message landingErrorMessage() {
+        if( simulationRepository.getSimulation().getRoverState() != null){
+            return new LandingErrorMessage(simulationRepository.getSimulation().getRoverState().roverCoordinate());
         } else
             return new LandingErrorEmptyCoordinateMessage();
     }
 
-    public static Message stateMessage(int simulationSize, RoverState roverState) {
+    public Message stateMessage() {
 
-        if(roverState == null){
+        if(simulationRepository.getSimulation().getRoverState() == null){
             return new StateErrorMessage();
         }
 
-        return new StateMessage(simulationSize,roverState);
+        return new StateMessage(simulationRepository.getSimulation().getSimulationSize(),simulationRepository.getSimulation().getRoverState());
     }
 
-    public static Message landingAlreadyLandedMessage() {
+    public Message landingAlreadyLandedMessage() {
        return new LandingAlreadyLandedMessage();
     }
 }

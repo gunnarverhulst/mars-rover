@@ -3,23 +3,31 @@ package io.tripled.marsrover.cli.command;
 import io.tripled.marsrover.MarsRoverApplication;
 import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.messages.*;
+import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Heading;
 import io.tripled.marsrover.service.rover.RoverState;
+import io.tripled.marsrover.service.simulation.SimulationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static io.tripled.marsrover.cli.command.CommandHandler.COMMAND_HANDLER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CommandHandlerTest {
 
+    private final MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
+    private final SimulationRepository simulationRepository;
     private String input;
 
-    private final MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
+    private final CommandHandler commandHandler;
+
+    public CommandHandlerTest() {
+        simulationRepository = new InMemorySimulationRepository();
+        this.commandHandler = new CommandHandler(simulationRepository);
+    }
 
     @BeforeEach
     void init(){
@@ -32,28 +40,28 @@ class CommandHandlerTest {
         Optional<Integer> optionalSimulationSize = InputParser.parseInputForSimulationSize(input);
         optionalSimulationSize.ifPresent(integer ->
                 assertEquals(new SimulationSizeSetMessage(integer).messageToBePrinted(),
-                    COMMAND_HANDLER.handlerBeforeSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted()));
+                    commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted()));
     }
 
     @Test
     void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
         input = "bad";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                COMMAND_HANDLER.handlerBeforeSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenInvalidCoordValueEntered_NegativeNumber_thenHandleCommand(){
         input = "-45";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                COMMAND_HANDLER.handlerBeforeSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
         input = "5";
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted();
-        assertTrue(marsRoverApplication.isSimulationSizeSet());
+        commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted();
+        assertTrue(simulationRepository.getSimulation() != null);
     }
 
     @Test
@@ -61,58 +69,58 @@ class CommandHandlerTest {
         input = "";
 
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                COMMAND_HANDLER.handlerBeforeSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void givenSimulationSizeSet_whenEmptyCommandEntered_thenShowHelpApi(){
         input = "";
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new ApiMessage().messageToBePrinted(),
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenPCommandEntered_thenShowHelpApi(){
         input = "P";
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new ApiMessage().messageToBePrinted(),
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenQCommandEntered_thenQuit(){
         input = "Q";
         assertEquals(new QuitMessage().messageToBePrinted(),
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
 
     }
 
     @Test
     void whenLANDCommandEntered_thenLand(){
         input = "Land 5 1";
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new LandingMessage(new Coordinate(5,1)).messageToBePrinted(),
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenStateCommandEntered_thenPrintState(){
 
         input = "state";
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
-        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
 
         assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5), Heading.NORTH)).messageToBePrinted(),
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_MoveOneForward_thenMoveRover(){
         input = "R1 f1";
 
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
-        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -122,15 +130,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_MoveOneForward_OneLeft_thenMoveRover(){
         input = "R1 f1 l";
 
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
-        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -142,15 +150,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_MoveTwoForward_OneLeft_thenMoveRover(){
         input = "R1 f2 l";
 
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
-        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -164,15 +172,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_Movef4lb2r_thenMoveRover(){
         input = "R1 f4 l b2 r";
 
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
-        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 5 5", marsRoverApplication.getSimulation());
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
             Rover R1 received instructions
@@ -196,15 +204,15 @@ class CommandHandlerTest {
             """;
 
         assertEquals(expectedMessageString,
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_CheckWorldIsRoundUp_thenMoveRover(){
         input = "R1 f3";
 
-        COMMAND_HANDLER.handlerBeforeSimulationSizeSet("10", marsRoverApplication.getSimulation()).messageToBePrinted();
-        COMMAND_HANDLER.handlerAfterSimulationSizeSet("land 0 9", marsRoverApplication.getSimulation());
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 0 9");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -218,7 +226,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
 }

@@ -3,6 +3,7 @@ package io.tripled.marsrover.cli.input;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Direction;
 import io.tripled.marsrover.service.rover.Move;
+import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,13 @@ import java.util.regex.Pattern;
 import static io.tripled.marsrover.cli.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
 import static io.tripled.marsrover.cli.validators.SimulationSizeInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
 
-public enum InputParser {
-    INPUT_PARSER;
+public class InputParser {
+
+    private SimulationRepository simulationRepository;
+
+    public InputParser(SimulationRepository simulationRepository) {
+        this.simulationRepository = simulationRepository;
+    }
 
     public static Optional<Integer> parseInputForSimulationSize(String input) {
         Optional<Integer> optionalSimulationSize = extractSimulationSize(input);
@@ -25,10 +31,10 @@ public enum InputParser {
         return Optional.empty();
     }
 
-    public static Optional<Coordinate> parseInputForCoordinate(String input, int simulationSize) {
+    public Optional<Coordinate> parseInputForCoordinate(String input) {
 
         Optional<Coordinate> optionalCoordinate = extractCoordinate(input);
-        if(optionalCoordinate.isPresent() && LAND_INPUT_VALIDATOR.isValidCoordinateInput(optionalCoordinate.get(), simulationSize))
+        if(optionalCoordinate.isPresent() && LAND_INPUT_VALIDATOR.isValidCoordinateInput(optionalCoordinate.get(), simulationRepository.getSimulation().getSimulationSize()))
             return optionalCoordinate;
 
         return Optional.empty();

@@ -7,83 +7,94 @@ import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingMessage;
 import io.tripled.marsrover.service.rover.*;
 import io.tripled.marsrover.service.simulation.Simulation;
+import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public enum CommandHandler {
-    COMMAND_HANDLER;
+public class CommandHandler {
 
-    public Message handlerBeforeSimulationSizeSet(String input, Simulation simulation){
+    private final SimulationRepository simulationRepository;
+    private final MessagePrinter messagePrinter;
+
+    private final InputParser inputParser;
+
+    public CommandHandler(SimulationRepository simulationRepository) {
+        this.simulationRepository = simulationRepository;
+        this.messagePrinter = new MessagePrinter(simulationRepository);
+        this.inputParser = new InputParser(simulationRepository);
+    }
+
+    public Message handlerBeforeSimulationSizeSet(String input) {
         String inputConvertedToLowercase = input.trim().toLowerCase();
-        return handleSimulationSize(inputConvertedToLowercase, simulation);
+        return handleSimulationSize(inputConvertedToLowercase);
     }
 
-    public Message handlerAfterSimulationSizeSet(String input, Simulation simulation){
+    public Message handlerAfterSimulationSizeSet(String input) {
         String preparedInput = input.trim().toLowerCase();
-        if(preparedInput.equalsIgnoreCase("Q")){
-            return MessagePrinter.quitMessage();
+        if (preparedInput.equalsIgnoreCase("Q")) {
+            return messagePrinter.quitMessage();
         }
-        if(preparedInput.isEmpty()){
-            return MessagePrinter.apiMessage();
+        if (preparedInput.isEmpty()) {
+            return messagePrinter.apiMessage();
         }
-        if(preparedInput.equalsIgnoreCase("P")){
-            return MessagePrinter.apiMessage();
+        if (preparedInput.equalsIgnoreCase("P")) {
+            return messagePrinter.apiMessage();
         }
-        if(preparedInput.equalsIgnoreCase("STATE")){
-            return MessagePrinter.stateMessage(simulation.getSimulationSize(), simulation.getRoverState());
+        if (preparedInput.equalsIgnoreCase("STATE")) {
+            return messagePrinter.stateMessage();
         }
-        if(preparedInput.startsWith("land")){
-            return handleRoverLanding(preparedInput, simulation);
+        if (preparedInput.startsWith("land")) {
+            return handleRoverLanding(preparedInput);
         }
-        if(preparedInput.startsWith("r")){
-            return handleRoverDriving(preparedInput, simulation);
+        if (preparedInput.startsWith("r")) {
+            return handleRoverDriving(preparedInput);
         }
-        return MessagePrinter.apiMessage();
+        return messagePrinter.apiMessage();
     }
 
 
-    private Message handleSimulationSize(String input, Simulation simulation) {
+    private Message handleSimulationSize(String input) {
         Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(input);
-        if(simulationSizeOptional.isPresent()){
-            simulation.setSimulationSize(simulationSizeOptional.get());
+        if (simulationSizeOptional.isPresent()) {
+            simulationRepository.addSimulation(new Simulation(simulationSizeOptional.get(), simulationRepository));
 
-            return MessagePrinter.simulationSizeSetMessage(simulation.getSimulationSize());
+            return messagePrinter.simulationSizeSetMessage(simulationRepository.getSimulation().getSimulationSize());
         }
-        return MessagePrinter.simulationSizeErrorMessage(input);
+        return messagePrinter.simulationSizeErrorMessage(input);
     }
 
-    private Message handleRoverLanding(String input, Simulation simulation) {
+    private Message handleRoverLanding(String input) {
 
-        if(simulation.getRoverState() == null) {
+        if (simulationRepository.getSimulation().getRoverState() == null) {
 
-            return performRoverLanding(input, simulation);
+            return performRoverLanding(input);
         }
-        return MessagePrinter.landingAlreadyLandedMessage();
+        return messagePrinter.landingAlreadyLandedMessage();
     }
 
-    private Message performRoverLanding(String input, Simulation simulation) {
-        Optional<Coordinate> parsedInput = InputParser.parseInputForCoordinate(input.toLowerCase(), simulation.getSimulationSize());
-        if(parsedInput.isPresent() ){
-            setRoverState(simulation, parsedInput.get());
-            return MessagePrinter.landingMessage(simulation.getRover1Coordinates());
+    private Message performRoverLanding(String input) {
+        Optional<Coordinate> parsedInput = inputParser.parseInputForCoordinate(input.toLowerCase());
+        if (parsedInput.isPresent()) {
+            setRoverState(parsedInput.get());
+            return messagePrinter.landingMessage();
         }
 
-        return MessagePrinter.landingErrorMessage(simulation.getRoverState());
+        return messagePrinter.landingErrorMessage();
     }
 
-    private static void setRoverState(Simulation simulation, Coordinate parsedInput) {
-        simulation.setRover1State(new RoverState(parsedInput, Heading.NORTH));
+    private void setRoverState(Coordinate parsedInput) {
+        simulationRepository.getSimulation().setRover1State(new RoverState(parsedInput, Heading.NORTH));
     }
 
-    private Message handleRoverDriving(String preparedInput, Simulation simulation) {
+    private Message handleRoverDriving(String preparedInput) {
         Optional<List<Move>> drivingMoves = buildDrivingMoves(preparedInput);
 
         RoverDrivingMessage drivingMessage = new RoverDrivingMessage();
         prepareRoverDrivingMessage(drivingMessage);
 
-        if(drivingMoves.isPresent()){
-            performRoverMoves(simulation, drivingMoves.get(), drivingMessage);
+        if (drivingMoves.isPresent()) {
+            performRoverMoves(drivingMoves.get(), drivingMessage);
 
             endRoverDrivingMessage(drivingMessage);
             return drivingMessage;
@@ -92,20 +103,20 @@ public enum CommandHandler {
         return new RoverDrivingErrorMessage();
     }
 
-    private static void endRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
+    private void endRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
         drivingMessage.concat("Rover R1 executed all instructions. Awaiting new ones...\n");
     }
 
-    private static void prepareRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
+    private void prepareRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
         drivingMessage.concat("Rover R1 received instructions\n");
     }
 
-    private static void performRoverMoves(Simulation simulation, List<Move> drivingMoves, RoverDrivingMessage drivingMessage) {
-        Rover rover = simulation.getRover1();
-        drivingMoves.forEach(x -> drivingMessage.concat(rover.move(x, simulation.getSimulationSize())));
+    private void performRoverMoves(List<Move> drivingMoves, RoverDrivingMessage drivingMessage) {
+        Rover rover = simulationRepository.getSimulation().getRover1();
+        drivingMoves.forEach(x -> drivingMessage.concat(rover.move(x)));
     }
 
-    private static Optional<List<Move>> buildDrivingMoves(String preparedInput) {
+    private Optional<List<Move>> buildDrivingMoves(String preparedInput) {
         return InputParser.parseInputForDrivingMoves(preparedInput);
     }
 }

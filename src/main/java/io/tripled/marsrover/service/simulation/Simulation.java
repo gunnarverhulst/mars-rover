@@ -6,19 +6,23 @@ import io.tripled.marsrover.service.rover.RoverState;
 
 public class Simulation {
 
-    private int simulationSize = -1;
+    private final int simulationSize ;
 
+    private final SimulationRepository simulationRepository;
 
-    private final Rover rover1 = new Rover();
+    private final Rover rover1;
+
+    public Simulation(int simulationSize, SimulationRepository simulationRepository) {
+        this.simulationSize = simulationSize;
+        this.simulationRepository = simulationRepository;
+        this.rover1 = new Rover(simulationRepository);
+    }
 
     public RoverState getRoverState() {
         return rover1.getRoverState();
     }
     public int getSimulationSize() {
         return simulationSize;
-    }
-    public void setSimulationSize(int simulationSize) {
-        this.simulationSize = simulationSize;
     }
 
     public Coordinate getRover1Coordinates(){

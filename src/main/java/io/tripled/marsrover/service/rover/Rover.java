@@ -1,8 +1,17 @@
 package io.tripled.marsrover.service.rover;
 
+import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
+import io.tripled.marsrover.service.simulation.SimulationRepository;
+
 public class Rover {
 
     private RoverState roverState = null;
+
+    private final SimulationRepository simulationRepository;
+
+    public Rover(SimulationRepository simulationRepository) {
+        this.simulationRepository = simulationRepository;
+    }
 
     public void setRoverState(RoverState roverState) {
         this.roverState = roverState;
@@ -16,26 +25,26 @@ public class Rover {
         return roverState.roverCoordinate();
     }
 
-    public String move(Move move, int simulationSize) {
+    public String move(Move move) {
         StringBuilder stringToConcatToMessage = new StringBuilder();
 
         for(int i = 0; i < move.steps(); i++){
-            stringToConcatToMessage.append(move(move.direction(), simulationSize));
+            stringToConcatToMessage.append(move(move.direction()));
         }
         return stringToConcatToMessage.toString();
     }
 
-    private String move(Direction direction, int simulationSize) {
+    private String move(Direction direction) {
         String stringToConcat = "";
         switch (direction){
             case FORWARD -> {
                 Coordinate coordinateToAdd = getRoverHeading().move("forward");
-                roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd, simulationSize), getRoverHeading());
+                roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
                 stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
             case BACKWARD -> {
                 Coordinate coordinateToAdd = getRoverHeading().move("backward");
-                roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd, simulationSize), getRoverHeading());
+                roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
                 stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
             case LEFT -> {
@@ -58,9 +67,9 @@ public class Rover {
         return roverState.heading();
     }
 
-    private Coordinate createNewRoverCoordinate(Coordinate coordinateToAdd, int simulationSize) {
-        return new Coordinate((getRoverCoordinates().x() + coordinateToAdd.x()) % (simulationSize + 1),
-                (getRoverCoordinates().y() + coordinateToAdd.y()) % (simulationSize + 1));
+    private Coordinate createNewRoverCoordinate(Coordinate coordinateToAdd) {
+        return new Coordinate((getRoverCoordinates().x() + coordinateToAdd.x()) % (simulationRepository.getSimulation().getSimulationSize() + 1),
+                (getRoverCoordinates().y() + coordinateToAdd.y()) % (simulationRepository.getSimulation().getSimulationSize() + 1));
     }
 
     private String createRoverMoveMessage(String stringToConcat, Direction direction) {

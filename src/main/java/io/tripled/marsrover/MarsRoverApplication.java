@@ -1,25 +1,33 @@
 package io.tripled.marsrover;
 
+import io.tripled.marsrover.cli.command.CommandHandler;
+import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.LogoMessage;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.cli.message.MessagePrinter;
-import io.tripled.marsrover.service.simulation.Simulation;
+import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
+import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.Scanner;
 
-import static io.tripled.marsrover.cli.command.CommandHandler.COMMAND_HANDLER;
 
 public class MarsRoverApplication {
 
-    public Simulation getSimulation() {
-        return simulation;
+    private final SimulationRepository simulationRepository;
+    private final CommandHandler commandHandler;
+
+    private final MessagePrinter messagePrinter;
+
+    public MarsRoverApplication() {
+        simulationRepository = new InMemorySimulationRepository();
+        this.commandHandler = new CommandHandler(simulationRepository);
+        messagePrinter = new MessagePrinter(simulationRepository);
     }
 
-    private final Simulation simulation = new Simulation();
-
     public static void main(String[] args) {
+        MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
+
         printLogo();
-        readInput();
+        marsRoverApplication.readInput();
     }
 
     public static void printLogo() {
@@ -27,9 +35,9 @@ public class MarsRoverApplication {
         System.out.println(logo.messageToBePrinted());
     }
 
-    public static String readInput() {
+    public String readInput() {
         final MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
-        System.out.println(MessagePrinter.requestSimulationSize().messageToBePrinted());
+        System.out.println(messagePrinter.requestSimulationSize().messageToBePrinted());
         String input;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
@@ -48,27 +56,27 @@ public class MarsRoverApplication {
 
     public Message handleCommand(String input, MarsRoverApplication marsRoverApplication) {
         Message output;
-        if (!isQuit(input)){
+        if (!isQuit(input)) {
 
-            if(!marsRoverApplication.isSimulationSizeSet()){
+            if (!marsRoverApplication.isSimulationSizeSet()) {
 
-                output = COMMAND_HANDLER.handlerBeforeSimulationSizeSet(input, marsRoverApplication.getSimulation());
+                output = commandHandler.handlerBeforeSimulationSizeSet(input);
 
             } else {
-                output = COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation());
+                output = commandHandler.handlerAfterSimulationSizeSet(input);
             }
 
         } else {
-            output = COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation());
+            output = commandHandler.handlerAfterSimulationSizeSet(input);
         }
         return output;
     }
 
     public boolean isSimulationSizeSet() {
-        return simulation.getSimulationSize() > -1;
+        return simulationRepository.getSimulation() != null;
     }
 
-//    public Message handleCommand(Command command, String input) {
+    //    public Message handleCommand(Command command, String input) {
 //
 //        return COMMAND_HANDLER.handleCommand(command, input, simulation);
 //    }

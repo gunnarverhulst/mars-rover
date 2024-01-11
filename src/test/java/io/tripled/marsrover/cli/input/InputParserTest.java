@@ -1,7 +1,9 @@
 package io.tripled.marsrover.cli.input;
 
 import io.tripled.marsrover.cli.input.InputParser;
+import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.rover.Coordinate;
+import io.tripled.marsrover.service.simulation.SimulationRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -12,6 +14,14 @@ class InputParserTest {
 
     private String input;
     private Optional<Coordinate> coordinateReturned;
+    private final SimulationRepository simulationRepository;
+
+    private final InputParser inputParser;
+
+    public InputParserTest() {
+        simulationRepository = new InMemorySimulationRepository();
+        inputParser = new InputParser(simulationRepository);
+    }
 
     @Test
     void whenValidSimulationSize_thenParseSimulationSize(){
@@ -27,7 +37,7 @@ class InputParserTest {
     void whenInputDoesNotStartWithLand_thenFalse(){
 
         input = "testland";
-        coordinateReturned = InputParser.parseInputForCoordinate(input,10);
+        coordinateReturned = inputParser.parseInputForCoordinate(input);
         if (coordinateReturned.isPresent()) {
             assertEquals(Optional.empty(), coordinateReturned);
         }
@@ -37,7 +47,7 @@ class InputParserTest {
     void whenValidLandInputOnlyLand_thenParseCoordinate(){
 
         input = "land";
-        coordinateReturned = InputParser.parseInputForCoordinate(input,10);
+        coordinateReturned = inputParser.parseInputForCoordinate(input);
         if (coordinateReturned.isPresent()) {
             assertEquals(Optional.empty(), coordinateReturned);
         }
@@ -48,7 +58,7 @@ class InputParserTest {
 
         input = "land 1";
 
-        coordinateReturned = InputParser.parseInputForCoordinate(input,10);
+        coordinateReturned = inputParser.parseInputForCoordinate(input);
         if (coordinateReturned.isPresent()) {
             assertEquals(Optional.empty(), coordinateReturned);
         }
@@ -60,7 +70,7 @@ class InputParserTest {
         Coordinate coordinate = new Coordinate(5,1);
         input = "Land 5 1";
 
-        coordinateReturned = InputParser.parseInputForCoordinate(input,10);
+        coordinateReturned = inputParser.parseInputForCoordinate(input);
         if(coordinateReturned.isPresent()){
             assertEquals(coordinate.x(), coordinateReturned.get().x());
             assertEquals(coordinate.y(), coordinateReturned.get().y());
@@ -73,7 +83,7 @@ class InputParserTest {
     void whenInputContainsXYZ_thenFalseIfAllOtherChecksFail() {
 
         input = "land 1 2 3";
-        coordinateReturned = InputParser.parseInputForCoordinate(input,10);
+        coordinateReturned = inputParser.parseInputForCoordinate(input);
         if (coordinateReturned.isPresent()) {
             assertEquals(Optional.empty(), coordinateReturned);
         }
