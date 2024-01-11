@@ -29,18 +29,8 @@ public class Rover {
         String stringToConcat = "";
         switch (direction){
             case FORWARD -> {
-                if(roverState.heading() == Heading.NORTH){
-                    roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y() + 1) % (simulationSize + 1)), Heading.NORTH);
-                }
-                if(roverState.heading() == Heading.EAST){
-                    roverState = new RoverState(new Coordinate((getRoverCoordinates().x() + 1) % (simulationSize + 1), getRoverCoordinates().y()), Heading.EAST);
-                }
-                if(roverState.heading() == Heading.WEST){
-                    roverState = new RoverState(new Coordinate((getRoverCoordinates().x() - 1) % (simulationSize + 1), getRoverCoordinates().y()), Heading.WEST);
-                }
-                if(roverState.heading() == Heading.SOUTH){
-                    roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y() - 1) % (simulationSize + 1)), Heading.NORTH);
-                }
+                Coordinate coordinateToAdd = roverState.heading().moveForward();
+                roverState = new RoverState(new Coordinate(getRoverCoordinates().x() + coordinateToAdd.x(), getRoverCoordinates().y() + coordinateToAdd.y()), roverState.heading());
                 stringToConcat += "Rover R1 is moving forward\n";
                 stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
             }
@@ -61,39 +51,14 @@ public class Rover {
                 stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
             }
             case LEFT -> {
-                Heading newHeading = roverState.heading();
-                if(roverState.heading() == Heading.NORTH){
-                    newHeading = Heading.WEST;
-                }
-                if(roverState.heading() == Heading.EAST){
-                    newHeading = Heading.NORTH;
-                }
-                if(roverState.heading() == Heading.WEST){
-                    newHeading = Heading.SOUTH;
-                }
-                if(roverState.heading() == Heading.SOUTH){
-                    newHeading = Heading.EAST;
-                }
+                Heading newHeading = roverState.heading().turnLeft();
 
                 roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
                 stringToConcat += "Rover R1 is turning left\n";
                 stringToConcat += "Rover R1 is now facing " + roverState.heading() + "\n";
             }
             case RIGHT -> {
-                Heading newHeading = roverState.heading();
-                if(roverState.heading() == Heading.NORTH){
-                    newHeading = Heading.EAST;
-                }
-                if(roverState.heading() == Heading.EAST){
-                    newHeading = Heading.SOUTH;
-                }
-                if(roverState.heading() == Heading.WEST){
-                    newHeading = Heading.NORTH;
-                }
-                if(roverState.heading() == Heading.SOUTH){
-                    newHeading = Heading.WEST;
-                }
-
+                Heading newHeading = roverState.heading().turnRight();
                 roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
                 stringToConcat += "Rover R1 is turning right\n";
                 stringToConcat += "Rover R1 is now facing " + roverState.heading() + "\n";
