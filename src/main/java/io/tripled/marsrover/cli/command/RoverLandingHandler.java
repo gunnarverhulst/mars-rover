@@ -16,32 +16,20 @@ public final class RoverLandingHandler implements ActionHandler{
 
     private final MessagePrinter messagePrinter;
 
-    private final InputParser inputParser;
-
     public RoverLandingHandler(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
         this.messagePrinter = new MessagePrinter(simulationRepository);
-        this.inputParser = new InputParser(simulationRepository);
     }
 
-    public Message handleRoverLanding(String input) {
+    public Message handleRoverLanding(Coordinate coordinate) {
 
         if (simulationRepository.getSimulation().getRoverState() == null) {
-
-            return performRoverLanding(input);
-        }
-        return messagePrinter.landingAlreadyLandedMessage();
-    }
-
-    private Message performRoverLanding(String input) {
-        Optional<Coordinate> parsedInput = inputParser.parseInputForCoordinate(input.toLowerCase());
-        if (parsedInput.isPresent()) {
-            setRoverState(parsedInput.get());
+            setRoverState(coordinate);
             return messagePrinter.landingMessage();
         }
-
         return messagePrinter.landingErrorMessage();
     }
+
 
     private void setRoverState(Coordinate parsedInput) {
         simulationRepository.getSimulation().setRover1State(new RoverState(parsedInput, Heading.NORTH));

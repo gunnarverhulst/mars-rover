@@ -1,17 +1,24 @@
 package io.tripled.marsrover.cli.command;
 
+import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
+
+import java.util.Optional;
 
 public class CommandHandler {
 
     private final SimulationRepository simulationRepository;
     private final MessagePrinter messagePrinter;
 
+    private final InputParser inputParser;
+
     public CommandHandler(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
         this.messagePrinter = new MessagePrinter(simulationRepository);
+        this.inputParser = new InputParser(simulationRepository);
     }
 
     public Message handlerBeforeSimulationSizeSet(String input) {
@@ -35,7 +42,11 @@ public class CommandHandler {
             return messagePrinter.stateMessage();
         }
         if (preparedInput.startsWith("land")) {
-            return new RoverLandingHandler(simulationRepository).handleRoverLanding(preparedInput);
+            Optional<Coordinate> parsedInput = inputParser.parseInputForCoordinate(input.toLowerCase());
+            if (parsedInput.isPresent()) {
+                return new RoverLandingHandler(simulationRepository).handleRoverLanding(parsedInput.get());
+            }
+            return messagePrinter.landingErrorMessage();
         }
         if (preparedInput.startsWith("r")) {
             return new RoverDrivingHandler(simulationRepository).handleRoverDriving(preparedInput);
