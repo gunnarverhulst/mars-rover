@@ -229,4 +229,26 @@ class CommandHandlerTest {
                 commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
+    @Test
+    void whenValidDriveCommandEntered_CheckWorldIsRoundDown_thenMoveRover(){
+        input = "R1 b3";
+
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 0 2");
+
+        String expectedMessageString = """
+                                       Rover R1 received instructions
+                                       Rover R1 is moving backward
+                                       Rover R1 is now located at [0,1]
+                                       Rover R1 is moving backward
+                                       Rover R1 is now located at [0,0]
+                                       Rover R1 is moving backward
+                                       Rover R1 is now located at [0,10]
+                                       Rover R1 executed all instructions. Awaiting new ones...
+                                       """;
+
+        assertEquals(expectedMessageString,
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+    }
+
 }

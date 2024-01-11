@@ -68,8 +68,23 @@ public class Rover {
     }
 
     private Coordinate createNewRoverCoordinate(Coordinate coordinateToAdd) {
-        return new Coordinate((getRoverCoordinates().x() + coordinateToAdd.x()) % (simulationRepository.getSimulation().getSimulationSize() + 1),
-                (getRoverCoordinates().y() + coordinateToAdd.y()) % (simulationRepository.getSimulation().getSimulationSize() + 1));
+
+        int simulationSizeWithOffset = simulationRepository.getSimulation().getSimulationSize() + 1;
+
+        int x = (getRoverCoordinates().x() + coordinateToAdd.x()) % (simulationSizeWithOffset);
+        int y = (getRoverCoordinates().y() + coordinateToAdd.y()) % (simulationSizeWithOffset);
+
+        if(x < 0){
+            x += simulationSizeWithOffset;
+            x = x % simulationSizeWithOffset;
+        }
+
+        if(y < 0){
+            y += simulationSizeWithOffset;
+            y = y % simulationSizeWithOffset;
+        }
+
+        return new Coordinate(x, y);
     }
 
     private String createRoverMoveMessage(String stringToConcat, Direction direction) {
