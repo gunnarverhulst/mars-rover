@@ -3,9 +3,12 @@ package io.tripled.marsrover.cli.command;
 import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.service.rover.Coordinate;
+import io.tripled.marsrover.service.rover.Move;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CommandHandler {
@@ -49,7 +52,12 @@ public class CommandHandler {
             return messagePrinter.landingErrorMessage();
         }
         if (preparedInput.startsWith("r")) {
-            return new RoverDrivingHandler(simulationRepository).handleRoverDriving(preparedInput);
+            Optional<List<Move>> drivingMoves = InputParser.parseInputForDrivingMoves(preparedInput);
+
+            if(drivingMoves.isPresent()){
+                return new RoverDrivingHandler(simulationRepository).handleRoverDriving(drivingMoves.get());
+            }
+            return new RoverDrivingErrorMessage();
         }
         return messagePrinter.apiMessage();
     }
