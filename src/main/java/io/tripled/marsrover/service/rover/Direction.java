@@ -21,7 +21,6 @@ public enum Direction {
     public String parseDirectionAsText(){
 
         return switch (this){
-            case FORWARD -> "forward";
             case LEFT -> "left";
             case RIGHT -> "right";
             case BACKWARD -> "backward";
