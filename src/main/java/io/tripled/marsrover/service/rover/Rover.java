@@ -31,30 +31,31 @@ public class Rover {
             case FORWARD -> {
                 Coordinate coordinateToAdd = getRoverHeading().move("forward");
                 roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd, simulationSize), getRoverHeading());
-                stringToConcat += "Rover R1 is moving forward\n";
-                stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
+                stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
             case BACKWARD -> {
                 Coordinate coordinateToAdd = getRoverHeading().move("backward");
                 roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd, simulationSize), getRoverHeading());
-                stringToConcat += "Rover R1 is moving backward\n";
-                stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
+                stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
             case LEFT -> {
                 Heading newHeading = roverState.heading().turnLeft();
 
                 roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
-                stringToConcat += "Rover R1 is turning left\n";
-                stringToConcat += "Rover R1 is now facing " + getRoverHeading() + "\n";
+                stringToConcat = createRoverTurnMessage(stringToConcat, direction);
             }
             case RIGHT -> {
                 Heading newHeading = roverState.heading().turnRight();
                 roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
-                stringToConcat += "Rover R1 is turning right\n";
-                stringToConcat += "Rover R1 is now facing " + getRoverHeading() + "\n";
+                stringToConcat = createRoverTurnMessage(stringToConcat, direction);
             }
         }
         return stringToConcat;
+    }
+
+
+    private Heading getRoverHeading() {
+        return roverState.heading();
     }
 
     private Coordinate createNewRoverCoordinate(Coordinate coordinateToAdd, int simulationSize) {
@@ -62,7 +63,16 @@ public class Rover {
                 (getRoverCoordinates().y() + coordinateToAdd.y()) % (simulationSize + 1));
     }
 
-    private Heading getRoverHeading() {
-        return roverState.heading();
+    private String createRoverMoveMessage(String stringToConcat, Direction direction) {
+        stringToConcat += "Rover R1 is moving " + direction.parseDirectionAsText()+ "\n";
+        stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
+        return stringToConcat;
     }
+    private String createRoverTurnMessage(String stringToConcat, Direction direction) {
+        stringToConcat += "Rover R1 is turning " + direction.parseDirectionAsText() + "\n";
+        stringToConcat += "Rover R1 is now facing " + getRoverHeading() + "\n";
+        return stringToConcat;
+    }
+
+
 }

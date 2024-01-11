@@ -8,13 +8,24 @@ public enum Direction {
     UNKNOWN_DIRECTION,
     DIRECTION;
 
-    public Direction parseDirection(String directionString){
-        return switch (directionString){
-            case "f" -> FORWARD;
-            case "l" -> LEFT;
-            case "r" -> RIGHT;
-            case "b" -> BACKWARD;
+    public Direction parseDirection(String directionAsText){
+        return switch (directionAsText){
+            case "f", "forward" -> FORWARD;
+            case "l", "left" -> LEFT;
+            case "r", "right" -> RIGHT;
+            case "b", "backward" -> BACKWARD;
             default -> UNKNOWN_DIRECTION;
+        };
+    }
+
+    public String parseDirectionAsText(){
+
+        return switch (this){
+            case FORWARD -> "forward";
+            case LEFT -> "left";
+            case RIGHT -> "right";
+            case BACKWARD -> "backward";
+            default -> "forward";
         };
     }
 }
