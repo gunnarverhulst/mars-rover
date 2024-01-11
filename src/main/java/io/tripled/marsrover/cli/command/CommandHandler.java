@@ -26,7 +26,12 @@ public class CommandHandler {
 
     public Message handlerBeforeSimulationSizeSet(String input) {
         String preppedInput = input.trim().toLowerCase();
-        return new SimCreationHandler(simulationRepository).handleSimulationSize(preppedInput);
+        Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(preppedInput);
+        if (simulationSizeOptional.isPresent()) {
+            return new SimCreationHandler(simulationRepository).handleSimulationSize(simulationSizeOptional.get());
+
+        }
+        return messagePrinter.simulationSizeErrorMessage(input);
     }
 
 
