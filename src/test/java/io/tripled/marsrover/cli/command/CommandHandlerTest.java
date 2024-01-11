@@ -221,5 +221,4 @@ class CommandHandlerTest {
                 COMMAND_HANDLER.handlerAfterSimulationSizeSet(input, marsRoverApplication.getSimulation()).messageToBePrinted());
     }
 
-
 }
