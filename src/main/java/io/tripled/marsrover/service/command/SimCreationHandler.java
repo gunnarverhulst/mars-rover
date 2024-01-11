@@ -1,4 +1,4 @@
-package io.tripled.marsrover.cli.command;
+package io.tripled.marsrover.service.command;
 
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
@@ -16,9 +16,10 @@ public final class SimCreationHandler implements ActionHandler {
         messagePrinter = new MessagePrinter(simulationRepository);
     }
 
-    public Message handleSimulationSize(int simulationSize) {
+    public Message execute(int simulationSize){
         simulationRepository.addSimulation(new Simulation(simulationSize, simulationRepository));
 
         return messagePrinter.simulationSizeSetMessage(simulationRepository.getSimulation().getSimulationSize());
+
     }
 }

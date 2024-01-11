@@ -3,25 +3,21 @@ package io.tripled.marsrover;
 import io.tripled.marsrover.cli.input.InputReader;
 import io.tripled.marsrover.cli.message.messages.LogoMessage;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
-import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 
 public class MarsRoverApplication {
 
     private final InputReader inputReader;
 
-
     public MarsRoverApplication() {
-        SimulationRepository simulationRepository = new InMemorySimulationRepository();
-        this.inputReader = new InputReader(simulationRepository);
+        this.inputReader = new InputReader();
     }
 
     public static void main(String[] args) {
         MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
 
         printLogo();
-        System.out.println(marsRoverApplication.getInputReader().readInput());
+        marsRoverApplication.getInputReader().readInput();
     }
 
     public static void printLogo() {

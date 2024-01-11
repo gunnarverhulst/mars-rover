@@ -2,12 +2,17 @@ package io.tripled.marsrover.cli.message.messages;
 
 public class ApiMessage implements Message{
 
-    private String message = """
+    private final String message = """
                 ***************************************************************************************************************************************************
+                *   Print API overview            | {P}                                                       | ex: p                                             *
                 *   Print state of simulation     | {state}                                                   | ex: state                                         *
                 *   Land a new rover              | {land {x} {y}}                                            | ex: land 1 5                                      *
-                *   Quit the application          | {Q}                                                                                                           *
-                *   Print API overview            | {P}                                                                                                           *
+                *   Drive with rover              | {Rx {fn|bn|ln|rn}}                                        | ex R1 f5 l2 b                                     *
+                *                                                                                             | Rover with id R1                                  *
+                *                                                                                             | drive forward 5 steps                             *
+                *                                                                                             | turn left twice                                   *
+                *                                                                                             | go back one step                                  *
+                *   Quit the application          | {Q}                                                       | ex: q                                             *
                 ***************************************************************************************************************************************************\n\n""" +
             "[Please enter a command] : ";
     @Override

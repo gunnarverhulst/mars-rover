@@ -1,6 +1,5 @@
 package io.tripled.marsrover.service.rover;
 
-import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 public class Rover {
@@ -21,11 +20,8 @@ public class Rover {
         return roverState;
     }
 
-    public Coordinate getRoverCoordinates() {
-        return roverState.roverCoordinate();
-    }
 
-    public String move(Move move) {
+    public String singleStepMove(Move move) {
         StringBuilder stringToConcatToMessage = new StringBuilder();
 
         for(int i = 0; i < move.steps(); i++){
@@ -37,24 +33,19 @@ public class Rover {
     private String move(Direction direction) {
         String stringToConcat = "";
         switch (direction){
-            case FORWARD -> {
-                Coordinate coordinateToAdd = getRoverHeading().move("forward");
-                roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
-                stringToConcat = createRoverMoveMessage(stringToConcat, direction);
-            }
-            case BACKWARD -> {
-                Coordinate coordinateToAdd = getRoverHeading().move("backward");
+            case FORWARD, BACKWARD -> {
+                Coordinate coordinateToAdd = singleStepMove(direction);
                 roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
                 stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
             case LEFT -> {
-                Heading newHeading = roverState.heading().turnLeft();
+                Heading newHeading = turnLeft();
 
                 roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
                 stringToConcat = createRoverTurnMessage(stringToConcat, direction);
             }
             case RIGHT -> {
-                Heading newHeading = roverState.heading().turnRight();
+                Heading newHeading = turnRight();
                 roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
                 stringToConcat = createRoverTurnMessage(stringToConcat, direction);
             }
@@ -62,7 +53,29 @@ public class Rover {
         return stringToConcat;
     }
 
+    private String createRoverMoveMessage(String stringToConcat, Direction direction) {
+        stringToConcat += "Rover R1 is moving " + direction.parseDirectionAsText()+ "\n";
+        stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
+        return stringToConcat;
+    }
+    private Coordinate singleStepMove(Direction direction){
+        int sign = 1;
+        if(direction == Direction.BACKWARD){
+            sign *= -1;
+        }
 
+        return switch (roverState.heading().getHeadingNumber()){
+            case 0 -> new Coordinate(0,sign);
+            case 1 -> new Coordinate(-1*sign,0);
+            case 2 -> new Coordinate(0,-1 * sign);
+            case 3 -> new Coordinate(sign,0);
+            default -> new Coordinate(0,0);
+        };
+    }
+
+    public Coordinate getRoverCoordinates() {
+        return roverState.roverCoordinate();
+    }
     private Heading getRoverHeading() {
         return roverState.heading();
     }
@@ -87,15 +100,18 @@ public class Rover {
         return new Coordinate(x, y);
     }
 
-    private String createRoverMoveMessage(String stringToConcat, Direction direction) {
-        stringToConcat += "Rover R1 is moving " + direction.parseDirectionAsText()+ "\n";
-        stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
-        return stringToConcat;
-    }
     private String createRoverTurnMessage(String stringToConcat, Direction direction) {
         stringToConcat += "Rover R1 is turning " + direction.parseDirectionAsText() + "\n";
         stringToConcat += "Rover R1 is now facing " + getRoverHeading() + "\n";
         return stringToConcat;
+    }
+
+    private Heading turnLeft(){
+        return Heading.getHeading((roverState.heading().getHeadingNumber() + 1) % 4);
+    }
+
+    private Heading turnRight(){
+        return Heading.getHeading((((roverState.heading().getHeadingNumber() - 1) % 4) + 4) % 4);
     }
 
 

@@ -1,16 +1,15 @@
 package io.tripled.marsrover.cli.input;
 
 import io.tripled.marsrover.cli.message.messages.*;
-import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Heading;
 import io.tripled.marsrover.service.rover.RoverState;
-import io.tripled.marsrover.service.simulation.SimulationRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InputReaderTest {
 
@@ -20,8 +19,7 @@ class InputReaderTest {
 
 
     public InputReaderTest() {
-        SimulationRepository simulationRepository = new InMemorySimulationRepository();
-        inputReader = new InputReader(simulationRepository);
+        inputReader = new InputReader();
     }
 
 

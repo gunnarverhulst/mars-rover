@@ -19,7 +19,7 @@ class MessagePrinterTest {
     public MessagePrinterTest() {
         SimulationRepository simulationRepository = new InMemorySimulationRepository();
         messagePrinter = new MessagePrinter(simulationRepository);
-        inputReader = new InputReader(simulationRepository);
+        inputReader = new InputReader();
     }
 
     private String input;
