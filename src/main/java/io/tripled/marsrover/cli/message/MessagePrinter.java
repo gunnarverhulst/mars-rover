@@ -1,8 +1,6 @@
 package io.tripled.marsrover.cli.message;
 
 import io.tripled.marsrover.cli.message.messages.*;
-import io.tripled.marsrover.service.rover.Coordinate;
-import io.tripled.marsrover.service.rover.RoverState;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 public class MessagePrinter {
@@ -58,4 +56,5 @@ public class MessagePrinter {
     public Message landingAlreadyLandedMessage() {
        return new LandingAlreadyLandedMessage();
     }
+
 }

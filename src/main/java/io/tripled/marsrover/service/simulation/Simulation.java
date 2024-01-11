@@ -7,14 +7,10 @@ import io.tripled.marsrover.service.rover.RoverState;
 public class Simulation {
 
     private final int simulationSize ;
-
-    private final SimulationRepository simulationRepository;
-
     private final Rover rover1;
 
     public Simulation(int simulationSize, SimulationRepository simulationRepository) {
         this.simulationSize = simulationSize;
-        this.simulationRepository = simulationRepository;
         this.rover1 = new Rover(simulationRepository);
     }
 

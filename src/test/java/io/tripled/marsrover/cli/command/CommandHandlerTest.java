@@ -1,6 +1,5 @@
 package io.tripled.marsrover.cli.command;
 
-import io.tripled.marsrover.MarsRoverApplication;
 import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.messages.*;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
@@ -13,12 +12,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CommandHandlerTest {
 
-    private final MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
     private final SimulationRepository simulationRepository;
     private String input;
 
@@ -61,7 +58,7 @@ class CommandHandlerTest {
     void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
         input = "5";
         commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted();
-        assertTrue(simulationRepository.getSimulation() != null);
+        assertNotNull(simulationRepository.getSimulation());
     }
 
     @Test
@@ -244,6 +241,54 @@ class CommandHandlerTest {
                                        Rover R1 is now located at [0,0]
                                        Rover R1 is moving backward
                                        Rover R1 is now located at [0,10]
+                                       Rover R1 executed all instructions. Awaiting new ones...
+                                       """;
+
+        assertEquals(expectedMessageString,
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+    }
+
+    @Test
+    void whenValidDriveCommandEntered_CheckWorldIsRoundLeft_thenMoveRover(){
+        input = "R1 l f3";
+
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 1 2");
+
+        String expectedMessageString = """
+                                       Rover R1 received instructions
+                                       Rover R1 is turning left
+                                       Rover R1 is now facing WEST
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [0,2]
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [10,2]
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [9,2]
+                                       Rover R1 executed all instructions. Awaiting new ones...
+                                       """;
+
+        assertEquals(expectedMessageString,
+                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+    }
+
+    @Test
+    void whenValidDriveCommandEntered_CheckWorldIsRoundRight_thenMoveRover(){
+        input = "R1 r f3";
+
+        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        commandHandler.handlerAfterSimulationSizeSet("land 9 2");
+
+        String expectedMessageString = """
+                                       Rover R1 received instructions
+                                       Rover R1 is turning right
+                                       Rover R1 is now facing EAST
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [10,2]
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [0,2]
+                                       Rover R1 is moving forward
+                                       Rover R1 is now located at [1,2]
                                        Rover R1 executed all instructions. Awaiting new ones...
                                        """;
 

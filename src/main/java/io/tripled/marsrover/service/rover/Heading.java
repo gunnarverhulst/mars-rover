@@ -6,7 +6,7 @@ public enum Heading {
     SOUTH(2),
     EAST(3);
 
-    private int headingNumber;
+    private final int headingNumber;
 
     Heading(int headingNumber) {
         this.headingNumber = headingNumber;
@@ -22,11 +22,11 @@ public enum Heading {
     }
 
     public Heading turnLeft(){
-        return getHeading(headingNumber + 1);
+        return getHeading((headingNumber + 1) % 4);
     }
 
     public Heading turnRight(){
-        return getHeading(headingNumber - 1);
+        return getHeading(((headingNumber + 4 - 1) % 4) );
     }
 
     public Coordinate move(String direction){
