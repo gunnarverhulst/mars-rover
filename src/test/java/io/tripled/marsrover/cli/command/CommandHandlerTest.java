@@ -19,11 +19,11 @@ class CommandHandlerTest {
     private final SimulationRepository simulationRepository;
     private String input;
 
-    private final CommandHandler commandHandler;
+    private final InputController inputController;
 
     public CommandHandlerTest() {
         simulationRepository = new InMemorySimulationRepository();
-        this.commandHandler = new CommandHandler(simulationRepository);
+        this.inputController = new InputController(simulationRepository);
     }
 
     @BeforeEach
@@ -37,27 +37,27 @@ class CommandHandlerTest {
         Optional<Integer> optionalSimulationSize = InputParser.parseInputForSimulationSize(input);
         optionalSimulationSize.ifPresent(integer ->
                 assertEquals(new SimulationSizeSetMessage(integer).messageToBePrinted(),
-                    commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted()));
+                    inputController.handlerBeforeSimulationSizeSet(input).messageToBePrinted()));
     }
 
     @Test
     void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
         input = "bad";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenInvalidCoordValueEntered_NegativeNumber_thenHandleCommand(){
         input = "-45";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
         input = "5";
-        commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted();
+        inputController.handlerBeforeSimulationSizeSet(input).messageToBePrinted();
         assertNotNull(simulationRepository.getSimulation());
     }
 
@@ -66,58 +66,58 @@ class CommandHandlerTest {
         input = "";
 
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
-                commandHandler.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerBeforeSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void givenSimulationSizeSet_whenEmptyCommandEntered_thenShowHelpApi(){
         input = "";
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new ApiMessage().messageToBePrinted(),
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenPCommandEntered_thenShowHelpApi(){
         input = "P";
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new ApiMessage().messageToBePrinted(),
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenQCommandEntered_thenQuit(){
         input = "Q";
         assertEquals(new QuitMessage().messageToBePrinted(),
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
 
     }
 
     @Test
     void whenLANDCommandEntered_thenLand(){
         input = "Land 5 1";
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new LandingMessage(new Coordinate(5,1)).messageToBePrinted(),
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenStateCommandEntered_thenPrintState(){
 
         input = "state";
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 5 5");
 
         assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5), Heading.NORTH)).messageToBePrinted(),
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_MoveOneForward_thenMoveRover(){
         input = "R1 f1";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -127,15 +127,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_MoveOneForward_OneLeft_thenMoveRover(){
         input = "R1 f1 l";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -147,15 +147,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_MoveTwoForward_OneLeft_thenMoveRover(){
         input = "R1 f2 l";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -169,15 +169,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_Movef4lb2r_thenMoveRover(){
         input = "R1 f4 l b2 r";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 5 5");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 5 5");
 
         String expectedMessageString = """
             Rover R1 received instructions
@@ -201,15 +201,15 @@ class CommandHandlerTest {
             """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_CheckWorldIsRoundUp_thenMoveRover(){
         input = "R1 f3";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 0 9");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 0 9");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -223,15 +223,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_CheckWorldIsRoundDown_thenMoveRover(){
         input = "R1 b3";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 0 2");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 0 2");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -245,15 +245,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_CheckWorldIsRoundLeft_thenMoveRover(){
         input = "R1 l f3";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 1 2");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 1 2");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -269,15 +269,15 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
     @Test
     void whenValidDriveCommandEntered_CheckWorldIsRoundRight_thenMoveRover(){
         input = "R1 r f3";
 
-        commandHandler.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        commandHandler.handlerAfterSimulationSizeSet("land 9 2");
+        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputController.handlerAfterSimulationSizeSet("land 9 2");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -293,7 +293,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                commandHandler.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
     }
 
 }

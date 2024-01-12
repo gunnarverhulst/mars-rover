@@ -4,10 +4,11 @@ import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
-import io.tripled.marsrover.service.command.ActionHandler;
-import io.tripled.marsrover.service.command.RoverDrivingHandler;
-import io.tripled.marsrover.service.command.RoverLandingHandler;
-import io.tripled.marsrover.service.command.SimCreationHandler;
+import io.tripled.marsrover.cli.presenter.SimCreationConsolePresenterImpl;
+import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
+import io.tripled.marsrover.service.businessinterface.Presenter;
+import io.tripled.marsrover.service.businessinterface.SimCreationPresenter;
+import io.tripled.marsrover.service.command.*;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Move;
 import io.tripled.marsrover.service.simulation.Simulation;
@@ -16,15 +17,21 @@ import io.tripled.marsrover.service.simulation.SimulationRepository;
 import java.util.List;
 import java.util.Optional;
 
-public class CommandHandler {
+public class InputController {
 
     private final SimulationRepository simulationRepository;
     private final MessagePrinter messagePrinter;
 
     private final InputParser inputParser;
 
-    public CommandHandler(SimulationRepository simulationRepository) {
+    public InputController(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
+        this.messagePrinter = new MessagePrinter(simulationRepository);
+        this.inputParser = new InputParser(simulationRepository);
+    }
+
+    public InputController() {
+        this.simulationRepository = new InMemorySimulationRepository();
         this.messagePrinter = new MessagePrinter(simulationRepository);
         this.inputParser = new InputParser(simulationRepository);
     }
@@ -34,11 +41,11 @@ public class CommandHandler {
         Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(preppedInput);
 
 
-        SimCreationHandler actionHandler = new SimCreationHandler(simulationRepository);
+        ActionHandler<Integer, SimCreationPresenter> actionHandler = ActionHandlerFactory.ACTION_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
 
         if (simulationSizeOptional.isPresent()) {
-            return actionHandler.execute(simulationSizeOptional.get());
-
+            return actionHandler.handle(simulationSizeOptional.get(), new SimCreationConsolePresenterImpl());
+//            return messagePrinter.requestSimulationSize();
         }
         return messagePrinter.simulationSizeErrorMessage(input);
     }
@@ -46,6 +53,8 @@ public class CommandHandler {
 
     public Message handlerAfterSimulationSizeSet(String input) {
         String preparedInput = input.trim().toLowerCase();
+        //Create ActionHandler -? aparte class
+        //ActionHandler . execute -> specifieke actionhandler
 
         ActionHandler actionHandler;
         if (preparedInput.equalsIgnoreCase("Q")) {
@@ -82,5 +91,10 @@ public class CommandHandler {
 
     public Simulation getSimulation() {
         return simulationRepository.getSimulation();
+    }
+
+
+    public void handleCommand(Command command, Presenter presenter){
+
     }
 }

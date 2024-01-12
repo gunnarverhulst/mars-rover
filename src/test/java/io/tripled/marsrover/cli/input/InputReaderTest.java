@@ -104,4 +104,9 @@ class InputReaderTest {
                 inputReader.handleCommand(input).messageToBePrinted());
     }
 
+//    @Test
+//    void inputReader_readInputV2_Simsize(){
+//
+//    }
+
 }

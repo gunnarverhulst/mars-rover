@@ -2,13 +2,14 @@ package io.tripled.marsrover.service.command;
 
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingMessage;
+import io.tripled.marsrover.service.businessinterface.RoverDrivingPresenter;
 import io.tripled.marsrover.service.rover.Move;
 import io.tripled.marsrover.service.rover.Rover;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.List;
 
-public final class RoverDrivingHandler implements ActionHandler {
+public final class RoverDrivingHandler implements ActionHandler<List<Move>, RoverDrivingPresenter> {
 
     private final SimulationRepository simulationRepository;
 
@@ -38,4 +39,18 @@ public final class RoverDrivingHandler implements ActionHandler {
         drivingMessage.concat("Rover R1 executed all instructions. Awaiting new ones...\n");
     }
 
+//    @Override
+//    public void handle(List<Move> drivingMoves) {
+//        RoverDrivingMessage roverDrivingMessage = new RoverDrivingMessage();
+//        prepareRoverDrivingMessage(roverDrivingMessage);
+//        performRoverMoves(drivingMoves, roverDrivingMessage);
+//
+//        endRoverDrivingMessage(roverDrivingMessage);
+//        return roverDrivingMessage;
+//    }
+
+    @Override
+    public Message handle(List<Move> command, RoverDrivingPresenter roverDrivingPresenter) {
+        return null;
+    }
 }
