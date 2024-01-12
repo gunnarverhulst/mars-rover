@@ -4,6 +4,7 @@ import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
+import io.tripled.marsrover.cli.presenter.RoverDrivingPresenterImpl;
 import io.tripled.marsrover.cli.presenter.RoverLandingPresenterImpl;
 import io.tripled.marsrover.cli.presenter.SimCreationConsolePresenterImpl;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
@@ -43,12 +44,11 @@ public class InputController {
         String preppedInput = input.trim().toLowerCase();
         Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(preppedInput);
 
-
-        ActionHandler<Integer, SimCreationPresenter> actionHandler = ActionHandlerFactory.ACTION_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
-
         if (simulationSizeOptional.isPresent()) {
-            return actionHandler.handle(simulationSizeOptional.get(), new SimCreationConsolePresenterImpl());
-//            return messagePrinter.requestSimulationSize();
+
+            int simulationSize = simulationSizeOptional.get();
+            CreateSimulationCommand createSimulationCommand = new CreateSimulationCommand(simulationSize);
+            return handleCommand(createSimulationCommand, new SimCreationConsolePresenterImpl());
         }
         return messagePrinter.simulationSizeErrorMessage(input);
     }
@@ -75,7 +75,7 @@ public class InputController {
         if (preparedInput.startsWith("land")) {
             Optional<Coordinate> coordinate = inputParser.parseInputForCoordinate(input.toLowerCase());
             if (coordinate.isPresent()) {
-                actionHandler = new RoverLandingHandler(simulationRepository);
+//                actionHandler = new RoverLandingHandler(simulationRepository);
                 LandCommand landCommand = new LandCommand(coordinate.get());
                 return handleCommand(landCommand, new RoverLandingPresenterImpl());
             }
@@ -87,7 +87,7 @@ public class InputController {
             if (drivingMoves.isPresent()) {
                 List<Move> moves = drivingMoves.get();
                 DriveCommand driveCommand = new DriveCommand(moves);
-                return handleCommand(driveCommand,null);
+                return handleCommand(driveCommand, new RoverDrivingPresenterImpl());
             }
             return new RoverDrivingErrorMessage();
         }
@@ -99,21 +99,27 @@ public class InputController {
     }
 
 
-    sealed interface CustomCommand permits DriveCommand, LandCommand{ }
 
+    sealed interface CustomCommand permits CreateSimulationCommand, DriveCommand, LandCommand { }
+
+    record CreateSimulationCommand(int simulationSize) implements CustomCommand{}
 
     record LandCommand(Coordinate coordinate) implements CustomCommand{}
 
     record DriveCommand(List<Move> moves) implements CustomCommand { }
     public Message handleCommand(CustomCommand command, Presenter presenter) {
         switch (command) {
-            case DriveCommand driveCommand -> {
-                ActionHandler actionHandler = new RoverDrivingHandler(simulationRepository);
-                return ((RoverDrivingHandler) actionHandler).handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
+            case CreateSimulationCommand createSimulationCommand -> {
+                ActionHandler actionHandler = new SimCreationHandler(simulationRepository);
+                return ((SimCreationHandler) actionHandler).handle(createSimulationCommand.simulationSize(), (SimCreationPresenter) presenter);
             }
             case LandCommand landCommand -> {
                 ActionHandler actionHandler = new RoverLandingHandler(simulationRepository);
                 return ((RoverLandingHandler) actionHandler).handle(landCommand.coordinate(), (RoverLandingPresenter) presenter);
+            }
+            case DriveCommand driveCommand -> {
+                ActionHandler actionHandler = new RoverDrivingHandler(simulationRepository);
+                return ((RoverDrivingHandler) actionHandler).handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
             }
         }
     }
