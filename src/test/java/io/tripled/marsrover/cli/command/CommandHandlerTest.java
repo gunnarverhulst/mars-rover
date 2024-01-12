@@ -21,9 +21,12 @@ class CommandHandlerTest {
 
     private final InputController inputController;
 
+    private final InputParser inputParser;
+
     public CommandHandlerTest() {
         simulationRepository = new InMemorySimulationRepository();
         this.inputController = new InputController(simulationRepository);
+        inputParser = new InputParser(simulationRepository);
     }
 
     @BeforeEach
@@ -74,7 +77,7 @@ class CommandHandlerTest {
         input = "";
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new ApiMessage().messageToBePrinted(),
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -82,14 +85,14 @@ class CommandHandlerTest {
         input = "P";
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new ApiMessage().messageToBePrinted(),
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
     void whenQCommandEntered_thenQuit(){
         input = "Q";
         assertEquals(new QuitMessage().messageToBePrinted(),
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
 
     }
 
@@ -98,7 +101,7 @@ class CommandHandlerTest {
         input = "Land 5 1";
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
         assertEquals(new LandingMessage(new Coordinate(5,1)).messageToBePrinted(),
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -106,10 +109,10 @@ class CommandHandlerTest {
 
         input = "state";
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 5 5");
+        inputParser.determineCommand("land 5 5");
 
         assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5), Heading.NORTH)).messageToBePrinted(),
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -117,7 +120,7 @@ class CommandHandlerTest {
         input = "R1 f1";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 5 5");
+        inputParser.determineCommand("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -127,7 +130,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -135,7 +138,7 @@ class CommandHandlerTest {
         input = "R1 f1 l";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 5 5");
+        inputParser.determineCommand("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -147,7 +150,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -155,7 +158,7 @@ class CommandHandlerTest {
         input = "R1 f2 l";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 5 5");
+        inputParser.determineCommand("land 5 5");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -169,7 +172,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -177,7 +180,7 @@ class CommandHandlerTest {
         input = "R1 f4 l b2 r";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 5 5");
+        inputParser.determineCommand("land 5 5");
 
         String expectedMessageString = """
             Rover R1 received instructions
@@ -201,7 +204,7 @@ class CommandHandlerTest {
             """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -209,7 +212,7 @@ class CommandHandlerTest {
         input = "R1 f3";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 0 9");
+        inputParser.determineCommand("land 0 9");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -223,7 +226,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -231,7 +234,7 @@ class CommandHandlerTest {
         input = "R1 b3";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 0 2");
+        inputParser.determineCommand("land 0 2");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -245,7 +248,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -253,7 +256,7 @@ class CommandHandlerTest {
         input = "R1 l f3";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 1 2");
+        inputParser.determineCommand("land 1 2");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -269,7 +272,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
@@ -277,7 +280,7 @@ class CommandHandlerTest {
         input = "R1 r f3";
 
         inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
-        inputController.handlerAfterSimulationSizeSet("land 9 2");
+        inputParser.determineCommand("land 9 2");
 
         String expectedMessageString = """
                                        Rover R1 received instructions
@@ -293,7 +296,7 @@ class CommandHandlerTest {
                                        """;
 
         assertEquals(expectedMessageString,
-                inputController.handlerAfterSimulationSizeSet(input).messageToBePrinted());
+                inputParser.determineCommand(input).messageToBePrinted());
     }
 
 }

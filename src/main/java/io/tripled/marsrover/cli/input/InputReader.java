@@ -1,13 +1,9 @@
 package io.tripled.marsrover.cli.input;
 
-import io.tripled.marsrover.cli.command.Command;
 import io.tripled.marsrover.cli.command.InputController;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.cli.presenter.SimCreationConsolePresenterImpl;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
-import io.tripled.marsrover.service.businessinterface.SimCreationPresenter;
-import io.tripled.marsrover.service.command.SimCreationHandler;
 import io.tripled.marsrover.service.simulation.Simulation;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
@@ -17,11 +13,13 @@ public class InputReader {
     public final SimulationRepository simulationRepository;
     public final InputController inputController;
     public final MessagePrinter messagePrinter;
+    private final InputParser inputParser;
 
     public InputReader() {
         this.simulationRepository = new InMemorySimulationRepository();
         this.inputController = new InputController(simulationRepository);
         this.messagePrinter = new MessagePrinter(simulationRepository);
+        this.inputParser = new InputParser(simulationRepository);
     }
 
     public void readInput() {
@@ -47,7 +45,7 @@ public class InputReader {
             do {
                 input = scanner.nextLine();
 
-                Command<?> command = InputParser.parse(input);
+//                Command<?> command = InputParser.parse(input);
 
                // inputController.handleCommand(command, new SimCreationConsolePresenterImpl());
 
@@ -65,11 +63,11 @@ public class InputReader {
                 output = inputController.handlerBeforeSimulationSizeSet(input);
 
             } else {
-                output = inputController.handlerAfterSimulationSizeSet(input);
+                output = inputParser.determineCommand(input);
             }
 
         } else {
-            output = inputController.handlerAfterSimulationSizeSet(input);
+            output = messagePrinter.quitMessage();
         }
         return output;
     }

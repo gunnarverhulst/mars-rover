@@ -2,7 +2,7 @@ package io.tripled.marsrover.service.command;
 
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.service.businessinterface.RoverLandingPresenter;
+import io.tripled.marsrover.service.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Heading;
 import io.tripled.marsrover.service.rover.RoverState;

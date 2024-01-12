@@ -1,8 +1,8 @@
 package io.tripled.marsrover.service.command;
 
-import io.tripled.marsrover.service.businessinterface.RoverDrivingPresenter;
-import io.tripled.marsrover.service.businessinterface.RoverLandingPresenter;
-import io.tripled.marsrover.service.businessinterface.SimCreationPresenter;
+import io.tripled.marsrover.service.presenter.RoverDrivingPresenter;
+import io.tripled.marsrover.service.presenter.RoverLandingPresenter;
+import io.tripled.marsrover.service.presenter.SimCreationPresenter;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Move;
 import io.tripled.marsrover.service.simulation.SimulationRepository;

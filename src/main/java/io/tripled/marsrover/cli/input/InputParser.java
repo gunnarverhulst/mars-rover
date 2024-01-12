@@ -1,11 +1,11 @@
 package io.tripled.marsrover.cli.input;
 
-import io.tripled.marsrover.cli.command.Command;
 import io.tripled.marsrover.cli.command.InputController;
+import io.tripled.marsrover.cli.message.MessagePrinter;
+import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
-import io.tripled.marsrover.service.command.ActionHandler;
-import io.tripled.marsrover.service.command.RoverDrivingHandler;
-import io.tripled.marsrover.service.command.RoverLandingHandler;
+import io.tripled.marsrover.cli.presenter.RoverDrivingPresenterImpl;
+import io.tripled.marsrover.cli.presenter.RoverLandingPresenterImpl;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Direction;
 import io.tripled.marsrover.service.rover.Move;
@@ -22,13 +22,15 @@ import static io.tripled.marsrover.cli.validators.SimulationSizeInputValidator.S
 
 public class InputParser {
 
-    private SimulationRepository simulationRepository;
+    private final MessagePrinter messagePrinter;
+    private final SimulationRepository simulationRepository;
 
-    private InputController inputController;
+    private final InputController inputController;
 
     public InputParser(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
-//        this.inputController = new InputController();
+        this.messagePrinter = new MessagePrinter(simulationRepository);
+        this.inputController = new InputController(simulationRepository);
     }
 
     public static Optional<Integer> parseInputForSimulationSize(String input) {
@@ -40,42 +42,40 @@ public class InputParser {
         return Optional.empty();
     }
 
-    public static Command<?> parse(String input) {
+    public Message determineCommand(String input) {
         String preparedInput = input.trim().toLowerCase();
 
-        ActionHandler actionHandler;
         if (preparedInput.equalsIgnoreCase("Q")) {
-//            return messagePrinter.quitMessage();
+            return messagePrinter.quitMessage();
         }
         if (preparedInput.isEmpty()) {
-//            return messagePrinter.apiMessage();
+            return messagePrinter.apiMessage();
         }
         if (preparedInput.equalsIgnoreCase("P")) {
-//            return messagePrinter.apiMessage();
+            return messagePrinter.apiMessage();
         }
         if (preparedInput.equalsIgnoreCase("STATE")) {
-//            return messagePrinter.stateMessage();
+            return messagePrinter.stateMessage();
         }
         if (preparedInput.startsWith("land")) {
-//            Optional<Coordinate> parsedInput = inputParser.parseInputForCoordinate(input.toLowerCase());
-//            if (parsedInput.isPresent()) {
-//                actionHandler = new RoverLandingHandler(simulationRepository);
-//                return ((RoverLandingHandler) actionHandler).execute(parsedInput.get());
-//            }
-//            return messagePrinter.landingErrorMessage();
+            Optional<Coordinate> coordinate = parseInputForCoordinate(input.toLowerCase());
+            if (coordinate.isPresent()) {
+                InputController.LandCommand landCommand = new InputController.LandCommand(coordinate.get());
+                return inputController.handleCommand(landCommand, new RoverLandingPresenterImpl());
+            }
+            return messagePrinter.landingErrorMessage();
         }
         if (preparedInput.startsWith("r")) {
-//            Optional<List<Move>> drivingMoves = InputParser.parseInputForDrivingMoves(preparedInput);
-//
-//            if(drivingMoves.isPresent()){
-//                actionHandler = new RoverDrivingHandler(simulationRepository);
-//                return ((RoverDrivingHandler) actionHandler).execute(drivingMoves.get());
-//            }
-//            return new RoverDrivingErrorMessage();
-        }
-//        return messagePrinter.apiMessage();
+            Optional<List<Move>> drivingMoves = parseInputForDrivingMoves(preparedInput);
 
-        return null;
+            if (drivingMoves.isPresent()) {
+                List<Move> moves = drivingMoves.get();
+                InputController.DriveCommand driveCommand = new InputController.DriveCommand(moves);
+                return inputController.handleCommand(driveCommand, new RoverDrivingPresenterImpl());
+            }
+            return new RoverDrivingErrorMessage();
+        }
+        return messagePrinter.apiMessage();
     }
 
     public Optional<Coordinate> parseInputForCoordinate(String input) {
