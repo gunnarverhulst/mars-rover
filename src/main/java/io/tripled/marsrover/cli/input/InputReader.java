@@ -49,7 +49,7 @@ public class InputReader {
 
                 Command<?> command = InputParser.parse(input);
 
-                inputController.handleCommand(command, new SimCreationConsolePresenterImpl());
+               // inputController.handleCommand(command, new SimCreationConsolePresenterImpl());
 
             }
             while (!isQuit(input));
