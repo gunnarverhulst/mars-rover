@@ -4,6 +4,7 @@ import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
+import io.tripled.marsrover.cli.presenter.RoverLandingPresenterImpl;
 import io.tripled.marsrover.cli.presenter.SimCreationConsolePresenterImpl;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.businessinterface.Presenter;
@@ -76,7 +77,7 @@ public class InputController {
             if (coordinate.isPresent()) {
                 actionHandler = new RoverLandingHandler(simulationRepository);
                 LandCommand landCommand = new LandCommand(coordinate.get());
-                return handleCommand(landCommand, null);
+                return handleCommand(landCommand, new RoverLandingPresenterImpl());
             }
             return messagePrinter.landingErrorMessage();
         }

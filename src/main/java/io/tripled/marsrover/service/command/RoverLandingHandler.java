@@ -31,7 +31,7 @@ import io.tripled.marsrover.service.simulation.SimulationRepository;
     }
 
     @Override
-    public Message handle(Coordinate command,RoverLandingPresenter roverLandingPresenter) {
-        return null;
+    public Message handle(Coordinate coordinate,RoverLandingPresenter roverLandingPresenter) {
+        return execute(coordinate);
     }
 }
