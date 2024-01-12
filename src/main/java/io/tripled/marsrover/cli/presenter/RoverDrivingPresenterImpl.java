@@ -1,0 +1,15 @@
+package io.tripled.marsrover.cli.presenter;
+
+import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.cli.message.messages.RoverDrivingMessage;
+import io.tripled.marsrover.service.businessinterface.RoverDrivingPresenter;
+import io.tripled.marsrover.service.rover.Move;
+
+import java.util.List;
+
+public class RoverDrivingPresenterImpl implements RoverDrivingPresenter {
+    @Override
+    public Message roverDriving(List<Move> drivingMoves) {
+        return new RoverDrivingMessage();
+    }
+}

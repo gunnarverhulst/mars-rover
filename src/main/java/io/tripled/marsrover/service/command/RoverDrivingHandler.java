@@ -50,7 +50,7 @@ public final class RoverDrivingHandler implements ActionHandler<List<Move>, Rove
 //    }
 
     @Override
-    public Message handle(List<Move> command, RoverDrivingPresenter roverDrivingPresenter) {
-        return null;
+    public Message handle(List<Move> moves, RoverDrivingPresenter roverDrivingPresenter) {
+        return execute(moves);
     }
 }
