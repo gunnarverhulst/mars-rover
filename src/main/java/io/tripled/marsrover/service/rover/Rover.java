@@ -1,5 +1,7 @@
 package io.tripled.marsrover.service.rover;
 
+import io.tripled.marsrover.service.message.messages.Message;
+import io.tripled.marsrover.service.message.messages.TransientMessage;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 public class Rover {
@@ -21,16 +23,16 @@ public class Rover {
     }
 
 
-    public String singleStepMove(Move move) {
+    public Message singleStepMove(Move move) {
         StringBuilder stringToConcatToMessage = new StringBuilder();
 
         for(int i = 0; i < move.steps(); i++){
-            stringToConcatToMessage.append(move(move.direction()));
+            stringToConcatToMessage.append(moveRover(move.direction()).messageToBePrinted());
         }
-        return stringToConcatToMessage.toString();
+        return new TransientMessage(stringToConcatToMessage.toString());
     }
 
-    private String move(Direction direction) {
+    private Message moveRover(Direction direction) {
         String stringToConcat = "";
         switch (direction){
             case FORWARD, BACKWARD -> {
@@ -49,7 +51,7 @@ public class Rover {
                 stringToConcat = createRoverTurnMessage(stringToConcat, direction);
             }
         }
-        return stringToConcat;
+        return new TransientMessage(stringToConcat);
     }
 
     private String createRoverMoveMessage(String stringToConcat, Direction direction) {

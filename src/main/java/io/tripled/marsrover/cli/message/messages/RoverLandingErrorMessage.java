@@ -1,8 +1,9 @@
 package io.tripled.marsrover.cli.message.messages;
 
+import io.tripled.marsrover.service.message.messages.Message;
 import io.tripled.marsrover.service.rover.Coordinate;
 
-public class RoverLandingErrorMessage implements Message{
+public class RoverLandingErrorMessage implements Message {
 
     private final String message;
 

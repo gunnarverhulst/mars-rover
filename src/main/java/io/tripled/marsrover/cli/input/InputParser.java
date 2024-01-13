@@ -4,7 +4,7 @@ import io.tripled.marsrover.service.command.CreateSimulationCommand;
 import io.tripled.marsrover.service.command.DriveCommand;
 import io.tripled.marsrover.service.command.CommandController;
 import io.tripled.marsrover.service.command.LandCommand;
-import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.service.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.cli.presenter.*;
 import io.tripled.marsrover.service.rover.Coordinate;

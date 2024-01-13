@@ -1,7 +1,7 @@
 package io.tripled.marsrover.cli.presenter;
 
 import io.tripled.marsrover.cli.message.messages.LandingMessage;
-import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.service.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverLandingErrorEmptyCoordinateMessage;
 import io.tripled.marsrover.cli.message.messages.RoverLandingErrorMessage;
 import io.tripled.marsrover.service.presenter.RoverLandingPresenter;

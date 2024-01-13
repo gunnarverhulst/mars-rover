@@ -1,6 +1,6 @@
 package io.tripled.marsrover.cli.input;
 
-import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.service.message.messages.Message;
 import io.tripled.marsrover.cli.presenter.ProgramConsolePresenterImpl;
 import io.tripled.marsrover.service.presenter.ProgramPresenter;
 import io.tripled.marsrover.service.simulation.SimulationRepository;

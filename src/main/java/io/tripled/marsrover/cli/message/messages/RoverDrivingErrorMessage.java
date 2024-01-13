@@ -1,6 +1,8 @@
 package io.tripled.marsrover.cli.message.messages;
 
-public class RoverDrivingErrorMessage implements Message{
+import io.tripled.marsrover.service.message.messages.Message;
+
+public class RoverDrivingErrorMessage implements Message {
 
     private final static String message = "Unable to parse coordinates for landing.";
     @Override

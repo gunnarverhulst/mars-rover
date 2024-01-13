@@ -1,6 +1,6 @@
 package io.tripled.marsrover.service.command;
 
-import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.service.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingMessage;
 import io.tripled.marsrover.service.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.service.rover.Move;
@@ -35,7 +35,7 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
 
     private void performRoverMoves(List<Move> drivingMoves, RoverDrivingMessage drivingMessage) {
         Rover rover = simulationRepository.getSimulation().getRover1();
-        drivingMoves.forEach(x -> drivingMessage.concat(rover.singleStepMove(x)));
+        drivingMoves.forEach(x -> drivingMessage.concat(rover.singleStepMove(x).messageToBePrinted()));
     }
     private void endRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
         drivingMessage.concat("Rover R1 executed all instructions. Awaiting new ones...\n");

@@ -1,6 +1,8 @@
 package io.tripled.marsrover.cli.message.messages;
 
-public class LogoMessage implements Message{
+import io.tripled.marsrover.service.message.messages.Message;
+
+public class LogoMessage implements Message {
 
     private final String message = """
                 **************************"

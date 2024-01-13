@@ -1,6 +1,8 @@
 package io.tripled.marsrover.cli.message.messages;
 
-public class QuitMessage implements Message{
+import io.tripled.marsrover.service.message.messages.Message;
+
+public class QuitMessage implements Message {
     private final String message = "Quitting application";
 
 

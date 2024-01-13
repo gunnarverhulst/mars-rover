@@ -1,8 +1,9 @@
 package io.tripled.marsrover.cli.message.messages;
 
+import io.tripled.marsrover.service.message.messages.Message;
 import io.tripled.marsrover.service.rover.RoverState;
 
-public class StateMessage implements Message{
+public class StateMessage implements Message {
     private final String message;
 
     public StateMessage(int simulationSize, RoverState roverState) {

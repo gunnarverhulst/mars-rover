@@ -1,6 +1,8 @@
 package io.tripled.marsrover.cli.message.messages;
 
-public class RoverDrivingMessage implements Message{
+import io.tripled.marsrover.service.message.messages.Message;
+
+public class RoverDrivingMessage implements Message {
 
     private String message = "";
     @Override
