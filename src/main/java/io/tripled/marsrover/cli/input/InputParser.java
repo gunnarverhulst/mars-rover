@@ -29,6 +29,41 @@ public class InputParser {
         this.inputController = new InputController(simulationRepository);
     }
 
+    public Message determineCommand(String input) {
+        String preparedInput = input.trim().toLowerCase();
+        boolean isSimulationSizeSet = simulationRepository.getSimulation() != null;
+
+        if(!isSimulationSizeSet){
+            return parseInputIfSimulationSizeNotSet(input, preparedInput);
+        }
+
+        if (preparedInput.equalsIgnoreCase("Q")) {
+            return new QuitConsolePresenterImpl().quitMessage();
+        }
+
+        if (preparedInput.isEmpty()) {
+            return new ApiConsolePresenterImpl().apiMessage();
+        }
+
+        if (preparedInput.equalsIgnoreCase("P")) {
+            return new ApiConsolePresenterImpl().apiMessage();
+        }
+
+        if (preparedInput.equalsIgnoreCase("STATE")) {
+            return parseState();
+        }
+
+        if (preparedInput.startsWith("land")) {
+            return parseLandInput(input);
+        }
+
+        if (preparedInput.startsWith("r")) {
+            return parseDriveInput(preparedInput);
+        }
+        return new ApiConsolePresenterImpl().apiMessage();
+
+    }
+
     public static Optional<Integer> parseInputForSimulationSize(String input) {
         Optional<Integer> optionalSimulationSize = extractSimulationSize(input);
         if(optionalSimulationSize.isPresent() && SIMULATIONSIZE_INPUT_VALIDATOR.isValidSimulationSize(input)){
@@ -38,90 +73,12 @@ public class InputParser {
         return Optional.empty();
     }
 
-    public Message determineCommand(String input) {
-        String preparedInput = input.trim().toLowerCase();
-        boolean isSimulationSizeSet = simulationRepository.getSimulation() != null;
-
-        if(!isSimulationSizeSet){
-            if (preparedInput.equalsIgnoreCase("Q")) {
-                return new QuitConsolePresenterImpl().quitMessage();
-            }
-
-            String preppedInput = input.trim().toLowerCase();
-            Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(preppedInput);
-
-            if (simulationSizeOptional.isPresent()) {
-
-                int simulationSize = simulationSizeOptional.get();
-                InputController.CreateSimulationCommand createSimulationCommand = new InputController.CreateSimulationCommand(simulationSize);
-                 return inputController.handleCommand(createSimulationCommand, new SimulationConsolePresenterImpl());
-            } else
-                return new SimulationConsolePresenterImpl().simulationSizeError(input);
-        }
-
-        if (preparedInput.equalsIgnoreCase("Q")) {
-            return new QuitConsolePresenterImpl().quitMessage();
-        }
-        if (preparedInput.isEmpty()) {
-            return new ApiConsolePresenterImpl().apiMessage();
-        }
-        if (preparedInput.equalsIgnoreCase("P")) {
-            return new ApiConsolePresenterImpl().apiMessage();
-        }
-        if (preparedInput.equalsIgnoreCase("STATE")) {
-            if(simulationRepository.getSimulation().getRoverState() != null)
-                return new StateConsolePresenterImpl().stateMessage(simulationRepository.getSimulation().getSimulationSize(), simulationRepository.getSimulation().getRoverState());
-            else
-                return new StateConsolePresenterImpl().stateErrorMessage();
-        }
-        if (preparedInput.startsWith("land")) {
-            Optional<Coordinate> coordinate = parseInputForCoordinate(input.toLowerCase());
-            if (coordinate.isPresent()) {
-                InputController.LandCommand landCommand = new InputController.LandCommand(coordinate.get());
-                return inputController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
-            }
-
-            return new RoverLandingConsolePresenterImpl().roverLandingEmptyCoordinateErrorMessage();
-        }
-        if (preparedInput.startsWith("r")) {
-            Optional<List<Move>> drivingMoves = parseInputForDrivingMoves(preparedInput);
-
-            if (drivingMoves.isPresent()) {
-                List<Move> moves = drivingMoves.get();
-                InputController.DriveCommand driveCommand = new InputController.DriveCommand(moves);
-                return inputController.handleCommand(driveCommand, new RoverDrivingConsolePresenterImpl());
-            }
-            return new RoverDrivingErrorMessage();
-        }
-        return new ApiConsolePresenterImpl().apiMessage();
-
-    }
-
     public Optional<Coordinate> parseInputForCoordinate(String input) {
 
         Optional<Coordinate> optionalCoordinate = extractCoordinate(input);
-        if(optionalCoordinate.isPresent() && LAND_INPUT_VALIDATOR.isValidCoordinateInput(optionalCoordinate.get(), simulationRepository.getSimulation().getSimulationSize()))
+        if(optionalCoordinate.isPresent() && LAND_INPUT_VALIDATOR.isValidCoordinateInput(optionalCoordinate.get(), getSimulationSize()))
             return optionalCoordinate;
 
-        return Optional.empty();
-    }
-
-    private static Optional<Integer> extractSimulationSize(String input) {
-        Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(input);
-        if(matcher.find()){
-            return Optional.of(Integer.parseInt(matcher.group()));
-        }
-        return Optional.empty();
-    }
-
-
-    private static Optional<Coordinate> extractCoordinate(String input) {
-        Pattern pattern = Pattern.compile("^land (\\d+) (\\d+)$");
-        Matcher matcher = pattern.matcher(input);
-        if(matcher.find()){
-            return Optional.of(new Coordinate(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2))));
-        }
         return Optional.empty();
     }
 
@@ -143,6 +100,68 @@ public class InputParser {
         return Optional.of(drivingMoves);
     }
 
+    private Message parseInputIfSimulationSizeNotSet(String input, String preparedInput) {
+        if (preparedInput.equalsIgnoreCase("Q")) {
+            return new QuitConsolePresenterImpl().quitMessage();
+        }
+
+        String preppedInput = input.trim().toLowerCase();
+        Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(preppedInput);
+
+        if (simulationSizeOptional.isPresent()) {
+
+            int simulationSize = simulationSizeOptional.get();
+            InputController.CreateSimulationCommand createSimulationCommand = new InputController.CreateSimulationCommand(simulationSize);
+            return inputController.handleCommand(createSimulationCommand, new SimulationConsolePresenterImpl());
+        } else
+            return new SimulationConsolePresenterImpl().simulationSizeError(input);
+    }
+
+    private Message parseState() {
+        if(simulationRepository.getSimulation().getRoverState() != null)
+            return new StateConsolePresenterImpl().stateMessage(getSimulationSize(), simulationRepository.getSimulation().getRoverState());
+        else
+            return new StateConsolePresenterImpl().stateErrorMessage();
+    }
+
+    private Message parseLandInput(String input) {
+        Optional<Coordinate> coordinate = parseInputForCoordinate(input.toLowerCase());
+        if (coordinate.isPresent()) {
+            InputController.LandCommand landCommand = new InputController.LandCommand(coordinate.get());
+            return inputController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
+        }
+
+        return new RoverLandingConsolePresenterImpl().roverLandingEmptyCoordinateErrorMessage();
+    }
+
+    private Message parseDriveInput(String preparedInput) {
+        Optional<List<Move>> drivingMoves = parseInputForDrivingMoves(preparedInput);
+
+        if (drivingMoves.isPresent()) {
+            List<Move> moves = drivingMoves.get();
+            InputController.DriveCommand driveCommand = new InputController.DriveCommand(moves);
+            return inputController.handleCommand(driveCommand, new RoverDrivingConsolePresenterImpl());
+        }
+        return new RoverDrivingErrorMessage();
+    }
+    private static Optional<Integer> extractSimulationSize(String input) {
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(input);
+        if(matcher.find()){
+            return Optional.of(Integer.parseInt(matcher.group()));
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<Coordinate> extractCoordinate(String input) {
+        Pattern pattern = Pattern.compile("^land (\\d+) (\\d+)$");
+        Matcher matcher = pattern.matcher(input);
+        if(matcher.find()){
+            return Optional.of(new Coordinate(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2))));
+        }
+        return Optional.empty();
+    }
+
     private static void addDrivingMove(Matcher matcher, String matchString, List<Move> drivingMoves) {
         if (matcher.group(1).contains(matchString)) {
             String backward = matcher.group(1).trim();
@@ -151,5 +170,9 @@ public class InputParser {
             Direction direction = Direction.DIRECTION.parseDirection(directionLetter);
             drivingMoves.add(new Move(direction, directionSteps));
         }
+    }
+
+    private int getSimulationSize() {
+        return simulationRepository.getSimulation().getSimulationSize();
     }
 }
