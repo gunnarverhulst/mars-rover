@@ -16,7 +16,6 @@ public final class SimCreationHandler implements CommandHandler<Integer, SimCons
     @Override
     public Message handle(Integer simulationSize, SimConsolePresenter simCreationPresenter) {
         simulationRepository.addSimulation(new Simulation(simulationSize, simulationRepository));
-        System.out.println(simCreationPresenter.simulationCreated(simulationSize).messageToBePrinted());
         return simCreationPresenter.simulationCreated(simulationSize);
     }
 }

@@ -41,21 +41,21 @@ class InputParserTest {
     }
 
     @Test
-    void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
+    void whenInvalidSimulationSizeEntered_Text_thenHandleCommand(){
         input = "bad";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
                 inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
-    void whenInvalidCoordValueEntered_NegativeNumber_thenHandleCommand(){
+    void whenInvalidSimulationSizeEntered_NegativeNumber_thenHandleCommand(){
         input = "-45";
         assertEquals(new SimulationSizeErrorMessage(input).messageToBePrinted(),
                 inputParser.determineCommand(input).messageToBePrinted());
     }
 
     @Test
-    void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
+    void whenValidSimulationSIzeEntered_thenMaxSimulationSizeIsSet(){
         input = "5";
         inputParser.determineCommand(input).messageToBePrinted();
         assertNotNull(simulationRepository.getSimulation());
