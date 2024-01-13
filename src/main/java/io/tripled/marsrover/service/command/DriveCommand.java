@@ -1,4 +1,4 @@
-package io.tripled.marsrover.cli.command;
+package io.tripled.marsrover.service.command;
 
 import io.tripled.marsrover.service.rover.Move;
 

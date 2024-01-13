@@ -1,9 +1,9 @@
 package io.tripled.marsrover.cli.input;
 
-import io.tripled.marsrover.cli.command.CreateSimulationCommand;
-import io.tripled.marsrover.cli.command.DriveCommand;
-import io.tripled.marsrover.cli.command.CommandController;
-import io.tripled.marsrover.cli.command.LandCommand;
+import io.tripled.marsrover.service.command.CreateSimulationCommand;
+import io.tripled.marsrover.service.command.DriveCommand;
+import io.tripled.marsrover.service.command.CommandController;
+import io.tripled.marsrover.service.command.LandCommand;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.cli.presenter.*;

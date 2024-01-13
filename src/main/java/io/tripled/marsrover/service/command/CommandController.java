@@ -1,7 +1,6 @@
-package io.tripled.marsrover.cli.command;
+package io.tripled.marsrover.service.command;
 
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.service.command.CommandHandler;
 import io.tripled.marsrover.service.presenter.Presenter;
 import io.tripled.marsrover.service.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.service.presenter.RoverLandingPresenter;

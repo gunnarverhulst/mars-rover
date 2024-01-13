@@ -23,7 +23,7 @@ public class InputReader {
             do {
                 input = scanner.nextLine();
 
-                handleCommand(input);
+                parseInput(input);
 
             }
             while (!isQuit(input));
@@ -31,7 +31,7 @@ public class InputReader {
 
     }
 
-    public void handleCommand(String input) {
+    public void parseInput(String input) {
         ProgramPresenter presenter = new ProgramConsolePresenterImpl();
         presenter.startupMessage();
 

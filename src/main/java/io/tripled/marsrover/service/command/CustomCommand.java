@@ -1,4 +1,4 @@
-package io.tripled.marsrover.cli.command;
+package io.tripled.marsrover.service.command;
 
 public sealed interface CustomCommand permits CreateSimulationCommand, DriveCommand, LandCommand {
 }
