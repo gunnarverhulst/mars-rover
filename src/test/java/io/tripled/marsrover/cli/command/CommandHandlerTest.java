@@ -255,7 +255,8 @@ class CommandHandlerTest {
     void whenValidDriveCommandEntered_CheckWorldIsRoundLeft_thenMoveRover(){
         input = "R1 l f3";
 
-        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+//        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputParser.determineCommand("10");
         inputParser.determineCommand("land 1 2");
 
         String expectedMessageString = """

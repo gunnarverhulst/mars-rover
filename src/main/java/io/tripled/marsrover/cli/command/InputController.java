@@ -62,7 +62,8 @@ public class InputController {
         switch (command) {
             case CreateSimulationCommand createSimulationCommand -> {
                 ActionHandler actionHandler = new SimCreationHandler(simulationRepository);
-                return ((SimCreationHandler) actionHandler).handle(createSimulationCommand.simulationSize(), (SimCreationPresenter) presenter);
+                Message m = ((SimCreationHandler) actionHandler).handle(createSimulationCommand.simulationSize(), (SimCreationPresenter) presenter);
+                return m;
             }
             case LandCommand landCommand -> {
                 ActionHandler actionHandler = new RoverLandingHandler(simulationRepository);

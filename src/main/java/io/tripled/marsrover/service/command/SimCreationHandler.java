@@ -28,6 +28,7 @@ public final class SimCreationHandler implements ActionHandler<Integer, SimCreat
     public Message handle(Integer simulationSize, SimCreationPresenter simCreationPresenter) {
         simulationRepository.addSimulation(new Simulation(simulationSize, simulationRepository));
         System.out.println(simCreationPresenter.simulationSuccesfullyCreated(simulationSize).messageToBePrinted());
-        return simCreationPresenter.simulationSuccesfullyCreated(simulationSize);
+        Message m = simCreationPresenter.simulationSuccesfullyCreated(simulationSize);
+        return m;
     }
 }

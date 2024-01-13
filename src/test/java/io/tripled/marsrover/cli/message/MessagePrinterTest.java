@@ -1,8 +1,7 @@
 package io.tripled.marsrover.cli.message;
 
 import io.tripled.marsrover.cli.input.InputReader;
-import io.tripled.marsrover.cli.message.messages.ApiMessage;
-import io.tripled.marsrover.cli.message.messages.RequestSimulationSizeMessage;
+import io.tripled.marsrover.cli.message.messages.SimulationSizeRequestMessage;
 import io.tripled.marsrover.cli.message.messages.SimulationSizeErrorMessage;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
@@ -27,7 +26,7 @@ class MessagePrinterTest {
 
     @Test
     void requestSimulationSizeOnBoot(){
-        assertEquals(new RequestSimulationSizeMessage().messageToBePrinted(),
+        assertEquals(new SimulationSizeRequestMessage().messageToBePrinted(),
                 messagePrinter.requestSimulationSize().messageToBePrinted());
     }
 

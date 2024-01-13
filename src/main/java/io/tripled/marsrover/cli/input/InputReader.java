@@ -3,6 +3,9 @@ package io.tripled.marsrover.cli.input;
 import io.tripled.marsrover.cli.command.InputController;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
+import io.tripled.marsrover.cli.presenter.ProgramPresenterImpl;
+import io.tripled.marsrover.service.presenter.Presenter;
+import io.tripled.marsrover.service.presenter.ProgramPresenter;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.Scanner;
@@ -36,12 +39,11 @@ public class InputReader {
     }
 
     public void handleCommand(String input) {
-        System.out.println(messagePrinter.requestSimulationSize().messageToBePrinted());
+        ProgramPresenter presenter = new ProgramPresenterImpl();
+        presenter.printStartUpMessage();
 
         Message output = inputParser.determineCommand(input);
 
-        System.out.println(output.messageToBePrinted());
-        System.out.println("*********END*****************");
     }
 
     private static boolean isQuit(String input) {

@@ -59,9 +59,9 @@ public class InputParser {
 
                 int simulationSize = simulationSizeOptional.get();
                 InputController.CreateSimulationCommand createSimulationCommand = new InputController.CreateSimulationCommand(simulationSize);
-                return inputController.handleCommand(createSimulationCommand, new SimCreationConsolePresenterImpl());
-            }
-            return messagePrinter.simulationSizeErrorMessage(input);
+                 return inputController.handleCommand(createSimulationCommand, new SimCreationConsolePresenterImpl());
+            } else
+                return messagePrinter.simulationSizeErrorMessage(input);
         }
 
         if (preparedInput.equalsIgnoreCase("Q")) {
@@ -95,6 +95,7 @@ public class InputParser {
             return new RoverDrivingErrorMessage();
         }
         return messagePrinter.apiMessage();
+
     }
 
     public Optional<Coordinate> parseInputForCoordinate(String input) {

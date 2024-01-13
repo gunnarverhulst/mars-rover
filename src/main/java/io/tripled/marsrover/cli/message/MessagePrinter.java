@@ -20,7 +20,7 @@ public class MessagePrinter {
     }
 
     public Message requestSimulationSize() {
-        return new RequestSimulationSizeMessage();
+        return new SimulationSizeRequestMessage();
     }
 
     public Message simulationSizeErrorMessage(String input) {
