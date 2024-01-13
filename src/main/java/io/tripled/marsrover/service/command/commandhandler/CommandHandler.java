@@ -5,6 +5,6 @@ import io.tripled.marsrover.service.presenter.Presenter;
 
 public sealed interface CommandHandler<T,P extends Presenter> extends Presenter permits RoverDrivingHandler, RoverLandingHandler, SimCreationHandler {
 
-    Message handle(T command, P p);
+    void handle(T command, P p);
 
 }

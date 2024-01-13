@@ -19,14 +19,15 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
     }
 
     @Override
-    public Message handle(List<Move> drivingMoves, RoverDrivingPresenter roverDrivingPresenter) {
+    public void handle(List<Move> drivingMoves, RoverDrivingPresenter roverDrivingPresenter) {
 
         RoverDrivingMessage roverDrivingMessage = new RoverDrivingMessage();
         prepareRoverDrivingMessage(roverDrivingMessage);
         performRoverMoves(drivingMoves, roverDrivingMessage);
 
         endRoverDrivingMessage(roverDrivingMessage);
-        return roverDrivingPresenter.roverDriving(drivingMoves, roverDrivingMessage);
+
+        roverDrivingPresenter.roverDriving(drivingMoves, roverDrivingMessage);
     }
 
     private void prepareRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
