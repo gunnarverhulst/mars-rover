@@ -5,7 +5,7 @@ import io.tripled.marsrover.service.presenter.SimConsolePresenter;
 import io.tripled.marsrover.service.simulation.Simulation;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
-public final class SimCreationHandler implements ActionHandler<Integer, SimConsolePresenter> {
+public final class SimCreationHandler implements CommandHandler<Integer, SimConsolePresenter> {
 
     private final SimulationRepository simulationRepository;
 

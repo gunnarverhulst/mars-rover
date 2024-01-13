@@ -1,6 +1,9 @@
 package io.tripled.marsrover.cli.input;
 
-import io.tripled.marsrover.cli.command.InputController;
+import io.tripled.marsrover.cli.command.CreateSimulationCommand;
+import io.tripled.marsrover.cli.command.DriveCommand;
+import io.tripled.marsrover.cli.command.CommandController;
+import io.tripled.marsrover.cli.command.LandCommand;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.cli.presenter.*;
@@ -22,11 +25,11 @@ public class InputParser {
 
     private final SimulationRepository simulationRepository;
 
-    private final InputController inputController;
+    private final CommandController commandController;
 
     public InputParser(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
-        this.inputController = new InputController(simulationRepository);
+        this.commandController = new CommandController(simulationRepository);
     }
 
     public Message determineCommand(String input) {
@@ -111,8 +114,8 @@ public class InputParser {
         if (simulationSizeOptional.isPresent()) {
 
             int simulationSize = simulationSizeOptional.get();
-            InputController.CreateSimulationCommand createSimulationCommand = new InputController.CreateSimulationCommand(simulationSize);
-            return inputController.handleCommand(createSimulationCommand, new SimulationConsolePresenterImpl());
+            CreateSimulationCommand createSimulationCommand = new CreateSimulationCommand(simulationSize);
+            return commandController.handleCommand(createSimulationCommand, new SimulationConsolePresenterImpl());
         } else
             return new SimulationConsolePresenterImpl().simulationSizeError(input);
     }
@@ -127,8 +130,8 @@ public class InputParser {
     private Message parseLandInput(String input) {
         Optional<Coordinate> coordinate = parseInputForCoordinate(input.toLowerCase());
         if (coordinate.isPresent()) {
-            InputController.LandCommand landCommand = new InputController.LandCommand(coordinate.get());
-            return inputController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
+            LandCommand landCommand = new LandCommand(coordinate.get());
+            return commandController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
         }
 
         return new RoverLandingConsolePresenterImpl().roverLandingEmptyCoordinateErrorMessage();
@@ -139,8 +142,8 @@ public class InputParser {
 
         if (drivingMoves.isPresent()) {
             List<Move> moves = drivingMoves.get();
-            InputController.DriveCommand driveCommand = new InputController.DriveCommand(moves);
-            return inputController.handleCommand(driveCommand, new RoverDrivingConsolePresenterImpl());
+            DriveCommand driveCommand = new DriveCommand(moves);
+            return commandController.handleCommand(driveCommand, new RoverDrivingConsolePresenterImpl());
         }
         return new RoverDrivingErrorMessage();
     }

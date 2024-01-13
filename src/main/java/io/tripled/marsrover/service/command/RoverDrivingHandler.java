@@ -9,7 +9,7 @@ import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.List;
 
-public final class RoverDrivingHandler implements ActionHandler<List<Move>, RoverDrivingPresenter> {
+public final class RoverDrivingHandler implements CommandHandler<List<Move>, RoverDrivingPresenter> {
 
     private final SimulationRepository simulationRepository;
 

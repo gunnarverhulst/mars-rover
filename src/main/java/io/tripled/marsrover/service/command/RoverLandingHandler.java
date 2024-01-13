@@ -7,7 +7,7 @@ import io.tripled.marsrover.service.rover.Heading;
 import io.tripled.marsrover.service.rover.RoverState;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
- public final class RoverLandingHandler implements ActionHandler<Coordinate, RoverLandingPresenter> {
+ public final class RoverLandingHandler implements CommandHandler<Coordinate, RoverLandingPresenter> {
 
     private final SimulationRepository simulationRepository;
 

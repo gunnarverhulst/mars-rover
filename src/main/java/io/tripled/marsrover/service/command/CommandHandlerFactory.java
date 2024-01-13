@@ -9,19 +9,18 @@ import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.List;
 
-public enum ActionHandlerFactory {
+public enum CommandHandlerFactory {
     ACTION_HANDLER_FACTORY;
 
-    public ActionHandler<Integer, SimConsolePresenter> createSimulationHandler(SimulationRepository simulationRepository){
+    public CommandHandler<Integer, SimConsolePresenter> createSimulationHandler(SimulationRepository simulationRepository){
         return new SimCreationHandler(simulationRepository);
     }
 
-    public ActionHandler<Coordinate, RoverLandingPresenter> createRoverLandingHandler(SimulationRepository simulationRepository){
-
+    public CommandHandler<Coordinate, RoverLandingPresenter> createRoverLandingHandler(SimulationRepository simulationRepository){
         return new RoverLandingHandler(simulationRepository);
     }
 
-    public ActionHandler<List<Move>, RoverDrivingPresenter> createRoverDrivingHandler(SimulationRepository simulationRepository){
+    public CommandHandler<List<Move>, RoverDrivingPresenter> createRoverDrivingHandler(SimulationRepository simulationRepository){
         return new RoverDrivingHandler(simulationRepository);
     }
 
