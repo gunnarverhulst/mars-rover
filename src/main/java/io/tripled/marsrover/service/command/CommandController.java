@@ -26,19 +26,19 @@ public class CommandController {
     public Simulation getSimulation() {
         return simulationRepository.getSimulation();
     }
-    public Message handleCommand(Command command, Presenter presenter) {
+    public void handleCommand(Command command, Presenter presenter) {
         switch (command) {
             case CreateSimulationCommand createSimulationCommand -> {
                 CommandHandler<Integer, SimConsolePresenter> commandHandler = ACTION_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
-                return commandHandler.handle(createSimulationCommand.simulationSize(), (SimConsolePresenter) presenter);
+                commandHandler.handle(createSimulationCommand.simulationSize(), (SimConsolePresenter) presenter);
             }
             case LandCommand landCommand -> {
                 CommandHandler<Coordinate, RoverLandingPresenter> commandHandler = ACTION_HANDLER_FACTORY.createRoverLandingHandler(simulationRepository);
-                return commandHandler.handle(landCommand.coordinate(), (RoverLandingPresenter) presenter);
+                commandHandler.handle(landCommand.coordinate(), (RoverLandingPresenter) presenter);
             }
             case DriveCommand driveCommand -> {
                 CommandHandler<List<Move>, RoverDrivingPresenter> commandHandler = ACTION_HANDLER_FACTORY.createRoverDrivingHandler(simulationRepository);
-                return commandHandler.handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
+                commandHandler.handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
             }
         }
     }
