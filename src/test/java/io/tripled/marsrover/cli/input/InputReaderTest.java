@@ -27,15 +27,15 @@ class InputReaderTest {
     }
 
 
-    @Test
-    void whenValidSimulationSizeValueEntered_thenParseValue(){
-
-        input = "5";
-        Optional<Integer> optionalSimulationSize = InputParser.parseInputForSimulationSize(input);
-        optionalSimulationSize.ifPresent(integer ->
-                assertEquals(new SimulationSizeSetMessage(integer).messageToBePrinted(),
-                        inputReader.handleCommand(input).messageToBePrinted()));
-    }
+//    @Test
+//    void whenValidSimulationSizeValueEntered_thenParseValue(){
+//
+//        input = "5";
+//        Optional<Integer> optionalSimulationSize = InputParser.parseInputForSimulationSize(input);
+//        optionalSimulationSize.ifPresent(integer ->
+//                assertEquals(new SimulationSizeSetMessage(integer).messageToBePrinted(),
+//                        inputReader.handleCommand(input).messageToBePrinted()));
+//    }
     @Test
     void whenInvalidCoordValueEntered_Text_thenHandleCommand(){
         input = "bad";

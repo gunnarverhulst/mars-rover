@@ -27,7 +27,7 @@ public final class SimCreationHandler implements ActionHandler<Integer, SimCreat
     @Override
     public Message handle(Integer simulationSize, SimCreationPresenter simCreationPresenter) {
         simulationRepository.addSimulation(new Simulation(simulationSize, simulationRepository));
-        System.out.println(simCreationPresenter.simulationCreated(simulationSize).messageToBePrinted());
-        return simCreationPresenter.simulationCreated(simulationSize);
+        System.out.println(simCreationPresenter.simulationSuccesfullyCreated(simulationSize).messageToBePrinted());
+        return simCreationPresenter.simulationSuccesfullyCreated(simulationSize);
     }
 }

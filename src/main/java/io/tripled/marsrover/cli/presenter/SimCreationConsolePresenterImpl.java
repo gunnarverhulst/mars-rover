@@ -6,7 +6,7 @@ import io.tripled.marsrover.service.presenter.SimCreationPresenter;
 
 public class SimCreationConsolePresenterImpl implements SimCreationPresenter {
     @Override
-    public Message simulationCreated(int simulationSize) {
+    public Message simulationSuccesfullyCreated(int simulationSize) {
         return new SimulationSizeSetMessage(simulationSize);
     }
 }
