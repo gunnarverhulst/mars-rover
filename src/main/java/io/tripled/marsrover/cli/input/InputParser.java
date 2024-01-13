@@ -6,6 +6,7 @@ import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.cli.presenter.RoverDrivingPresenterImpl;
 import io.tripled.marsrover.cli.presenter.RoverLandingPresenterImpl;
+import io.tripled.marsrover.cli.presenter.SimCreationConsolePresenterImpl;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Direction;
 import io.tripled.marsrover.service.rover.Move;
@@ -44,6 +45,24 @@ public class InputParser {
 
     public Message determineCommand(String input) {
         String preparedInput = input.trim().toLowerCase();
+        boolean isSimulationSizeSet = simulationRepository.getSimulation() != null;
+
+        if(!isSimulationSizeSet){
+            if (preparedInput.equalsIgnoreCase("Q")) {
+                return messagePrinter.quitMessage();
+            }
+
+            String preppedInput = input.trim().toLowerCase();
+            Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(preppedInput);
+
+            if (simulationSizeOptional.isPresent()) {
+
+                int simulationSize = simulationSizeOptional.get();
+                InputController.CreateSimulationCommand createSimulationCommand = new InputController.CreateSimulationCommand(simulationSize);
+                return inputController.handleCommand(createSimulationCommand, new SimCreationConsolePresenterImpl());
+            }
+            return messagePrinter.simulationSizeErrorMessage(input);
+        }
 
         if (preparedInput.equalsIgnoreCase("Q")) {
             return messagePrinter.quitMessage();

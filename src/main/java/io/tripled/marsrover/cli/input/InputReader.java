@@ -42,14 +42,7 @@ public class InputReader {
         System.out.println(messagePrinter.requestSimulationSize().messageToBePrinted());
         Message output;
         if (!isQuit(input)) {
-
-            if (!isSimulationSizeSet()) {
-
-                output = inputController.handlerBeforeSimulationSizeSet(input);
-
-            } else {
-                output = inputParser.determineCommand(input);
-            }
+            output = inputParser.determineCommand(input);
 
         } else {
             output = messagePrinter.quitMessage();
