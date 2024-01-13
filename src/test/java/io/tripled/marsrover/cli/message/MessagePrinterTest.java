@@ -12,14 +12,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MessagePrinterTest {
 
+    private final SimulationRepository simulationRepository;
     private final MessagePrinter messagePrinter;
 
     private final InputReader inputReader;
 
     public MessagePrinterTest() {
-        SimulationRepository simulationRepository = new InMemorySimulationRepository();
+        simulationRepository = new InMemorySimulationRepository();
         messagePrinter = new MessagePrinter(simulationRepository);
-        inputReader = new InputReader();
+        inputReader = new InputReader(simulationRepository);
     }
 
     private String input;

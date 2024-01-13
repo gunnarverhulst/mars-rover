@@ -15,8 +15,8 @@ public class InputReader {
     public final MessagePrinter messagePrinter;
     private final InputParser inputParser;
 
-    public InputReader() {
-        this.simulationRepository = new InMemorySimulationRepository();
+    public InputReader(SimulationRepository simulationRepository) {
+        this.simulationRepository  = simulationRepository;
         this.inputController = new InputController(simulationRepository);
         this.messagePrinter = new MessagePrinter(simulationRepository);
         this.inputParser = new InputParser(simulationRepository);

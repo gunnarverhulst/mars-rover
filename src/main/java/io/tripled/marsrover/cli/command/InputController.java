@@ -45,48 +45,6 @@ public class InputController {
     }
 
 
-    public Message handlerAfterSimulationSizeSet(String input) {
-//        String preparedInput = input.trim().toLowerCase();
-//        //Create ActionHandler -? aparte class
-//        //ActionHandler . execute -> specifieke actionhandler
-//
-//        ActionHandler actionHandler;
-//        if (preparedInput.equalsIgnoreCase("Q")) {
-//            return messagePrinter.quitMessage();
-//        }
-//        if (preparedInput.isEmpty()) {
-//            return messagePrinter.apiMessage();
-//        }
-//        if (preparedInput.equalsIgnoreCase("P")) {
-//            return messagePrinter.apiMessage();
-//        }
-//        if (preparedInput.equalsIgnoreCase("STATE")) {
-//            return messagePrinter.stateMessage();
-//        }
-//        if (preparedInput.startsWith("land")) {
-//            Optional<Coordinate> coordinate = inputParser.parseInputForCoordinate(input.toLowerCase());
-//            if (coordinate.isPresent()) {
-////                actionHandler = new RoverLandingHandler(simulationRepository);
-//                LandCommand landCommand = new LandCommand(coordinate.get());
-//                return handleCommand(landCommand, new RoverLandingPresenterImpl());
-//            }
-//            return messagePrinter.landingErrorMessage();
-//        }
-//        if (preparedInput.startsWith("r")) {
-//            Optional<List<Move>> drivingMoves = InputParser.parseInputForDrivingMoves(preparedInput);
-//
-//            if (drivingMoves.isPresent()) {
-//                List<Move> moves = drivingMoves.get();
-//                DriveCommand driveCommand = new DriveCommand(moves);
-//                return handleCommand(driveCommand, new RoverDrivingPresenterImpl());
-//            }
-//            return new RoverDrivingErrorMessage();
-//        }
-//        return messagePrinter.apiMessage();
-
-        return null;
-    }
-
     public Simulation getSimulation() {
         return simulationRepository.getSimulation();
     }
