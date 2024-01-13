@@ -131,39 +131,25 @@ public class InputParser {
         List<Move> drivingMoves = new ArrayList<>();
         while(matcher.find()){
 
-            if(matcher.group(1).contains("f")){
-                String forward = matcher.group(1).trim();
-                String directionLetter = forward.substring(0,1);
-                int directionSteps = forward.length() > 1 ? Integer.parseInt(forward.trim().substring(1)) : 1;
-                Direction direction = Direction.DIRECTION.parseDirection(directionLetter);
-                drivingMoves.add(new Move(direction, directionSteps));
-            }
-            if(matcher.group(1).contains("l")){
-                String left = matcher.group(1).trim();
-                String directionLetter = left.substring(0,1);
-                int directionSteps = left.length() > 1 ? Integer.parseInt(left.trim().substring(1)) : 1;
-                Direction direction = Direction.DIRECTION.parseDirection(directionLetter);
-                drivingMoves.add(new Move(direction, directionSteps));
-            }
-            if(matcher.group(1).contains("r")){
-                String right = matcher.group(1).trim();
-                String directionLetter = right.substring(0,1);
-                int directionSteps = right.length() > 1 ? Integer.parseInt(right.trim().substring(1)) : 1;
-                Direction direction = Direction.DIRECTION.parseDirection(directionLetter);
-                drivingMoves.add(new Move(direction, directionSteps));
-            }
-            if(matcher.group(1).contains("b")){
-                String backward = matcher.group(1).trim();
-                String directionLetter = backward.substring(0,1);
-                int directionSteps = backward.length() > 1 ? Integer.parseInt(backward.trim().substring(1)) : 1;
-                Direction direction = Direction.DIRECTION.parseDirection(directionLetter);
-                drivingMoves.add(new Move(direction, directionSteps));
-            }
+            addDrivingMove(matcher, "f", drivingMoves);
+            addDrivingMove(matcher, "l", drivingMoves);
+            addDrivingMove(matcher, "r", drivingMoves);
+            addDrivingMove(matcher, "b", drivingMoves);
 
         }
         if(drivingMoves.isEmpty()){
             return Optional.empty();
         }
         return Optional.of(drivingMoves);
+    }
+
+    private static void addDrivingMove(Matcher matcher, String matchString, List<Move> drivingMoves) {
+        if (matcher.group(1).contains(matchString)) {
+            String backward = matcher.group(1).trim();
+            String directionLetter = backward.substring(0, 1);
+            int directionSteps = backward.length() > 1 ? Integer.parseInt(backward.trim().substring(1)) : 1;
+            Direction direction = Direction.DIRECTION.parseDirection(directionLetter);
+            drivingMoves.add(new Move(direction, directionSteps));
+        }
     }
 }
