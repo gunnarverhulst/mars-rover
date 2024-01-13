@@ -38,14 +38,13 @@ public class Rover {
                 roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
                 stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
-            case LEFT -> {
-                Heading newHeading = turnLeft();
+            case LEFT, RIGHT -> {
+                Heading newHeading;
+                if(direction == Direction.LEFT)
+                    newHeading = turnLeft();
+                else
+                    newHeading = turnRight();
 
-                roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
-                stringToConcat = createRoverTurnMessage(stringToConcat, direction);
-            }
-            case RIGHT -> {
-                Heading newHeading = turnRight();
                 roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
                 stringToConcat = createRoverTurnMessage(stringToConcat, direction);
             }
@@ -84,18 +83,8 @@ public class Rover {
 
         int simulationSizeWithOffset = simulationRepository.getSimulation().getSimulationSize() + 1;
 
-        int x = (getRoverCoordinates().x() + coordinateToAdd.x()) % (simulationSizeWithOffset);
-        int y = (getRoverCoordinates().y() + coordinateToAdd.y()) % (simulationSizeWithOffset);
-
-        if(x < 0){
-            x += simulationSizeWithOffset;
-            x = x % simulationSizeWithOffset;
-        }
-
-        if(y < 0){
-            y += simulationSizeWithOffset;
-            y = y % simulationSizeWithOffset;
-        }
+        int x = (getRoverCoordinates().x() + coordinateToAdd.x() + simulationSizeWithOffset) % (simulationSizeWithOffset);
+        int y = (getRoverCoordinates().y() + coordinateToAdd.y() + simulationSizeWithOffset) % (simulationSizeWithOffset);
 
         return new Coordinate(x, y);
     }
