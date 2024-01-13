@@ -3,7 +3,6 @@ package io.tripled.marsrover.cli.input;
 import io.tripled.marsrover.cli.command.InputController;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.simulation.Simulation;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
@@ -23,38 +22,24 @@ public class InputReader {
     }
 
     public void readInput() {
-        System.out.println(messagePrinter.requestSimulationSize().messageToBePrinted());
+
         String input;
         try (Scanner scanner = new Scanner(System.in)) {
             do {
                 input = scanner.nextLine();
 
-                Message output = handleCommand(input);
+                handleCommand(input);
 
-                System.out.println(output.messageToBePrinted());
 
-            }
-            while (!isQuit(input));
-        }
-        System.out.println("*********END*****************");
-    }
-
-    public void readInputV2(){
-        String input;
-        try (Scanner scanner = new Scanner(System.in)) {
-            do {
-                input = scanner.nextLine();
-
-//                Command<?> command = InputParser.parse(input);
-
-               // inputController.handleCommand(command, new SimCreationConsolePresenterImpl());
 
             }
             while (!isQuit(input));
         }
+
     }
 
     public Message handleCommand(String input) {
+        System.out.println(messagePrinter.requestSimulationSize().messageToBePrinted());
         Message output;
         if (!isQuit(input)) {
 
@@ -69,6 +54,8 @@ public class InputReader {
         } else {
             output = messagePrinter.quitMessage();
         }
+        System.out.println(output.messageToBePrinted());
+        System.out.println("*********END*****************");
         return output;
     }
 
