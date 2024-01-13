@@ -46,13 +46,6 @@ public class InputReader {
         return output;
     }
 
-    public boolean isSimulationSizeSet() {
-
-        Simulation simulation = inputController.getSimulation();
-        return simulation != null;
-    }
-
-
     private static boolean isQuit(String input) {
         return "q".equalsIgnoreCase(input);
     }

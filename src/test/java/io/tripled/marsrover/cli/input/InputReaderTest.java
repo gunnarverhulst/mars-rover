@@ -41,13 +41,6 @@ class InputReaderTest {
     }
 
     @Test
-    void whenValidCoordValueEntered_thenMaxCoordsIsSet(){
-        input = "5";
-        inputReader.handleCommand(input).messageToBePrinted();
-        assertTrue(inputReader.isSimulationSizeSet());
-    }
-
-    @Test
     void whenEmptySimulationSizeEntered_thenHandleCommand(){
         input = "";
 
