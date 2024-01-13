@@ -32,29 +32,26 @@ public class InputParser {
         this.commandController = new CommandController(simulationRepository);
     }
 
-    public Message determineCommand(String input) {
+    public void determineCommand(String input) {
         String preparedInput = input.trim().toLowerCase();
         boolean isSimulationSizeSet = simulationRepository.getSimulation() != null;
 
-        Message message;
         if(!isSimulationSizeSet){
-            message =  parseInputIfSimulationSizeNotSet(input, preparedInput);
+            parseInputIfSimulationSizeNotSet(input, preparedInput);
         } else if (preparedInput.equalsIgnoreCase("Q")) {
-            message =  new QuitConsolePresenterImpl().quitMessage();
+            new QuitConsolePresenterImpl().quitMessage();
         } else if (preparedInput.isEmpty()) {
-            message =  new ApiConsolePresenterImpl().apiMessage();
+            new ApiConsolePresenterImpl().apiMessage();
         } else if (preparedInput.equalsIgnoreCase("P")) {
-            message =  new ApiConsolePresenterImpl().apiMessage();
+            new ApiConsolePresenterImpl().apiMessage();
         } else if (preparedInput.equalsIgnoreCase("STATE")) {
-            message =  parseState();
+            parseState();
         } else if (preparedInput.startsWith("land")) {
-            message =  parseLandInput(input);
+            parseLandInput(input);
         } else if (preparedInput.startsWith("r")) {
-            message =  parseDriveInput(preparedInput);
+            parseDriveInput(preparedInput);
         } else
-            message = new ApiConsolePresenterImpl().apiMessage();
-
-        return message;
+            new ApiConsolePresenterImpl().apiMessage();
     }
 
     public static Optional<Integer> parseInputForSimulationSize(String input) {
