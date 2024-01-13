@@ -8,19 +8,19 @@ public class ProgramPresenterImpl implements ProgramPresenter {
 
     @Override
     public Message printLogo() {
-        System.out.println(new LogoMessage());
+        System.out.println(new LogoMessage().messageToBePrinted());
         return new LogoMessage();
     }
 
     @Override
     public Message printStartUpMessage() {
-        System.out.println(new SimulationSizeRequestMessage());
+        System.out.println(new SimulationSizeRequestMessage().messageToBePrinted());
         return new SimulationSizeRequestMessage();
     }
 
     @Override
     public Message printEndMessage() {
-        System.out.println(new EndMessage());
+        System.out.println(new EndMessage().messageToBePrinted());
         return new EndMessage();
     }
 

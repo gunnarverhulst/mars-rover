@@ -2,11 +2,10 @@ package io.tripled.marsrover.cli.input;
 
 import io.tripled.marsrover.cli.command.InputController;
 import io.tripled.marsrover.cli.message.MessagePrinter;
+import io.tripled.marsrover.cli.message.messages.ApiMessage;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
-import io.tripled.marsrover.cli.presenter.RoverDrivingPresenterImpl;
-import io.tripled.marsrover.cli.presenter.RoverLandingPresenterImpl;
-import io.tripled.marsrover.cli.presenter.SimCreationConsolePresenterImpl;
+import io.tripled.marsrover.cli.presenter.*;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Direction;
 import io.tripled.marsrover.service.rover.Move;
@@ -49,7 +48,7 @@ public class InputParser {
 
         if(!isSimulationSizeSet){
             if (preparedInput.equalsIgnoreCase("Q")) {
-                return messagePrinter.quitMessage();
+                return new QuitPresenterImpl().printQuitMessage();
             }
 
             String preppedInput = input.trim().toLowerCase();
@@ -65,13 +64,13 @@ public class InputParser {
         }
 
         if (preparedInput.equalsIgnoreCase("Q")) {
-            return messagePrinter.quitMessage();
+            return new QuitPresenterImpl().printQuitMessage();
         }
         if (preparedInput.isEmpty()) {
-            return messagePrinter.apiMessage();
+            return new ApiPresenterImpl().printApiMessage();
         }
         if (preparedInput.equalsIgnoreCase("P")) {
-            return messagePrinter.apiMessage();
+            return new ApiPresenterImpl().printApiMessage();
         }
         if (preparedInput.equalsIgnoreCase("STATE")) {
             return messagePrinter.stateMessage();
@@ -94,7 +93,7 @@ public class InputParser {
             }
             return new RoverDrivingErrorMessage();
         }
-        return messagePrinter.apiMessage();
+        return new ApiPresenterImpl().printApiMessage();
 
     }
 
