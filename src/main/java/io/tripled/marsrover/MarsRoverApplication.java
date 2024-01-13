@@ -23,6 +23,7 @@ public class MarsRoverApplication {
 
         ProgramPresenter programPresenter = new ProgramConsolePresenterImpl();
         programPresenter.logo();
+        programPresenter.startupMessage();
         marsRoverApplication.getInputReader().readInput();
         programPresenter.endMessage();
     }

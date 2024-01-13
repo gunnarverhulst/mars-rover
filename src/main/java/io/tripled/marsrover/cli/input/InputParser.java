@@ -38,32 +38,20 @@ public class InputParser {
 
         if(!isSimulationSizeSet){
             return parseInputIfSimulationSizeNotSet(input, preparedInput);
-        }
-
-        if (preparedInput.equalsIgnoreCase("Q")) {
+        } else if (preparedInput.equalsIgnoreCase("Q")) {
             return new QuitConsolePresenterImpl().quitMessage();
-        }
-
-        if (preparedInput.isEmpty()) {
+        } else if (preparedInput.isEmpty()) {
             return new ApiConsolePresenterImpl().apiMessage();
-        }
-
-        if (preparedInput.equalsIgnoreCase("P")) {
+        } else if (preparedInput.equalsIgnoreCase("P")) {
             return new ApiConsolePresenterImpl().apiMessage();
-        }
-
-        if (preparedInput.equalsIgnoreCase("STATE")) {
+        } else if (preparedInput.equalsIgnoreCase("STATE")) {
             return parseState();
-        }
-
-        if (preparedInput.startsWith("land")) {
+        } else if (preparedInput.startsWith("land")) {
             return parseLandInput(input);
-        }
-
-        if (preparedInput.startsWith("r")) {
+        } else if (preparedInput.startsWith("r")) {
             return parseDriveInput(preparedInput);
-        }
-        return new ApiConsolePresenterImpl().apiMessage();
+        } else
+            return new ApiConsolePresenterImpl().apiMessage();
 
     }
 
