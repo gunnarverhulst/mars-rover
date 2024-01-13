@@ -5,5 +5,9 @@ import io.tripled.marsrover.service.rover.Coordinate;
 
 public interface RoverLandingPresenter extends Presenter {
 
-    Message roverLanded(Coordinate coordinate);
+    Message roverLandedMessage(Coordinate coordinate);
+
+    Message roverLandingErrorMessage(Coordinate coordinate);
+
+    Message roverLandingEmptyCoordinateErrorMessage();
 }

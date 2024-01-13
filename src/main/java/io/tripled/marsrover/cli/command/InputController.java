@@ -1,10 +1,10 @@
 package io.tripled.marsrover.cli.command;
 
-import io.tripled.marsrover.cli.input.InputParser;
-import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.cli.presenter.SimulationConsolePresenterImpl;
-import io.tripled.marsrover.service.command.*;
+import io.tripled.marsrover.service.command.ActionHandler;
+import io.tripled.marsrover.service.command.RoverDrivingHandler;
+import io.tripled.marsrover.service.command.RoverLandingHandler;
+import io.tripled.marsrover.service.command.SimCreationHandler;
 import io.tripled.marsrover.service.presenter.Presenter;
 import io.tripled.marsrover.service.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.service.presenter.RoverLandingPresenter;
@@ -15,38 +15,20 @@ import io.tripled.marsrover.service.simulation.Simulation;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static io.tripled.marsrover.service.command.ActionHandlerFactory.ACTION_HANDLER_FACTORY;
 
 public class InputController {
 
     private final SimulationRepository simulationRepository;
-    private final MessagePrinter messagePrinter;
 
     public InputController(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
-        this.messagePrinter = new MessagePrinter(simulationRepository);
     }
-
-    public Message handlerBeforeSimulationSizeSet(String input) {
-        String preppedInput = input.trim().toLowerCase();
-        Optional<Integer> simulationSizeOptional = InputParser.parseInputForSimulationSize(preppedInput);
-
-        if (simulationSizeOptional.isPresent()) {
-
-            int simulationSize = simulationSizeOptional.get();
-            CreateSimulationCommand createSimulationCommand = new CreateSimulationCommand(simulationSize);
-            return handleCommand(createSimulationCommand, new SimulationConsolePresenterImpl());
-        }
-        return messagePrinter.simulationSizeErrorMessage(input);
-    }
-
 
     public Simulation getSimulation() {
         return simulationRepository.getSimulation();
     }
-
 
 
     sealed interface CustomCommand permits CreateSimulationCommand, DriveCommand, LandCommand { }

@@ -1,7 +1,6 @@
 package io.tripled.marsrover.cli.input;
 
 import io.tripled.marsrover.cli.command.InputController;
-import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.presenter.ProgramConsolePresenterImpl;
 import io.tripled.marsrover.service.presenter.ProgramPresenter;
@@ -12,13 +11,11 @@ import java.util.Scanner;
 public class InputReader {
     public final SimulationRepository simulationRepository;
     public final InputController inputController;
-    public final MessagePrinter messagePrinter;
     private final InputParser inputParser;
 
     public InputReader(SimulationRepository simulationRepository) {
         this.simulationRepository  = simulationRepository;
         this.inputController = new InputController(simulationRepository);
-        this.messagePrinter = new MessagePrinter(simulationRepository);
         this.inputParser = new InputParser(simulationRepository);
     }
 

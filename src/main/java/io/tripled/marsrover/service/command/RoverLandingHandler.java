@@ -1,6 +1,5 @@
 package io.tripled.marsrover.service.command;
 
-import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.service.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.service.rover.Coordinate;
@@ -12,26 +11,21 @@ import io.tripled.marsrover.service.simulation.SimulationRepository;
 
     private final SimulationRepository simulationRepository;
 
-    private final MessagePrinter messagePrinter;
 
     public RoverLandingHandler(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
-        this.messagePrinter = new MessagePrinter(simulationRepository);
     }
 
-    public Message execute(Coordinate coordinate){
-        if (simulationRepository.getSimulation().getRoverState() == null) {
-            setRoverState(coordinate);
-            return messagePrinter.landingMessage();
-        }
-        return messagePrinter.landingErrorMessage();
-    }
     private void setRoverState(Coordinate parsedInput) {
         simulationRepository.getSimulation().setRover1State(new RoverState(parsedInput, Heading.NORTH));
     }
 
     @Override
     public Message handle(Coordinate coordinate,RoverLandingPresenter roverLandingPresenter) {
-        return execute(coordinate);
+        if (simulationRepository.getSimulation().getRoverState() == null) {
+            setRoverState(coordinate);
+            return roverLandingPresenter.roverLandedMessage(coordinate);
+        }
+        return roverLandingPresenter.roverLandingErrorMessage(coordinate);
     }
 }

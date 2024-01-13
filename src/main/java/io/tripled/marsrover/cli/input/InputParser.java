@@ -1,7 +1,6 @@
 package io.tripled.marsrover.cli.input;
 
 import io.tripled.marsrover.cli.command.InputController;
-import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.cli.presenter.*;
@@ -21,14 +20,12 @@ import static io.tripled.marsrover.cli.validators.SimulationSizeInputValidator.S
 
 public class InputParser {
 
-    private final MessagePrinter messagePrinter;
     private final SimulationRepository simulationRepository;
 
     private final InputController inputController;
 
     public InputParser(SimulationRepository simulationRepository) {
         this.simulationRepository = simulationRepository;
-        this.messagePrinter = new MessagePrinter(simulationRepository);
         this.inputController = new InputController(simulationRepository);
     }
 
@@ -83,7 +80,8 @@ public class InputParser {
                 InputController.LandCommand landCommand = new InputController.LandCommand(coordinate.get());
                 return inputController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
             }
-            return messagePrinter.landingErrorMessage();
+
+            return new RoverLandingConsolePresenterImpl().roverLandingEmptyCoordinateErrorMessage();
         }
         if (preparedInput.startsWith("r")) {
             Optional<List<Move>> drivingMoves = parseInputForDrivingMoves(preparedInput);
