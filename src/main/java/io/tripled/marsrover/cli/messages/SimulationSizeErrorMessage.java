@@ -7,8 +7,8 @@ public class SimulationSizeErrorMessage implements Message {
     private final String message;
 
     public SimulationSizeErrorMessage(String input) {
-        this.message = "[" + input + "] is an invalid Simulation maxCoordinate\n\n" +
-                "Determine the maxCoordinate of the simulation by setting the maximum coordinate [0-100]\n\n" +
+        this.message = "[" + input + "] is an invalid Simulation size\n\n" +
+                "Determine the maxCoordinate of the simulation by setting the maximum size [0-100]\n\n" +
                 "[Enter max coordinate] : ";
     }
 

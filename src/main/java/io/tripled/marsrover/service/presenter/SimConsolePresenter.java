@@ -1,9 +1,7 @@
 package io.tripled.marsrover.service.presenter;
 
-import io.tripled.marsrover.service.message.messages.Message;
-
 public interface SimConsolePresenter extends Presenter {
-    Message simulationCreated(int simulationSize);
+    void simulationCreated(int simulationSize);
 
-    Message simulationSizeError(String input);
+    void simulationSizeError(String input);
 }
