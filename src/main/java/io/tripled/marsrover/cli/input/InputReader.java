@@ -30,8 +30,6 @@ public class InputReader {
 
                 handleCommand(input);
 
-
-
             }
             while (!isQuit(input));
         }
@@ -40,13 +38,9 @@ public class InputReader {
 
     public Message handleCommand(String input) {
         System.out.println(messagePrinter.requestSimulationSize().messageToBePrinted());
-        Message output;
-        if (!isQuit(input)) {
-            output = inputParser.determineCommand(input);
 
-        } else {
-            output = messagePrinter.quitMessage();
-        }
+        Message output = inputParser.determineCommand(input);
+
         System.out.println(output.messageToBePrinted());
         System.out.println("*********END*****************");
         return output;
