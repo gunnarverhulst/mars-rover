@@ -1,10 +1,10 @@
 package io.tripled.marsrover;
 
-import io.tripled.marsrover.cli.input.InputReader;
-import io.tripled.marsrover.cli.presenter.ProgramConsolePresenterImpl;
+import io.tripled.marsrover.ui.cli.input.InputReader;
+import io.tripled.marsrover.ui.cli.presenter.ProgramConsolePresenterImpl;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
-import io.tripled.marsrover.service.presenter.ProgramPresenter;
-import io.tripled.marsrover.service.simulation.SimulationRepository;
+import io.tripled.marsrover.businesslogic.presenter.ProgramPresenter;
+import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 
 
 public class MarsRoverApplication {

@@ -1,7 +1,7 @@
 package io.tripled.marsrover.data.simulation;
 
-import io.tripled.marsrover.service.simulation.Simulation;
-import io.tripled.marsrover.service.simulation.SimulationRepository;
+import io.tripled.marsrover.businesslogic.simulation.Simulation;
+import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 
 public class InMemorySimulationRepository implements SimulationRepository {
 
