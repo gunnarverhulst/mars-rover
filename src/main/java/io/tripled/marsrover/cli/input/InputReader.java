@@ -19,18 +19,11 @@ public class InputReader {
         try (Scanner scanner = new Scanner(System.in)) {
             do {
                 input = scanner.nextLine();
-
-                parseInput(input);
+                inputParser.determineCommand(input);
 
             }
             while (!isQuit(input));
         }
-
-    }
-
-    public void parseInput(String input) {
-
-        inputParser.determineCommand(input);
 
     }
 

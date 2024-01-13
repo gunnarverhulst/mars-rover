@@ -36,23 +36,25 @@ public class InputParser {
         String preparedInput = input.trim().toLowerCase();
         boolean isSimulationSizeSet = simulationRepository.getSimulation() != null;
 
+        Message message;
         if(!isSimulationSizeSet){
-            return parseInputIfSimulationSizeNotSet(input, preparedInput);
+            message =  parseInputIfSimulationSizeNotSet(input, preparedInput);
         } else if (preparedInput.equalsIgnoreCase("Q")) {
-            return new QuitConsolePresenterImpl().quitMessage();
+            message =  new QuitConsolePresenterImpl().quitMessage();
         } else if (preparedInput.isEmpty()) {
-            return new ApiConsolePresenterImpl().apiMessage();
+            message =  new ApiConsolePresenterImpl().apiMessage();
         } else if (preparedInput.equalsIgnoreCase("P")) {
-            return new ApiConsolePresenterImpl().apiMessage();
+            message =  new ApiConsolePresenterImpl().apiMessage();
         } else if (preparedInput.equalsIgnoreCase("STATE")) {
-            return parseState();
+            message =  parseState();
         } else if (preparedInput.startsWith("land")) {
-            return parseLandInput(input);
+            message =  parseLandInput(input);
         } else if (preparedInput.startsWith("r")) {
-            return parseDriveInput(preparedInput);
+            message =  parseDriveInput(preparedInput);
         } else
-            return new ApiConsolePresenterImpl().apiMessage();
+            message = new ApiConsolePresenterImpl().apiMessage();
 
+        return message;
     }
 
     public static Optional<Integer> parseInputForSimulationSize(String input) {
