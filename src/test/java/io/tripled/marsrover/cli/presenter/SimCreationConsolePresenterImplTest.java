@@ -1,7 +1,7 @@
 package io.tripled.marsrover.cli.presenter;
 
 import io.tripled.marsrover.cli.input.InputParser;
-import io.tripled.marsrover.cli.message.messages.SimulationSizeSetMessage;
+import io.tripled.marsrover.cli.messages.SimulationSizeSetMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

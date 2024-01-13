@@ -76,7 +76,7 @@
 //    void whenLANDCommandEntered_thenLand(){
 //        inputReader.handleCommand("10").messageToBePrinted();
 //        input = "Land 5 1";
-//        assertEquals(new LandingMessage(new Coordinate(5,1)).messageToBePrinted(),
+//        assertEquals(new RoverLandingMessage(new Coordinate(5,1)).messageToBePrinted(),
 //                inputReader.handleCommand(input).messageToBePrinted());
 //    }
 //

@@ -1,6 +1,6 @@
 package io.tripled.marsrover.cli.input;
 
-import io.tripled.marsrover.cli.message.messages.*;
+import io.tripled.marsrover.cli.messages.*;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Heading;
@@ -153,7 +153,7 @@ class InputParserTest {
     void whenLANDCommandEntered_thenLand(){
         input = "Land 5 1";
         inputParser.determineCommand("10").messageToBePrinted();
-        assertEquals(new LandingMessage(new Coordinate(5,1)).messageToBePrinted(),
+        assertEquals(new RoverLandingMessage(new Coordinate(5,1)).messageToBePrinted(),
                 inputParser.determineCommand(input).messageToBePrinted());
     }
 

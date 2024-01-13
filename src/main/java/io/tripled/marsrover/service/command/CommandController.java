@@ -1,5 +1,6 @@
 package io.tripled.marsrover.service.command;
 
+import io.tripled.marsrover.service.command.commandhandler.CommandHandler;
 import io.tripled.marsrover.service.message.messages.Message;
 import io.tripled.marsrover.service.presenter.Presenter;
 import io.tripled.marsrover.service.presenter.RoverDrivingPresenter;
@@ -12,7 +13,7 @@ import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.List;
 
-import static io.tripled.marsrover.service.command.CommandHandlerFactory.ACTION_HANDLER_FACTORY;
+import static io.tripled.marsrover.service.command.commandhandler.CommandHandlerFactory.ACTION_HANDLER_FACTORY;
 
 public class CommandController {
 
@@ -25,7 +26,7 @@ public class CommandController {
     public Simulation getSimulation() {
         return simulationRepository.getSimulation();
     }
-    public Message handleCommand(CustomCommand command, Presenter presenter) {
+    public Message handleCommand(Command command, Presenter presenter) {
         switch (command) {
             case CreateSimulationCommand createSimulationCommand -> {
                 CommandHandler<Integer, SimConsolePresenter> commandHandler = ACTION_HANDLER_FACTORY.createSimulationHandler(simulationRepository);

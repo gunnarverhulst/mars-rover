@@ -1,8 +1,8 @@
 package io.tripled.marsrover.cli.presenter;
 
 import io.tripled.marsrover.service.message.messages.Message;
-import io.tripled.marsrover.cli.message.messages.SimulationSizeErrorMessage;
-import io.tripled.marsrover.cli.message.messages.SimulationSizeSetMessage;
+import io.tripled.marsrover.cli.messages.SimulationSizeErrorMessage;
+import io.tripled.marsrover.cli.messages.SimulationSizeSetMessage;
 import io.tripled.marsrover.service.presenter.SimConsolePresenter;
 
 public class SimulationConsolePresenterImpl implements SimConsolePresenter {
