@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RoverDrivingConsolePresenterImpl implements RoverDrivingPresenter {
     @Override
-    public Message roverDriving(List<Move> drivingMoves) {
-        return new RoverDrivingMessage();
+    public Message roverDriving(List<Move> drivingMoves, RoverDrivingMessage roverDrivingMessage) {
+        return roverDrivingMessage;
     }
 }

@@ -8,6 +8,7 @@ import io.tripled.marsrover.service.presenter.SimConsolePresenter;
 public class SimulationConsolePresenterImpl implements SimConsolePresenter {
     @Override
     public Message simulationCreated(int simulationSize) {
+        System.out.println(new SimulationSizeSetMessage(simulationSize));
         return new SimulationSizeSetMessage(simulationSize);
     }
 

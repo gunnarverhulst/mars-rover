@@ -85,7 +85,7 @@ public class InputParser {
         return Optional.empty();
     }
 
-    public static Optional<List<Move>> parseInputForDrivingMoves(String input) {
+    private static Optional<List<Move>> parseInputForDrivingMoves(String input) {
         Pattern pattern = Pattern.compile("( [flrb]\\d*)");
         Matcher matcher = pattern.matcher(input);
         List<Move> drivingMoves = new ArrayList<>();

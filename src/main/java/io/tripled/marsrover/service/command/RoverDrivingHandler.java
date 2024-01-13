@@ -18,13 +18,15 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
         this.simulationRepository = simulationRepository;
     }
 
-    public Message execute(List<Move> drivingMoves){
+    @Override
+    public Message handle(List<Move> drivingMoves, RoverDrivingPresenter roverDrivingPresenter) {
+
         RoverDrivingMessage roverDrivingMessage = new RoverDrivingMessage();
         prepareRoverDrivingMessage(roverDrivingMessage);
         performRoverMoves(drivingMoves, roverDrivingMessage);
 
         endRoverDrivingMessage(roverDrivingMessage);
-        return roverDrivingMessage;
+        return roverDrivingPresenter.roverDriving(drivingMoves, roverDrivingMessage);
     }
 
     private void prepareRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
@@ -39,18 +41,4 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
         drivingMessage.concat("Rover R1 executed all instructions. Awaiting new ones...\n");
     }
 
-//    @Override
-//    public void handle(List<Move> drivingMoves) {
-//        RoverDrivingMessage roverDrivingMessage = new RoverDrivingMessage();
-//        prepareRoverDrivingMessage(roverDrivingMessage);
-//        performRoverMoves(drivingMoves, roverDrivingMessage);
-//
-//        endRoverDrivingMessage(roverDrivingMessage);
-//        return roverDrivingMessage;
-//    }
-
-    @Override
-    public Message handle(List<Move> moves, RoverDrivingPresenter roverDrivingPresenter) {
-        return execute(moves);
-    }
 }
