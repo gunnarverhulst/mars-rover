@@ -3,7 +3,6 @@ package io.tripled.marsrover.cli.input;
 import io.tripled.marsrover.cli.command.InputController;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.service.simulation.Simulation;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.Scanner;
@@ -36,14 +35,13 @@ public class InputReader {
 
     }
 
-    public Message handleCommand(String input) {
+    public void handleCommand(String input) {
         System.out.println(messagePrinter.requestSimulationSize().messageToBePrinted());
 
         Message output = inputParser.determineCommand(input);
 
         System.out.println(output.messageToBePrinted());
         System.out.println("*********END*****************");
-        return output;
     }
 
     private static boolean isQuit(String input) {

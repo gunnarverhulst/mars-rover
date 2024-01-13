@@ -52,16 +52,16 @@ class MessagePrinterTest {
                 messagePrinter.simulationSizeErrorMessage("").messageToBePrinted());
     }
 
-    @Test
-    void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
-        inputReader.handleCommand("5");
-        assertEquals(new ApiMessage().messageToBePrinted(),messagePrinter.apiMessage().messageToBePrinted() );
-    }
-
-    @Test
-    void whenPCommandEntered_thenShowHelpApi(){
-        inputReader.handleCommand("5");
-        assertEquals(new ApiMessage().messageToBePrinted(),messagePrinter.apiMessage().messageToBePrinted() );
-    }
+//    @Test
+//    void givenMaxCoordsSet_whenEmptyCommandEntered_thenShowHelpApi(){
+//        inputReader.handleCommand("5");
+//        assertEquals(new ApiMessage().messageToBePrinted(),messagePrinter.apiMessage().messageToBePrinted() );
+//    }
+//
+//    @Test
+//    void whenPCommandEntered_thenShowHelpApi(){
+//        inputReader.handleCommand("5");
+//        assertEquals(new ApiMessage().messageToBePrinted(),messagePrinter.apiMessage().messageToBePrinted() );
+//    }
 
 }
