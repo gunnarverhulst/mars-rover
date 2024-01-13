@@ -108,7 +108,7 @@ class CommandHandlerTest {
     void whenStateCommandEntered_thenPrintState(){
 
         input = "state";
-        inputController.handlerBeforeSimulationSizeSet("10").messageToBePrinted();
+        inputParser.determineCommand("10").messageToBePrinted();
         inputParser.determineCommand("land 5 5");
 
         assertEquals(new StateMessage(10, new RoverState(new Coordinate(5,5), Heading.NORTH)).messageToBePrinted(),

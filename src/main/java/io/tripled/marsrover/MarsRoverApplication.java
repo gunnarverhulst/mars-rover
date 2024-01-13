@@ -1,9 +1,7 @@
 package io.tripled.marsrover;
 
 import io.tripled.marsrover.cli.input.InputReader;
-import io.tripled.marsrover.cli.message.messages.LogoMessage;
-import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.cli.presenter.ProgramPresenterImpl;
+import io.tripled.marsrover.cli.presenter.ProgramConsolePresenterImpl;
 import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
 import io.tripled.marsrover.service.presenter.ProgramPresenter;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
@@ -23,10 +21,10 @@ public class MarsRoverApplication {
     public static void main(String[] args) {
         MarsRoverApplication marsRoverApplication = new MarsRoverApplication();
 
-        ProgramPresenter programPresenter = new ProgramPresenterImpl();
-        programPresenter.printLogo();
+        ProgramPresenter programPresenter = new ProgramConsolePresenterImpl();
+        programPresenter.logo();
         marsRoverApplication.getInputReader().readInput();
-        programPresenter.printEndMessage();
+        programPresenter.endMessage();
     }
 
     public InputReader getInputReader() {

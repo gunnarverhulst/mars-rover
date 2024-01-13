@@ -2,7 +2,6 @@ package io.tripled.marsrover.cli.input;
 
 import io.tripled.marsrover.cli.command.InputController;
 import io.tripled.marsrover.cli.message.MessagePrinter;
-import io.tripled.marsrover.cli.message.messages.ApiMessage;
 import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.cli.message.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.cli.presenter.*;
@@ -48,7 +47,7 @@ public class InputParser {
 
         if(!isSimulationSizeSet){
             if (preparedInput.equalsIgnoreCase("Q")) {
-                return new QuitPresenterImpl().printQuitMessage();
+                return new QuitConsolePresenterImpl().quitMessage();
             }
 
             String preppedInput = input.trim().toLowerCase();
@@ -58,28 +57,31 @@ public class InputParser {
 
                 int simulationSize = simulationSizeOptional.get();
                 InputController.CreateSimulationCommand createSimulationCommand = new InputController.CreateSimulationCommand(simulationSize);
-                 return inputController.handleCommand(createSimulationCommand, new SimCreationConsolePresenterImpl());
+                 return inputController.handleCommand(createSimulationCommand, new SimulationConsolePresenterImpl());
             } else
-                return messagePrinter.simulationSizeErrorMessage(input);
+                return new SimulationConsolePresenterImpl().simulationSizeError(input);
         }
 
         if (preparedInput.equalsIgnoreCase("Q")) {
-            return new QuitPresenterImpl().printQuitMessage();
+            return new QuitConsolePresenterImpl().quitMessage();
         }
         if (preparedInput.isEmpty()) {
-            return new ApiPresenterImpl().printApiMessage();
+            return new ApiConsolePresenterImpl().apiMessage();
         }
         if (preparedInput.equalsIgnoreCase("P")) {
-            return new ApiPresenterImpl().printApiMessage();
+            return new ApiConsolePresenterImpl().apiMessage();
         }
         if (preparedInput.equalsIgnoreCase("STATE")) {
-            return messagePrinter.stateMessage();
+            if(simulationRepository.getSimulation().getRoverState() != null)
+                return new StateConsolePresenterImpl().stateMessage(simulationRepository.getSimulation().getSimulationSize(), simulationRepository.getSimulation().getRoverState());
+            else
+                return new StateConsolePresenterImpl().stateErrorMessage();
         }
         if (preparedInput.startsWith("land")) {
             Optional<Coordinate> coordinate = parseInputForCoordinate(input.toLowerCase());
             if (coordinate.isPresent()) {
                 InputController.LandCommand landCommand = new InputController.LandCommand(coordinate.get());
-                return inputController.handleCommand(landCommand, new RoverLandingPresenterImpl());
+                return inputController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
             }
             return messagePrinter.landingErrorMessage();
         }
@@ -89,11 +91,11 @@ public class InputParser {
             if (drivingMoves.isPresent()) {
                 List<Move> moves = drivingMoves.get();
                 InputController.DriveCommand driveCommand = new InputController.DriveCommand(moves);
-                return inputController.handleCommand(driveCommand, new RoverDrivingPresenterImpl());
+                return inputController.handleCommand(driveCommand, new RoverDrivingConsolePresenterImpl());
             }
             return new RoverDrivingErrorMessage();
         }
-        return new ApiPresenterImpl().printApiMessage();
+        return new ApiConsolePresenterImpl().apiMessage();
 
     }
 

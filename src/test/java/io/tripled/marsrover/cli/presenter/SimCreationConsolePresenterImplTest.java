@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimCreationConsolePresenterImplTest {
     private String input;
 
-    private SimCreationConsolePresenterImpl simCreationConsolePresenter;
+    private SimulationConsolePresenterImpl simCreationConsolePresenter;
 
     @BeforeEach
     void init(){
-        simCreationConsolePresenter = new SimCreationConsolePresenterImpl();
+        simCreationConsolePresenter = new SimulationConsolePresenterImpl();
     }
 
     @Test
@@ -26,7 +26,7 @@ class SimCreationConsolePresenterImplTest {
         Optional<Integer> optionalSimulationSize = InputParser.parseInputForSimulationSize(input);
         optionalSimulationSize.ifPresent(integer ->
                 assertEquals(new SimulationSizeSetMessage(integer).messageToBePrinted(),
-                        simCreationConsolePresenter.simulationSuccesfullyCreated(Integer.parseInt(input)).messageToBePrinted()));
+                        simCreationConsolePresenter.simulationCreated(Integer.parseInt(input)).messageToBePrinted()));
     }
 
 }

@@ -5,7 +5,7 @@ import io.tripled.marsrover.cli.message.messages.Message;
 import io.tripled.marsrover.service.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.service.rover.Coordinate;
 
-public class RoverLandingPresenterImpl implements RoverLandingPresenter {
+public class RoverLandingConsolePresenterImpl implements RoverLandingPresenter {
     @Override
     public Message roverLanded(Coordinate coordinate) {
         return new LandingMessage(coordinate);

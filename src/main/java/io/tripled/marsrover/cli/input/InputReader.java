@@ -3,8 +3,7 @@ package io.tripled.marsrover.cli.input;
 import io.tripled.marsrover.cli.command.InputController;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.cli.presenter.ProgramPresenterImpl;
-import io.tripled.marsrover.service.presenter.Presenter;
+import io.tripled.marsrover.cli.presenter.ProgramConsolePresenterImpl;
 import io.tripled.marsrover.service.presenter.ProgramPresenter;
 import io.tripled.marsrover.service.simulation.SimulationRepository;
 
@@ -39,8 +38,8 @@ public class InputReader {
     }
 
     public void handleCommand(String input) {
-        ProgramPresenter presenter = new ProgramPresenterImpl();
-        presenter.printStartUpMessage();
+        ProgramPresenter presenter = new ProgramConsolePresenterImpl();
+        presenter.startupMessage();
 
         Message output = inputParser.determineCommand(input);
 

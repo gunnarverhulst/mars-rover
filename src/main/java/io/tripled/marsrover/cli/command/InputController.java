@@ -3,16 +3,12 @@ package io.tripled.marsrover.cli.command;
 import io.tripled.marsrover.cli.input.InputParser;
 import io.tripled.marsrover.cli.message.MessagePrinter;
 import io.tripled.marsrover.cli.message.messages.Message;
-import io.tripled.marsrover.cli.presenter.SimCreationConsolePresenterImpl;
-import io.tripled.marsrover.data.simulation.InMemorySimulationRepository;
-import io.tripled.marsrover.service.command.ActionHandler;
-import io.tripled.marsrover.service.command.RoverDrivingHandler;
-import io.tripled.marsrover.service.command.RoverLandingHandler;
-import io.tripled.marsrover.service.command.SimCreationHandler;
+import io.tripled.marsrover.cli.presenter.SimulationConsolePresenterImpl;
+import io.tripled.marsrover.service.command.*;
 import io.tripled.marsrover.service.presenter.Presenter;
 import io.tripled.marsrover.service.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.service.presenter.RoverLandingPresenter;
-import io.tripled.marsrover.service.presenter.SimCreationPresenter;
+import io.tripled.marsrover.service.presenter.SimConsolePresenter;
 import io.tripled.marsrover.service.rover.Coordinate;
 import io.tripled.marsrover.service.rover.Move;
 import io.tripled.marsrover.service.simulation.Simulation;
@@ -20,6 +16,8 @@ import io.tripled.marsrover.service.simulation.SimulationRepository;
 
 import java.util.List;
 import java.util.Optional;
+
+import static io.tripled.marsrover.service.command.ActionHandlerFactory.ACTION_HANDLER_FACTORY;
 
 public class InputController {
 
@@ -39,7 +37,7 @@ public class InputController {
 
             int simulationSize = simulationSizeOptional.get();
             CreateSimulationCommand createSimulationCommand = new CreateSimulationCommand(simulationSize);
-            return handleCommand(createSimulationCommand, new SimCreationConsolePresenterImpl());
+            return handleCommand(createSimulationCommand, new SimulationConsolePresenterImpl());
         }
         return messagePrinter.simulationSizeErrorMessage(input);
     }
@@ -61,16 +59,15 @@ public class InputController {
     public Message handleCommand(CustomCommand command, Presenter presenter) {
         switch (command) {
             case CreateSimulationCommand createSimulationCommand -> {
-                ActionHandler actionHandler = new SimCreationHandler(simulationRepository);
-                Message m = ((SimCreationHandler) actionHandler).handle(createSimulationCommand.simulationSize(), (SimCreationPresenter) presenter);
-                return m;
+                ActionHandler actionHandler = ACTION_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
+                return ((SimCreationHandler) actionHandler).handle(createSimulationCommand.simulationSize(), (SimConsolePresenter) presenter);
             }
             case LandCommand landCommand -> {
-                ActionHandler actionHandler = new RoverLandingHandler(simulationRepository);
+                ActionHandler actionHandler = ACTION_HANDLER_FACTORY.createRoverLandingHandler(simulationRepository);
                 return ((RoverLandingHandler) actionHandler).handle(landCommand.coordinate(), (RoverLandingPresenter) presenter);
             }
             case DriveCommand driveCommand -> {
-                ActionHandler actionHandler = new RoverDrivingHandler(simulationRepository);
+                ActionHandler actionHandler = ACTION_HANDLER_FACTORY.createRoverDrivingHandler(simulationRepository);
                 return ((RoverDrivingHandler) actionHandler).handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
             }
         }

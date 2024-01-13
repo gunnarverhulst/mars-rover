@@ -4,9 +4,9 @@ import io.tripled.marsrover.cli.message.messages.Message;
 
 public interface ProgramPresenter extends Presenter{
 
-    public Message printLogo();
+    Message logo();
 
-    public Message printStartUpMessage();
+    Message startupMessage();
 
-    public Message printEndMessage();
+    Message endMessage();
 }
