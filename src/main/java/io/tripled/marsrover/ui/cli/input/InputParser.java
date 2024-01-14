@@ -1,15 +1,14 @@
 package io.tripled.marsrover.ui.cli.input;
 
+import io.tripled.marsrover.businesslogic.command.CommandController;
 import io.tripled.marsrover.businesslogic.command.CreateSimulationCommand;
 import io.tripled.marsrover.businesslogic.command.DriveCommand;
-import io.tripled.marsrover.businesslogic.command.CommandController;
 import io.tripled.marsrover.businesslogic.command.LandCommand;
-import io.tripled.marsrover.ui.cli.messages.RoverDrivingErrorMessage;
-import io.tripled.marsrover.cli.presenter.*;
 import io.tripled.marsrover.businesslogic.rover.Coordinate;
 import io.tripled.marsrover.businesslogic.rover.Direction;
 import io.tripled.marsrover.businesslogic.rover.Move;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
+import io.tripled.marsrover.ui.cli.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.ui.cli.presenter.*;
 
 import java.util.ArrayList;
@@ -65,11 +64,7 @@ public class InputParser {
 
     public Optional<Coordinate> parseInputForCoordinate(String input) {
 
-        Optional<Coordinate> optionalCoordinate = extractCoordinate(input);
-        if(optionalCoordinate.isPresent() && LAND_INPUT_VALIDATOR.isValidCoordinateInput(optionalCoordinate.get(), getSimulationSize()))
-            return optionalCoordinate;
-
-        return Optional.empty();
+        return extractCoordinate(input);
     }
 
     private static Optional<List<Move>> parseInputForDrivingMoves(String input) {
@@ -112,18 +107,66 @@ public class InputParser {
         if(simulationRepository.getSimulation().getRoverState() != null)
             new StateConsolePresenterImpl().stateMessage(getSimulationSize(), simulationRepository.getSimulation().getRoverState());
         else
-            new StateConsolePresenterImpl().stateErrorMessage();
+            new StateConsolePresenterImpl().stateErrorMessage(getSimulationSize());
 
     }
 
     private void parseLandInput(String input) {
-        Optional<Coordinate> coordinate = parseInputForCoordinate(input.toLowerCase());
-        if (coordinate.isPresent()) {
-            LandCommand landCommand = new LandCommand(coordinate.get());
-            commandController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
+        String prepperdInput = input.toLowerCase();
+        Optional<Coordinate> coordinate = parseInputForCoordinate(prepperdInput);
+        if (coordinate.isPresent() ) {
+            int x = coordinate.get().x();
+            int y = coordinate.get().y();
+            int simulationSize = simulationRepository.getSimulation().getSimulationSize();
+            if(x <= simulationSize && y <= simulationSize){
+                LandCommand landCommand = new LandCommand(coordinate.get());
+                commandController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
+            } else {
+                new RoverLandingConsolePresenterImpl().roverLandingErrorOutOfBounds(x, y, simulationSize);
+            }
+
+        } else
+            parseInvalidCoordinateInput(prepperdInput);
+
+    }
+
+    private void parseInvalidCoordinateInput(String input) {
+        Pattern invalidPatternNoCoordinates = Pattern.compile("^land$");
+        Matcher matcherNoCoordinates = invalidPatternNoCoordinates.matcher(input);
+        if(matcherNoCoordinates.find()){
+            new RoverLandingConsolePresenterImpl().roverLandingEmptyCoordinateErrorMessage();
+            return;
         }
 
-        new RoverLandingConsolePresenterImpl().roverLandingEmptyCoordinateErrorMessage();
+        Pattern invalidPatternXAndOrYNotANumber = Pattern.compile("land ([0-9a-zA-Z]+) ([0-9a-zA-Z]+)");
+        Matcher matcherXAndOrYNotANumber = invalidPatternXAndOrYNotANumber.matcher(input);
+        if (matcherXAndOrYNotANumber.find()){
+            new RoverLandingConsolePresenterImpl().roverLandingErrorXYNotANumberMessage(matcherXAndOrYNotANumber.group(1), matcherXAndOrYNotANumber.group(2));
+            return;
+        }
+
+        Pattern invalidPatternXAndOrYNegative = Pattern.compile("land (-?[0-9a-zA-Z]+) (-?[0-9a-zA-Z]+)");
+        Matcher matcherXAndOrYNegative = invalidPatternXAndOrYNegative.matcher(input);
+        if (matcherXAndOrYNegative.find()){
+            new RoverLandingConsolePresenterImpl().roverLandingErrorXAndOrYNegativeMessage(matcherXAndOrYNegative.group(1), matcherXAndOrYNegative.group(2));
+            return;
+        }
+
+        Pattern invalidPatternOnlyX = Pattern.compile("land ([0-9a-zA-Z]+)");
+        Matcher matcherOnlyX = invalidPatternOnlyX.matcher(input);
+        if (matcherOnlyX.find()){
+            new RoverLandingConsolePresenterImpl().roverLandingErrorOnlyXMessage(matcherOnlyX.group(1));
+            return;
+        }
+
+        Pattern invalidPatternOnlyXNegative = Pattern.compile("land (-[0-9a-zA-Z]+)");
+        Matcher matcherOnlyXNegative = invalidPatternOnlyXNegative.matcher(input);
+        if (matcherOnlyXNegative.find()){
+            new RoverLandingConsolePresenterImpl().roverLandingErrorOnlyXNegativeMessage(matcherOnlyXNegative.group(1));
+            return;
+        }
+
+
     }
 
     private void parseDriveInput(String preparedInput) {

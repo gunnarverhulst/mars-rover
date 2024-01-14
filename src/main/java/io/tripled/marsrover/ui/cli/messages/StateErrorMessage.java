@@ -4,10 +4,13 @@ import io.tripled.marsrover.businesslogic.message.Message;
 
 public class StateErrorMessage implements Message {
 
-    private final String message = """
-                Rover has not landed yet.
-                
-                [Please enter a command]""";
+    private final String message;
+
+    public StateErrorMessage(int simulationSize) {
+        message = "Simulation has max coordinate [" + simulationSize + "] with a total of " + ((simulationSize + 1) + (simulationSize + 1)) + " coordinates.\n\n" +
+                "[Please enter a command] : ";
+    }
+
     @Override
     public String messageToBePrinted() {
         return message;

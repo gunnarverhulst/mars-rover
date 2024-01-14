@@ -1,8 +1,6 @@
 package io.tripled.marsrover.ui.cli.presenter;
 
-import io.tripled.marsrover.ui.cli.messages.RoverLandingErrorEmptyCoordinateMessage;
-import io.tripled.marsrover.ui.cli.messages.RoverLandingErrorMessage;
-import io.tripled.marsrover.ui.cli.messages.RoverLandingMessage;
+import io.tripled.marsrover.ui.cli.messages.*;
 import io.tripled.marsrover.businesslogic.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.businesslogic.rover.Coordinate;
 
@@ -20,5 +18,30 @@ public class RoverLandingConsolePresenterImpl implements RoverLandingPresenter {
     @Override
     public void roverLandingEmptyCoordinateErrorMessage() {
         System.out.println(new RoverLandingErrorEmptyCoordinateMessage().messageToBePrinted());
+    }
+
+    @Override
+    public void roverLandingErrorOnlyXMessage(String xCoordinate) {
+        System.out.println(new RoverLandingErrorOnlyXMessage(xCoordinate).messageToBePrinted());
+    }
+
+    @Override
+    public void roverLandingErrorXYNotANumberMessage(String xCoordinate, String yCoordinate) {
+        System.out.println(new RoverLandingErrorXYNotANumberMessage(xCoordinate, yCoordinate).messageToBePrinted());
+    }
+
+    @Override
+    public void roverLandingErrorOnlyXNegativeMessage(String xCoordinate) {
+        System.out.println(new RoverLandingErrorOnlyXNegativeMessage(xCoordinate).messageToBePrinted());
+    }
+
+    @Override
+    public void roverLandingErrorXAndOrYNegativeMessage(String xCoordinate, String yCoordinate) {
+        System.out.println(new RoverLandingErrorXAndOrYNegativeMessage(xCoordinate, yCoordinate).messageToBePrinted());
+    }
+
+    @Override
+    public void roverLandingErrorOutOfBounds(int xCoordinate, int yCoordinate, int simulationSize) {
+        System.out.println(new RoverLandingErrorOutOfBoundsMessage(xCoordinate, yCoordinate, simulationSize).messageToBePrinted());
     }
 }

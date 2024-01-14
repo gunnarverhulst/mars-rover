@@ -12,7 +12,7 @@ public class StateConsolePresenterImpl implements StatePresenter {
     }
 
     @Override
-    public void stateErrorMessage() {
-        System.out.println(new StateErrorMessage().messageToBePrinted());
+    public void stateErrorMessage(int simulationSize) {
+        System.out.println(new StateErrorMessage(simulationSize).messageToBePrinted());
     }
 }
