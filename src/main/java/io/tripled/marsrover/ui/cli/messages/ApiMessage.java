@@ -9,7 +9,8 @@ public class ApiMessage implements Message {
                 *   Print API overview            | {P}                                                       | ex: p                                             *
                 *   Print state of simulation     | {state}                                                   | ex: state                                         *
                 *   Land a new rover              | {land {x} {y}}                                            | ex: land 1 5                                      *
-                *   Drive with rover              | {Rx {fn|bn|ln|rn}}                                        | ex R1 f5 l2 b                                     *
+                *   Map                           | {m}                                                       | ex: m                                             *
+                *   Drive with rover              | {Rx {fn|bn|ln|rn}}                                        | ex: R1 f5 l2 b                                    *
                 *                                                                                             | Rover with id R1                                  *
                 *                                                                                             | drive forward 5 steps                             *
                 *                                                                                             | turn left twice                                   *

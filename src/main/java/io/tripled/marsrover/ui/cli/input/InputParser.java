@@ -35,7 +35,7 @@ public class InputParser {
         String preparedInput = input.trim().toLowerCase();
         boolean isSimulationSizeSet = simulationRepository.getSimulation() != null;
 
-        if(!isSimulationSizeSet){
+        if (!isSimulationSizeSet) {
             parseInputIfSimulationSizeNotSet(input, preparedInput);
         } else if (preparedInput.equalsIgnoreCase("Q")) {
             new QuitConsolePresenterImpl().quitMessage();
@@ -49,6 +49,11 @@ public class InputParser {
             parseLandInput(input);
         } else if (preparedInput.startsWith("r")) {
             parseDriveInput(preparedInput);
+        } else if(preparedInput.equalsIgnoreCase("m")){
+            if(simulationRepository.getSimulation().getRoverState() != null){
+                new MapConsolePresenterImpl().mapMessage(getSimulationSize(), simulationRepository.getSimulation().getRoverState());
+            } else
+                new MapConsolePresenterImpl().mapMessage(getSimulationSize());
         } else
             new ApiConsolePresenterImpl().apiMessage();
     }

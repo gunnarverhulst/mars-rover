@@ -66,9 +66,9 @@ public class Rover {
         }
 
         return switch (roverState.heading().getHeadingNumber()){
-            case 0 -> new Coordinate(0,sign);
-            case 1 -> new Coordinate(-1*sign,0);
-            case 2 -> new Coordinate(0,-1 * sign);
+            case 0 -> new Coordinate(0,-1*sign);
+            case 1 -> new Coordinate(-1 * sign,0);
+            case 2 -> new Coordinate(0,sign);
             case 3 -> new Coordinate(sign,0);
             default -> new Coordinate(0,0);
         };
