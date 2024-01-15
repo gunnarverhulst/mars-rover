@@ -2,9 +2,9 @@ package io.tripled.marsrover.ui.cli.presenter;
 
 import io.tripled.marsrover.ui.cli.messages.SimulationSizeErrorMessage;
 import io.tripled.marsrover.ui.cli.messages.SimulationSizeSetMessage;
-import io.tripled.marsrover.businesslogic.presenter.SimCreationPresenter;
+import io.tripled.marsrover.businesslogic.presenter.SimConsolePresenter;
 
-public class SimulationConsolePresenterImpl implements SimCreationPresenter {
+public class SimulationConsolePresenterImpl implements SimConsolePresenter {
     @Override
     public void simulationCreated(int simulationSize) {
         System.out.println(new SimulationSizeSetMessage(simulationSize).messageToBePrinted());
