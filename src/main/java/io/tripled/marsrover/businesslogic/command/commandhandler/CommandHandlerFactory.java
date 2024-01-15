@@ -1,8 +1,9 @@
 package io.tripled.marsrover.businesslogic.command.commandhandler;
 
+import io.tripled.marsrover.businesslogic.presenter.Presenter;
 import io.tripled.marsrover.businesslogic.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.businesslogic.presenter.RoverLandingPresenter;
-import io.tripled.marsrover.businesslogic.presenter.SimConsolePresenter;
+import io.tripled.marsrover.businesslogic.presenter.SimCreationPresenter;
 import io.tripled.marsrover.businesslogic.rover.Coordinate;
 import io.tripled.marsrover.businesslogic.rover.Move;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
@@ -12,7 +13,7 @@ import java.util.List;
 public enum CommandHandlerFactory {
     COMMAND_HANDLER_FACTORY;
 
-    public CommandHandler<Integer, SimConsolePresenter> createSimulationHandler(SimulationRepository simulationRepository){
+    public CommandHandler<Integer, SimCreationPresenter> createSimulationHandler(SimulationRepository simulationRepository){
         return new SimCreationHandler(simulationRepository);
     }
 

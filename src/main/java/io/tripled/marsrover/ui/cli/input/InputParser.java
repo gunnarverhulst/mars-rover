@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static io.tripled.marsrover.ui.cli.validators.LandInputValidator.LAND_INPUT_VALIDATOR;
 import static io.tripled.marsrover.ui.cli.validators.SimulationSizeInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
 
 public class InputParser {
@@ -33,9 +32,7 @@ public class InputParser {
 
     public void determineCommand(String input) {
         String preparedInput = input.trim().toLowerCase();
-        boolean isSimulationSizeSet = simulationRepository.getSimulation() != null;
-
-        if (!isSimulationSizeSet) {
+        if (!commandController.hasSimulation()) {
             parseInputIfSimulationSizeNotSet(input, preparedInput);
         } else if (preparedInput.equalsIgnoreCase("Q")) {
             new QuitConsolePresenterImpl().quitMessage();
@@ -50,7 +47,7 @@ public class InputParser {
         } else if (preparedInput.startsWith("r")) {
             parseDriveInput(preparedInput);
         } else if(preparedInput.equalsIgnoreCase("m")){
-            if(simulationRepository.getSimulation().getRoverState() != null){
+            if(commandController.hasRoverState()){
                 new MapConsolePresenterImpl().mapMessage(getSimulationSize(), simulationRepository.getSimulation().getRoverState());
             } else
                 new MapConsolePresenterImpl().mapMessage(getSimulationSize());
