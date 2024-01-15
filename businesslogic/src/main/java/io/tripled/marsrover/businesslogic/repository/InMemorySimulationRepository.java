@@ -1,7 +1,4 @@
 package io.tripled.marsrover.businesslogic.repository;
-//
-//import io.tripled.marsrover.businesslogic.simulation.Simulation;
-//import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 
 import io.tripled.marsrover.businesslogic.simulation.Simulation;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;

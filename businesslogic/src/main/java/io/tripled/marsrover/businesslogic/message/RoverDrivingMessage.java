@@ -1,7 +1,5 @@
 package io.tripled.marsrover.businesslogic.message;
 
-import io.tripled.marsrover.businesslogic.message.Message;
-
 public class RoverDrivingMessage implements Message {
 
     private String message = "";

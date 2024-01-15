@@ -7,6 +7,7 @@ import io.tripled.marsrover.businesslogic.command.LandCommand;
 import io.tripled.marsrover.businesslogic.rover.Coordinate;
 import io.tripled.marsrover.businesslogic.rover.Direction;
 import io.tripled.marsrover.businesslogic.rover.Move;
+import io.tripled.marsrover.businesslogic.message.MapData;
 import io.tripled.marsrover.ui.cli.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.ui.cli.presenter.*;
 
@@ -46,9 +47,12 @@ public class InputParser {
             parseDriveInput(preparedInput);
         } else if(preparedInput.equalsIgnoreCase("m")){
             if(commandController.hasRoverState()){
-                new MapConsolePresenterImpl().mapMessage(getSimulationSize(), commandController.getRoverSate());
-            } else
-                new MapConsolePresenterImpl().mapMessage(getSimulationSize());
+                MapData mapData = new MapData(getSimulationSize(), commandController.getRoverSate());
+                new MapConsolePresenterImpl().mapMessage(mapData);
+            } else{
+                MapData mapData = new MapData(getSimulationSize(), null);
+                new MapConsolePresenterImpl().mapMessage(mapData);
+            }
         } else
             new ApiConsolePresenterImpl().apiMessage();
     }
