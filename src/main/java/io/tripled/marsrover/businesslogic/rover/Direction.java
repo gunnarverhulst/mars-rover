@@ -5,7 +5,6 @@ public enum Direction {
     LEFT,
     RIGHT,
     BACKWARD,
-    UNKNOWN_DIRECTION,
     DIRECTION;
 
     public Direction parseDirection(String directionAsText){
@@ -14,7 +13,7 @@ public enum Direction {
             case "l", "left" -> LEFT;
             case "r", "right" -> RIGHT;
             case "b", "backward" -> BACKWARD;
-            default -> UNKNOWN_DIRECTION;
+            default -> FORWARD;
         };
     }
 

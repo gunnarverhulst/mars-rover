@@ -14,15 +14,6 @@ public class Rover {
         this.simulationRepository = simulationRepository;
     }
 
-    public void setRoverState(RoverState roverState) {
-        this.roverState = roverState;
-    }
-
-    public RoverState getRoverState() {
-        return roverState;
-    }
-
-
     public Message moveRover(Move move) {
         StringBuilder stringToConcatToMessage = new StringBuilder();
 
@@ -33,6 +24,14 @@ public class Rover {
     }
     public Coordinate getRoverCoordinates() {
         return roverState.roverCoordinate();
+    }
+
+    public void setRoverState(RoverState roverState) {
+        this.roverState = roverState;
+    }
+
+    public RoverState getRoverState() {
+        return roverState;
     }
 
     private Message singleStepMoveRover(Direction direction) {

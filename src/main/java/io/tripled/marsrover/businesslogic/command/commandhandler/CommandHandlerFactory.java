@@ -10,7 +10,7 @@ import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 import java.util.List;
 
 public enum CommandHandlerFactory {
-    ACTION_HANDLER_FACTORY;
+    COMMAND_HANDLER_FACTORY;
 
     public CommandHandler<Integer, SimConsolePresenter> createSimulationHandler(SimulationRepository simulationRepository){
         return new SimCreationHandler(simulationRepository);

@@ -6,5 +6,5 @@ public interface StatePresenter extends Presenter{
 
     void stateMessage(int simulationSize, RoverState roverState);
 
-    void stateErrorMessage(int simuationSize);
+    void stateErrorMessage(int simulationSize);
 }

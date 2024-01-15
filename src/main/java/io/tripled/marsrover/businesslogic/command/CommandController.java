@@ -12,7 +12,7 @@ import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 
 import java.util.List;
 
-import static io.tripled.marsrover.businesslogic.command.commandhandler.CommandHandlerFactory.ACTION_HANDLER_FACTORY;
+import static io.tripled.marsrover.businesslogic.command.commandhandler.CommandHandlerFactory.COMMAND_HANDLER_FACTORY;
 
 public class CommandController {
 
@@ -28,15 +28,15 @@ public class CommandController {
     public void handleCommand(Command command, Presenter presenter) {
         switch (command) {
             case CreateSimulationCommand createSimulationCommand -> {
-                CommandHandler<Integer, SimConsolePresenter> commandHandler = ACTION_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
+                CommandHandler<Integer, SimConsolePresenter> commandHandler = COMMAND_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
                 commandHandler.handle(createSimulationCommand.simulationSize(), (SimConsolePresenter) presenter);
             }
             case LandCommand landCommand -> {
-                CommandHandler<Coordinate, RoverLandingPresenter> commandHandler = ACTION_HANDLER_FACTORY.createRoverLandingHandler(simulationRepository);
+                CommandHandler<Coordinate, RoverLandingPresenter> commandHandler = COMMAND_HANDLER_FACTORY.createRoverLandingHandler(simulationRepository);
                 commandHandler.handle(landCommand.coordinate(), (RoverLandingPresenter) presenter);
             }
             case DriveCommand driveCommand -> {
-                CommandHandler<List<Move>, RoverDrivingPresenter> commandHandler = ACTION_HANDLER_FACTORY.createRoverDrivingHandler(simulationRepository);
+                CommandHandler<List<Move>, RoverDrivingPresenter> commandHandler = COMMAND_HANDLER_FACTORY.createRoverDrivingHandler(simulationRepository);
                 commandHandler.handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
             }
         }

@@ -1,6 +1,5 @@
 package io.tripled.marsrover.businesslogic.simulation;
 
-import io.tripled.marsrover.businesslogic.rover.Coordinate;
 import io.tripled.marsrover.businesslogic.rover.Rover;
 import io.tripled.marsrover.businesslogic.rover.RoverState;
 
@@ -21,9 +20,6 @@ public class Simulation {
         return simulationSize;
     }
 
-    public Coordinate getRover1Coordinates(){
-        return rover1.getRoverCoordinates();
-    }
 
     public void setRover1State(RoverState roverState){
         rover1.setRoverState(roverState);

@@ -12,8 +12,4 @@ public class TransientMessage implements Message{
     public String messageToBePrinted() {
         return message;
     }
-
-    public void concat(String input){
-        message = message.concat(input);
-    }
 }

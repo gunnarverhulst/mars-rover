@@ -12,10 +12,6 @@ public enum Heading {
         this.headingNumber = headingNumber;
     }
 
-    public int getHeadingNumber(){
-        return headingNumber;
-    }
-
     public static Heading getHeading(int headingNumber){
         for(Heading heading: values()){
             if(heading.headingNumber == headingNumber){
@@ -24,4 +20,9 @@ public enum Heading {
         }
         return null;
     }
+
+    public int getHeadingNumber(){
+        return headingNumber;
+    }
+
 }

@@ -14,10 +14,6 @@ import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
         this.simulationRepository = simulationRepository;
     }
 
-    private void setRoverState(Coordinate parsedInput) {
-        simulationRepository.getSimulation().setRover1State(new RoverState(parsedInput, Heading.NORTH));
-    }
-
     @Override
     public void handle(Coordinate coordinate,RoverLandingPresenter roverLandingPresenter) {
         if (simulationRepository.getSimulation().getRoverState() == null) {
@@ -26,4 +22,8 @@ import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
         } else
             roverLandingPresenter.roverLandingErrorMessage(coordinate);
     }
+    private void setRoverState(Coordinate parsedInput) {
+        simulationRepository.getSimulation().setRover1State(new RoverState(parsedInput, Heading.NORTH));
+    }
+
 }
