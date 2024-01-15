@@ -5,8 +5,10 @@ import io.tripled.marsrover.businesslogic.presenter.Presenter;
 import io.tripled.marsrover.businesslogic.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.businesslogic.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.businesslogic.presenter.SimCreationPresenter;
+import io.tripled.marsrover.businesslogic.repository.InMemorySimulationRepository;
 import io.tripled.marsrover.businesslogic.rover.Coordinate;
 import io.tripled.marsrover.businesslogic.rover.Move;
+import io.tripled.marsrover.businesslogic.rover.RoverState;
 import io.tripled.marsrover.businesslogic.simulation.Simulation;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 
@@ -18,8 +20,8 @@ public class CommandController {
 
     private final SimulationRepository simulationRepository;
 
-    public CommandController(SimulationRepository simulationRepository) {
-        this.simulationRepository = simulationRepository;
+    public CommandController() {
+        this.simulationRepository = new InMemorySimulationRepository();
     }
 
     public Simulation getSimulation() {
@@ -48,5 +50,13 @@ public class CommandController {
 
     public boolean hasRoverState() {
         return simulationRepository.getSimulation().getRoverState() != null;
+    }
+
+    public RoverState getRoverSate() {
+        return simulationRepository.getSimulation().getRoverState();
+    }
+
+    public int getSimulationSize() {
+        return simulationRepository.getSimulation().getSimulationSize();
     }
 }

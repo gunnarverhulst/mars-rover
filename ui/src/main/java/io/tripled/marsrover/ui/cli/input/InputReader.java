@@ -1,16 +1,12 @@
 package io.tripled.marsrover.ui.cli.input;
 
-import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
-
 import java.util.Scanner;
 
 public class InputReader {
-    public final SimulationRepository simulationRepository;
     private final InputParser inputParser;
 
-    public InputReader(SimulationRepository simulationRepository) {
-        this.simulationRepository  = simulationRepository;
-        this.inputParser = new InputParser(simulationRepository);
+    public InputReader() {
+        this.inputParser = new InputParser();
     }
 
     public void readInput() {

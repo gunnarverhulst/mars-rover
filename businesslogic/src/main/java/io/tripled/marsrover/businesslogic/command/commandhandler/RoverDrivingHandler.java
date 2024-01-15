@@ -1,6 +1,6 @@
 package io.tripled.marsrover.businesslogic.command.commandhandler;
 
-import io.tripled.marsrover.ui.cli.messages.RoverDrivingMessage;
+import io.tripled.marsrover.businesslogic.message.RoverDrivingMessage;
 import io.tripled.marsrover.businesslogic.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.businesslogic.rover.Move;
 import io.tripled.marsrover.businesslogic.rover.Rover;

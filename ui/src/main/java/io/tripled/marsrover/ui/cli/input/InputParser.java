@@ -7,7 +7,6 @@ import io.tripled.marsrover.businesslogic.command.LandCommand;
 import io.tripled.marsrover.businesslogic.rover.Coordinate;
 import io.tripled.marsrover.businesslogic.rover.Direction;
 import io.tripled.marsrover.businesslogic.rover.Move;
-import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 import io.tripled.marsrover.ui.cli.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.ui.cli.presenter.*;
 
@@ -21,13 +20,11 @@ import static io.tripled.marsrover.ui.cli.validators.SimulationSizeInputValidato
 
 public class InputParser {
 
-    private final SimulationRepository simulationRepository;
 
     private final CommandController commandController;
 
-    public InputParser(SimulationRepository simulationRepository) {
-        this.simulationRepository = simulationRepository;
-        this.commandController = new CommandController(simulationRepository);
+    public InputParser() {
+        this.commandController = new CommandController();
     }
 
     public void determineCommand(String input) {
@@ -49,7 +46,7 @@ public class InputParser {
             parseDriveInput(preparedInput);
         } else if(preparedInput.equalsIgnoreCase("m")){
             if(commandController.hasRoverState()){
-                new MapConsolePresenterImpl().mapMessage(getSimulationSize(), simulationRepository.getSimulation().getRoverState());
+                new MapConsolePresenterImpl().mapMessage(getSimulationSize(), commandController.getRoverSate());
             } else
                 new MapConsolePresenterImpl().mapMessage(getSimulationSize());
         } else
@@ -107,8 +104,8 @@ public class InputParser {
     }
 
     private void parseState() {
-        if(simulationRepository.getSimulation().getRoverState() != null)
-            new StateConsolePresenterImpl().stateMessage(getSimulationSize(), simulationRepository.getSimulation().getRoverState());
+        if(commandController.getRoverSate() != null)
+            new StateConsolePresenterImpl().stateMessage(getSimulationSize(), commandController.getRoverSate());
         else
             new StateConsolePresenterImpl().stateErrorMessage(getSimulationSize());
 
@@ -120,7 +117,7 @@ public class InputParser {
         if (coordinate.isPresent() ) {
             int x = coordinate.get().x();
             int y = coordinate.get().y();
-            int simulationSize = simulationRepository.getSimulation().getSimulationSize();
+            int simulationSize = commandController.getSimulationSize();
             if(x <= simulationSize && y <= simulationSize){
                 LandCommand landCommand = new LandCommand(coordinate.get());
                 commandController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
@@ -211,6 +208,6 @@ public class InputParser {
     }
 
     private int getSimulationSize() {
-        return simulationRepository.getSimulation().getSimulationSize();
+        return commandController.getSimulationSize();
     }
 }
