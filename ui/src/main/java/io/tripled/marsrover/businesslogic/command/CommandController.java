@@ -4,7 +4,7 @@ import io.tripled.marsrover.businesslogic.command.commandhandler.CommandHandler;
 import io.tripled.marsrover.businesslogic.presenter.Presenter;
 import io.tripled.marsrover.businesslogic.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.businesslogic.presenter.RoverLandingPresenter;
-import io.tripled.marsrover.businesslogic.presenter.SimConsolePresenter;
+import io.tripled.marsrover.businesslogic.presenter.SimCreationPresenter;
 import io.tripled.marsrover.businesslogic.rover.Coordinate;
 import io.tripled.marsrover.businesslogic.rover.Move;
 import io.tripled.marsrover.businesslogic.simulation.Simulation;
@@ -28,8 +28,8 @@ public class CommandController {
     public void handleCommand(Command command, Presenter presenter) {
         switch (command) {
             case CreateSimulationCommand createSimulationCommand -> {
-                CommandHandler<Integer, SimConsolePresenter> commandHandler = COMMAND_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
-                commandHandler.handle(createSimulationCommand.simulationSize(), (SimConsolePresenter) presenter);
+                CommandHandler<Integer, SimCreationPresenter> commandHandler = COMMAND_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
+                commandHandler.handle(createSimulationCommand.simulationSize(), (SimCreationPresenter) presenter);
             }
             case LandCommand landCommand -> {
                 CommandHandler<Coordinate, RoverLandingPresenter> commandHandler = COMMAND_HANDLER_FACTORY.createRoverLandingHandler(simulationRepository);
@@ -40,5 +40,13 @@ public class CommandController {
                 commandHandler.handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
             }
         }
+    }
+
+    public boolean hasSimulation() {
+        return simulationRepository.getSimulation() != null;
+    }
+
+    public boolean hasRoverState() {
+        return simulationRepository.getSimulation().getRoverState() != null;
     }
 }
