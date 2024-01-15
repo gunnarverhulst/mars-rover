@@ -35,7 +35,7 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
 
     private void performRoverMoves(List<Move> drivingMoves, RoverDrivingMessage drivingMessage) {
         Rover rover = simulationRepository.getSimulation().getRover1();
-        drivingMoves.forEach(x -> drivingMessage.concat(rover.singleStepMove(x).messageToBePrinted()));
+        drivingMoves.forEach(x -> drivingMessage.concat(rover.moveRover(x).messageToBePrinted()));
     }
     private void endRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
         drivingMessage.concat("Rover R1 executed all instructions. Awaiting new ones...\n\n[Please enter a command] : ");

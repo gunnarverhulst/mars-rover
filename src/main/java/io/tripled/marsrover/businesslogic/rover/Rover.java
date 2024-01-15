@@ -23,20 +23,23 @@ public class Rover {
     }
 
 
-    public Message singleStepMove(Move move) {
+    public Message moveRover(Move move) {
         StringBuilder stringToConcatToMessage = new StringBuilder();
 
         for(int i = 0; i < move.steps(); i++){
-            stringToConcatToMessage.append(moveRover(move.direction()).messageToBePrinted());
+            stringToConcatToMessage.append(singleStepMoveRover(move.direction()).messageToBePrinted());
         }
         return new TransientMessage(stringToConcatToMessage.toString());
     }
+    public Coordinate getRoverCoordinates() {
+        return roverState.roverCoordinate();
+    }
 
-    private Message moveRover(Direction direction) {
+    private Message singleStepMoveRover(Direction direction) {
         String stringToConcat = "";
         switch (direction){
             case FORWARD, BACKWARD -> {
-                Coordinate coordinateToAdd = singleStepMove(direction);
+                Coordinate coordinateToAdd = move(direction);
                 roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
                 stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
@@ -59,7 +62,7 @@ public class Rover {
         stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
         return stringToConcat;
     }
-    private Coordinate singleStepMove(Direction direction){
+    private Coordinate move(Direction direction){
         int sign = 1;
         if(direction == Direction.BACKWARD){
             sign *= -1;
@@ -74,9 +77,6 @@ public class Rover {
         };
     }
 
-    public Coordinate getRoverCoordinates() {
-        return roverState.roverCoordinate();
-    }
     private Heading getRoverHeading() {
         return roverState.heading();
     }
