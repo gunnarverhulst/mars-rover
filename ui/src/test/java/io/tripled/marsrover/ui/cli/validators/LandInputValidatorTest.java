@@ -1,6 +1,6 @@
 package io.tripled.marsrover.ui.cli.validators;
 
-import io.tripled.marsrover.businesslogic.rover.Coordinate;
+import io.tripled.marsrover.vocabulary.rover.Coordinate;
 import org.junit.jupiter.api.Test;
 
 import static io.tripled.marsrover.ui.cli.validators.LandInputValidator.LAND_INPUT_VALIDATOR;

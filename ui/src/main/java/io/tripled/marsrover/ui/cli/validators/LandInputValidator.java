@@ -1,6 +1,7 @@
 package io.tripled.marsrover.ui.cli.validators;
 
-import io.tripled.marsrover.businesslogic.rover.Coordinate;
+
+import io.tripled.marsrover.vocabulary.rover.Coordinate;
 
 public enum LandInputValidator {
     LAND_INPUT_VALIDATOR;

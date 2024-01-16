@@ -1,6 +1,7 @@
 package io.tripled.marsrover.ui.cli.messages;
 
-import io.tripled.marsrover.businesslogic.message.Message;
+
+import io.tripled.marsrover.api.message.Message;
 
 public class RoverLandingErrorXYNotANumberMessage implements Message {
     private String message = "";

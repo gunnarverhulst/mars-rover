@@ -1,6 +1,6 @@
 package io.tripled.marsrover.businesslogic.command.commandhandler;
 
-import io.tripled.marsrover.businesslogic.presenter.SimCreationPresenter;
+import io.tripled.marsrover.api.presenter.SimCreationPresenter;
 import io.tripled.marsrover.businesslogic.simulation.Simulation;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 

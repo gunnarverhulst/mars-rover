@@ -1,17 +1,19 @@
 package io.tripled.marsrover.businesslogic.rover;
 
-import io.tripled.marsrover.businesslogic.message.Message;
-import io.tripled.marsrover.businesslogic.message.TransientMessage;
+import io.tripled.marsrover.api.message.Message;
+import io.tripled.marsrover.api.message.TransientMessage;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
+import io.tripled.marsrover.vocabulary.rover.*;
 
 public class Rover {
 
     private RoverState roverState = null;
 
-    private final SimulationRepository simulationRepository;
 
-    public Rover(SimulationRepository simulationRepository) {
-        this.simulationRepository = simulationRepository;
+    private final int simulationSize;
+
+    public Rover(int simulationSize) {
+        this.simulationSize = simulationSize;
     }
 
     public Message moveRover(Move move) {
@@ -82,7 +84,7 @@ public class Rover {
 
     private Coordinate createNewRoverCoordinate(Coordinate coordinateToAdd) {
 
-        int simulationSizeWithOffset = simulationRepository.getSimulation().getSimulationSize() + 1;
+        int simulationSizeWithOffset = simulationSize + 1;
 
         int x = (getRoverCoordinates().x() + coordinateToAdd.x() + simulationSizeWithOffset) % (simulationSizeWithOffset);
         int y = (getRoverCoordinates().y() + coordinateToAdd.y() + simulationSizeWithOffset) % (simulationSizeWithOffset);

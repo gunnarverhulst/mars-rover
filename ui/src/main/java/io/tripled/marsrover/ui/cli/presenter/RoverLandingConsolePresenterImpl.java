@@ -1,8 +1,8 @@
 package io.tripled.marsrover.ui.cli.presenter;
 
+import io.tripled.marsrover.api.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.ui.cli.messages.*;
-import io.tripled.marsrover.businesslogic.presenter.RoverLandingPresenter;
-import io.tripled.marsrover.businesslogic.rover.Coordinate;
+import io.tripled.marsrover.vocabulary.rover.Coordinate;
 
 public class RoverLandingConsolePresenterImpl implements RoverLandingPresenter {
     @Override

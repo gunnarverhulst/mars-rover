@@ -1,6 +1,6 @@
 package io.tripled.marsrover.ui.cli.presenter;
 
-import io.tripled.marsrover.businesslogic.message.Message;
+import io.tripled.marsrover.api.message.Message;
 
 public class RoverLandingErrorOnlyXNegativeMessage implements Message {
 

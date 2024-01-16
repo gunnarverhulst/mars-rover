@@ -1,8 +1,9 @@
 package io.tripled.marsrover.businesslogic.rover;
 
+import io.tripled.marsrover.vocabulary.rover.Direction;
 import org.junit.jupiter.api.Test;
 
-import static io.tripled.marsrover.businesslogic.rover.Direction.DIRECTION;
+import static io.tripled.marsrover.vocabulary.rover.Direction.DIRECTION;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DirectionTest {

@@ -1,12 +1,15 @@
 package io.tripled.marsrover.ui.cli.input;
 
+
+import io.tripled.marsrover.api.command.ApplicationService;
+
 import java.util.Scanner;
 
 public class InputReader {
     private final InputParser inputParser;
 
-    public InputReader() {
-        this.inputParser = new InputParser();
+    public InputReader(ApplicationService applicationService) {
+        this.inputParser = new InputParser(applicationService);
     }
 
     public void readInput() {

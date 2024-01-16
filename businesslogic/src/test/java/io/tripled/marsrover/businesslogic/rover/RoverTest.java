@@ -1,35 +1,34 @@
 package io.tripled.marsrover.businesslogic.rover;
 
+import io.tripled.marsrover.api.command.ApplicationService;
+import io.tripled.marsrover.api.message.TransientMessage;
 import io.tripled.marsrover.businesslogic.command.CommandController;
-import io.tripled.marsrover.businesslogic.message.TransientMessage;
 import io.tripled.marsrover.businesslogic.repository.InMemorySimulationRepository;
 import io.tripled.marsrover.businesslogic.simulation.Simulation;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
+import io.tripled.marsrover.vocabulary.rover.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RoverTest {
-
     private Rover rover;
-    private CommandController commandController;
-    private SimulationRepository simulationRepository;
 
     @BeforeEach
     void init(){
-        commandController = new CommandController();
-        simulationRepository = new InMemorySimulationRepository();
+        SimulationRepository simulationRepository = new InMemorySimulationRepository();
+        ApplicationService applicationService = new CommandController(simulationRepository);
+
+        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
+
+        rover = new Rover(10);
 
     }
 
     @Test
     void whenMoveRoverUp1WithinBounds_thenYMin1(){
 
-
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,5), Heading.NORTH));
         String expectedString = "Rover R1 is moving forward\n" +
                 "Rover R1 is now located at [5,4]\n";
@@ -39,9 +38,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverDown1WithinBounds_thenYPlus1(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,5), Heading.NORTH));
 
         String expectedString = "Rover R1 is moving backward\n" +
@@ -52,9 +48,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverLeft(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,5), Heading.NORTH));
 
         String expectedString = "Rover R1 is turning left\n" +
@@ -65,9 +58,7 @@ class RoverTest {
 
     @Test
     void whenMoveRoverRight(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
 
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,5), Heading.NORTH));
 
         String expectedString = "Rover R1 is turning right\n" +
@@ -78,9 +69,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverUp2WithinBounds_thenYMin2(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,5), Heading.NORTH));
         String expectedString = "Rover R1 is moving forward\n" +
                 "Rover R1 is now located at [5,4]\n" +
@@ -92,9 +80,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverDown2WithinBounds_thenYPlus2(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,5), Heading.NORTH));
         String expectedString = "Rover R1 is moving backward\n" +
                 "Rover R1 is now located at [5,6]\n" +
@@ -106,9 +91,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverUp2OutOfBounds_thenYLeapsOver(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,1), Heading.NORTH));
 
         String expectedString = "Rover R1 is moving forward\n" +
@@ -121,9 +103,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverDown2OutOfBounds_thenYLeapsOver(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(5,9), Heading.NORTH));
 
         String expectedString = "Rover R1 is moving backward\n" +
@@ -136,9 +115,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverForwardFacingWest2OutOfBounds_thenXLeapsOver(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(9,5), Heading.EAST));
 
         String expectedString = "Rover R1 is moving forward\n" +
@@ -151,9 +127,6 @@ class RoverTest {
 
     @Test
     void whenMoveRoverBackwardFacingWest2OutOfBounds_thenYXLeapsOver(){
-        simulationRepository.addSimulation(new Simulation(10, simulationRepository));
-
-        Rover rover = new Rover(simulationRepository);
         rover.setRoverState(new RoverState(new Coordinate(1,5), Heading.EAST));
 
         String expectedString = "Rover R1 is moving backward\n" +

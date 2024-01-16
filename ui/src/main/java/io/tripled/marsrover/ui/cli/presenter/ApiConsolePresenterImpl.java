@@ -1,7 +1,7 @@
 package io.tripled.marsrover.ui.cli.presenter;
 
 import io.tripled.marsrover.ui.cli.messages.ApiMessage;
-import io.tripled.marsrover.businesslogic.presenter.ApiPresenter;
+import io.tripled.marsrover.api.presenter.ApiPresenter;
 
 public class ApiConsolePresenterImpl implements ApiPresenter {
     @Override

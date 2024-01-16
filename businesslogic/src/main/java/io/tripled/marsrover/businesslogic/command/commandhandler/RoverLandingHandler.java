@@ -1,12 +1,12 @@
 package io.tripled.marsrover.businesslogic.command.commandhandler;
 
-import io.tripled.marsrover.businesslogic.presenter.RoverLandingPresenter;
-import io.tripled.marsrover.businesslogic.rover.Coordinate;
-import io.tripled.marsrover.businesslogic.rover.Heading;
-import io.tripled.marsrover.businesslogic.rover.RoverState;
+import io.tripled.marsrover.api.presenter.RoverLandingPresenter;
+import io.tripled.marsrover.vocabulary.rover.Heading;
+import io.tripled.marsrover.vocabulary.rover.RoverState;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
+import io.tripled.marsrover.vocabulary.rover.Coordinate;
 
- public final class RoverLandingHandler implements CommandHandler<Coordinate, RoverLandingPresenter> {
+public final class RoverLandingHandler implements CommandHandler<Coordinate, RoverLandingPresenter> {
 
     private final SimulationRepository simulationRepository;
 

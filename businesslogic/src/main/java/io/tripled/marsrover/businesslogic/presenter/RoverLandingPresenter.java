@@ -1,8 +1,9 @@
 package io.tripled.marsrover.businesslogic.presenter;
 
-import io.tripled.marsrover.businesslogic.rover.Coordinate;
 
-public interface RoverLandingPresenter extends Presenter {
+import io.tripled.marsrover.vocabulary.rover.Coordinate;
+
+public interface RoverLandingPresenter {
 
     void roverLandedMessage(Coordinate coordinate);
 

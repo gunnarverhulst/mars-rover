@@ -1,8 +1,8 @@
 package io.tripled.marsrover.ui.cli.presenter;
 
-import io.tripled.marsrover.businesslogic.message.MapData;
-import io.tripled.marsrover.businesslogic.presenter.MapPresenter;
-import io.tripled.marsrover.businesslogic.rover.Heading;
+import io.tripled.marsrover.vocabulary.message.MapData;
+import io.tripled.marsrover.api.presenter.MapPresenter;
+import io.tripled.marsrover.vocabulary.rover.Heading;
 
 public class MapConsolePresenterImpl implements MapPresenter {
 

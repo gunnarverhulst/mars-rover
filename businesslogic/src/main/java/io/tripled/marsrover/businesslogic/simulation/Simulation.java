@@ -1,7 +1,8 @@
 package io.tripled.marsrover.businesslogic.simulation;
 
 import io.tripled.marsrover.businesslogic.rover.Rover;
-import io.tripled.marsrover.businesslogic.rover.RoverState;
+import io.tripled.marsrover.vocabulary.rover.RoverState;
+import io.tripled.marsrover.vocabulary.simulation.SimulationState;
 
 public class Simulation {
 
@@ -10,7 +11,7 @@ public class Simulation {
 
     public Simulation(int simulationSize, SimulationRepository simulationRepository) {
         this.simulationSize = simulationSize;
-        this.rover1 = new Rover(simulationRepository);
+        this.rover1 = new Rover(simulationSize);
     }
 
     public RoverState getRoverState() {
@@ -26,5 +27,9 @@ public class Simulation {
     }
     public Rover getRover1() {
         return rover1;
+    }
+
+    public SimulationState getSimulationState() {
+        return null;
     }
 }

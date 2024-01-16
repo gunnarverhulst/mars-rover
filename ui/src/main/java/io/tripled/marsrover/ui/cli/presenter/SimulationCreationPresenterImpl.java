@@ -1,8 +1,8 @@
 package io.tripled.marsrover.ui.cli.presenter;
 
+import io.tripled.marsrover.api.presenter.SimCreationPresenter;
 import io.tripled.marsrover.ui.cli.messages.SimulationSizeErrorMessage;
 import io.tripled.marsrover.ui.cli.messages.SimulationSizeSetMessage;
-import io.tripled.marsrover.businesslogic.presenter.SimCreationPresenter;
 
 public class SimulationCreationPresenterImpl implements SimCreationPresenter {
     @Override

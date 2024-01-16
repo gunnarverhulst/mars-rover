@@ -1,15 +1,15 @@
 package io.tripled.marsrover.ui.cli.input;
 
-import io.tripled.marsrover.businesslogic.command.CommandController;
-import io.tripled.marsrover.businesslogic.command.CreateSimulationCommand;
-import io.tripled.marsrover.businesslogic.command.DriveCommand;
-import io.tripled.marsrover.businesslogic.command.LandCommand;
-import io.tripled.marsrover.businesslogic.rover.Coordinate;
-import io.tripled.marsrover.businesslogic.rover.Direction;
-import io.tripled.marsrover.businesslogic.rover.Move;
-import io.tripled.marsrover.businesslogic.message.MapData;
+import io.tripled.marsrover.api.command.ApplicationService;
+import io.tripled.marsrover.api.command.CreateSimulationCommand;
+import io.tripled.marsrover.api.command.DriveCommand;
+import io.tripled.marsrover.api.command.LandCommand;
 import io.tripled.marsrover.ui.cli.messages.RoverDrivingErrorMessage;
 import io.tripled.marsrover.ui.cli.presenter.*;
+import io.tripled.marsrover.vocabulary.message.MapData;
+import io.tripled.marsrover.vocabulary.rover.Coordinate;
+import io.tripled.marsrover.vocabulary.rover.Direction;
+import io.tripled.marsrover.vocabulary.rover.Move;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +19,18 @@ import java.util.regex.Pattern;
 
 import static io.tripled.marsrover.ui.cli.validators.SimulationSizeInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
 
-public class InputParser {
+class InputParser {
 
+    private final ApplicationService applicationService;
 
-    private final CommandController commandController;
-
-    public InputParser() {
-        this.commandController = new CommandController();
+    InputParser(ApplicationService applicationService) { // cc meegeven
+        this.applicationService = applicationService;
     }
 
     public void determineCommand(String input) {
         String preparedInput = input.trim().toLowerCase();
 
-        if (!commandController.hasSimulation()) {
+        if (!applicationService.hasSimulation()) {
             parseInputIfSimulationSizeNotSet(input, preparedInput);
         } else if (preparedInput.equalsIgnoreCase("Q")) {
             new QuitConsolePresenterImpl().quitMessage();
@@ -46,8 +45,8 @@ public class InputParser {
         } else if (preparedInput.startsWith("r")) {
             parseDriveInput(preparedInput);
         } else if(preparedInput.equalsIgnoreCase("m")){
-            if(commandController.hasRoverState()){
-                MapData mapData = new MapData(getSimulationSize(), commandController.getRoverSate());
+            if(applicationService.hasRoverState()){
+                MapData mapData = new MapData(getSimulationSize(), applicationService.getRoverSate());
                 new MapConsolePresenterImpl().mapMessage(mapData);
             } else{
                 MapData mapData = new MapData(getSimulationSize(), null);
@@ -101,36 +100,36 @@ public class InputParser {
 
                 int simulationSize = simulationSizeOptional.get();
                 CreateSimulationCommand createSimulationCommand = new CreateSimulationCommand(simulationSize);
-                commandController.handleCommand(createSimulationCommand, new SimulationCreationPresenterImpl());
+                applicationService.handleCommand(createSimulationCommand, new SimulationCreationPresenterImpl());
             } else
                 new SimulationCreationPresenterImpl().simulationSizeError(input);
         }
     }
 
     private void parseState() {
-        if(commandController.getRoverSate() != null)
-            new StateConsolePresenterImpl().stateMessage(getSimulationSize(), commandController.getRoverSate());
+        if(applicationService.getRoverSate() != null)
+            new StateConsolePresenterImpl().stateMessage(getSimulationSize(), applicationService.getRoverSate());
         else
             new StateConsolePresenterImpl().stateErrorMessage(getSimulationSize());
 
     }
 
     private void parseLandInput(String input) {
-        String prepperdInput = input.toLowerCase();
-        Optional<Coordinate> coordinate = parseInputForCoordinate(prepperdInput);
+        String preppedInput = input.toLowerCase();
+        Optional<Coordinate> coordinate = parseInputForCoordinate(preppedInput);
         if (coordinate.isPresent() ) {
             int x = coordinate.get().x();
             int y = coordinate.get().y();
-            int simulationSize = commandController.getSimulationSize();
+            int simulationSize = applicationService.getSimulationSize();
             if(x <= simulationSize && y <= simulationSize){
                 LandCommand landCommand = new LandCommand(coordinate.get());
-                commandController.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
+                applicationService.handleCommand(landCommand, new RoverLandingConsolePresenterImpl());
             } else {
                 new RoverLandingConsolePresenterImpl().roverLandingErrorOutOfBounds(x, y, simulationSize);
             }
 
         } else
-            parseInvalidCoordinateInput(prepperdInput);
+            parseInvalidCoordinateInput(preppedInput);
 
     }
 
@@ -179,7 +178,7 @@ public class InputParser {
         if (drivingMoves.isPresent()) {
             List<Move> moves = drivingMoves.get();
             DriveCommand driveCommand = new DriveCommand(moves);
-            commandController.handleCommand(driveCommand, new RoverDrivingConsolePresenterImpl());
+            applicationService.handleCommand(driveCommand, new RoverDrivingConsolePresenterImpl());
         } else
             new RoverDrivingErrorMessage();
     }
@@ -212,6 +211,6 @@ public class InputParser {
     }
 
     private int getSimulationSize() {
-        return commandController.getSimulationSize();
+        return applicationService.getSimulationSize();
     }
 }

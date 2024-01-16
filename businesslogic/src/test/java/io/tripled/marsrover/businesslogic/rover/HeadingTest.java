@@ -1,5 +1,6 @@
 package io.tripled.marsrover.businesslogic.rover;
 
+import io.tripled.marsrover.vocabulary.rover.Heading;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

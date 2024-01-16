@@ -1,11 +1,10 @@
 package io.tripled.marsrover.businesslogic.command.commandhandler;
 
-import io.tripled.marsrover.businesslogic.message.RoverDrivingMessage;
-import io.tripled.marsrover.businesslogic.presenter.RoverDrivingPresenter;
-import io.tripled.marsrover.businesslogic.rover.Move;
+import io.tripled.marsrover.api.message.RoverDrivingMessage;
+import io.tripled.marsrover.api.presenter.RoverDrivingPresenter;
+import io.tripled.marsrover.vocabulary.rover.Move;
 import io.tripled.marsrover.businesslogic.rover.Rover;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
-
 import java.util.List;
 
 public final class RoverDrivingHandler implements CommandHandler<List<Move>, RoverDrivingPresenter> {
@@ -22,8 +21,11 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
 
         RoverDrivingMessage roverDrivingMessage = new RoverDrivingMessage();
         prepareRoverDrivingMessage(roverDrivingMessage);
-        performRoverMoves(drivingMoves, roverDrivingMessage);
-
+        //Get aggregate
+        Rover rover = simulationRepository.getSimulation().getRover1();
+        //Do stuuf op aggregate
+        drivingMoves.forEach(x -> roverDrivingMessage.concat(rover.moveRover(x).messageToBePrinted()));
+        //Save aggregate
         endRoverDrivingMessage(roverDrivingMessage);
 
         roverDrivingPresenter.roverDriving(drivingMoves, roverDrivingMessage);
@@ -33,10 +35,6 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
         drivingMessage.concat("Rover R1 received instructions\n");
     }
 
-    private void performRoverMoves(List<Move> drivingMoves, RoverDrivingMessage drivingMessage) {
-        Rover rover = simulationRepository.getSimulation().getRover1();
-        drivingMoves.forEach(x -> drivingMessage.concat(rover.moveRover(x).messageToBePrinted()));
-    }
     private void endRoverDrivingMessage(RoverDrivingMessage drivingMessage) {
         drivingMessage.concat("Rover R1 executed all instructions. Awaiting new ones...\n\n[Please enter a command] : ");
     }

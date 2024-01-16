@@ -3,7 +3,7 @@ package io.tripled.marsrover.ui.cli.presenter;
 import io.tripled.marsrover.ui.cli.messages.EndMessage;
 import io.tripled.marsrover.ui.cli.messages.LogoMessage;
 import io.tripled.marsrover.ui.cli.messages.SimulationSizeRequestMessage;
-import io.tripled.marsrover.businesslogic.presenter.ProgramPresenter;
+import io.tripled.marsrover.api.presenter.ProgramPresenter;
 
 public class ProgramConsolePresenterImpl implements ProgramPresenter {
 
