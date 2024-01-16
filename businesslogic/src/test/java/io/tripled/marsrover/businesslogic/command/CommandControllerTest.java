@@ -1,8 +1,6 @@
 package io.tripled.marsrover.businesslogic.command;
 
 import io.tripled.marsrover.businesslogic.presenter.DummySimulationCreationPresenter;
-import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
-import io.tripled.marsrover.businesslogic.repository.InMemorySimulationRepository;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,8 +12,6 @@ class CommandControllerTest {
     public CommandControllerTest() {
         commandController = new CommandController();
     }
-
-//    @BeforeEach
 
     @Test
     void createSimulationWithValidSize(){

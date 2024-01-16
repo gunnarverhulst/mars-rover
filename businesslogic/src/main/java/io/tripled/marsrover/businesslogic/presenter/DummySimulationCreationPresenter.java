@@ -3,8 +3,14 @@ package io.tripled.marsrover.businesslogic.presenter;
 public class DummySimulationCreationPresenter implements SimCreationPresenter {
     private int simulationSize = 0;
 
+    private boolean simulationSizeError = false;
+
     public int returnSimCreationSize(){
         return simulationSize;
+    }
+
+    public boolean returnSimulationSizeError(){
+        return simulationSizeError;
     }
 
 
@@ -15,6 +21,6 @@ public class DummySimulationCreationPresenter implements SimCreationPresenter {
 
     @Override
     public void simulationSizeError(String input) {
-
+        simulationSizeError = true;
     }
 }
