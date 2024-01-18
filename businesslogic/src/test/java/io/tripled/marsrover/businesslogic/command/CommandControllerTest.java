@@ -9,17 +9,25 @@ import io.tripled.marsrover.businesslogic.repository.InMemorySimulationRepositor
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 import io.tripled.marsrover.vocabulary.rover.Coordinate;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = TestConfiguration.class)
 class CommandControllerTest {
 
-    private final ApplicationService applicationService;
-    private final SimulationRepository simulationRepository;
+    @Autowired
+    private ApplicationService applicationService;
+    @Autowired
+    private InMemorySimulationRepository simulationRepository;
 
     public CommandControllerTest() {
-        this.simulationRepository = new InMemorySimulationRepository();
-        applicationService = new CommandController(simulationRepository);
     }
 
     @Test
