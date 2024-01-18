@@ -2,23 +2,32 @@ package io.tripled.marsrover.businesslogic.rover;
 
 import io.tripled.marsrover.api.command.ApplicationService;
 import io.tripled.marsrover.api.message.TransientMessage;
-import io.tripled.marsrover.businesslogic.command.CommandController;
-import io.tripled.marsrover.businesslogic.repository.InMemorySimulationRepository;
+import io.tripled.marsrover.businesslogic.command.TestConfiguration;
 import io.tripled.marsrover.businesslogic.simulation.Simulation;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 import io.tripled.marsrover.vocabulary.rover.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = TestConfiguration.class)
 class RoverTest {
     private Rover rover;
+    @Autowired
+    private SimulationRepository simulationRepository;
+    @Autowired
+    private ApplicationService applicationService;
 
     @BeforeEach
     void init(){
-        SimulationRepository simulationRepository = new InMemorySimulationRepository();
-        ApplicationService applicationService = new CommandController(simulationRepository);
 
         simulationRepository.addSimulation(new Simulation(10, simulationRepository));
 
