@@ -1,5 +1,7 @@
-package io.tripled.marsrover.api.presenter;
+package io.tripled.marsrover.businesslogic.presenter;
 
+
+import io.tripled.marsrover.api.presenter.SimCreationPresenter;
 
 public class DummySimulationCreationPresenter implements SimCreationPresenter {
     private int simulationSize = 0;

@@ -10,6 +10,7 @@ import io.tripled.marsrover.vocabulary.message.MapData;
 import io.tripled.marsrover.vocabulary.rover.Coordinate;
 import io.tripled.marsrover.vocabulary.rover.Direction;
 import io.tripled.marsrover.vocabulary.rover.Move;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
 
 import static io.tripled.marsrover.ui.cli.validators.SimulationSizeInputValidator.SIMULATIONSIZE_INPUT_VALIDATOR;
 
+@Component
 class InputParser {
 
     private final ApplicationService applicationService;

@@ -2,9 +2,11 @@ package io.tripled.marsrover.ui.cli.input;
 
 
 import io.tripled.marsrover.api.command.ApplicationService;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class InputReader {
     private final InputParser inputParser;
 

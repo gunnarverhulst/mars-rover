@@ -12,11 +12,13 @@ import io.tripled.marsrover.vocabulary.rover.Coordinate;
 import io.tripled.marsrover.vocabulary.rover.Move;
 import io.tripled.marsrover.vocabulary.rover.RoverState;
 import io.tripled.marsrover.vocabulary.simulation.SimulationState;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
+@Component
 public class CommandController implements ApplicationService {
 
     private final SimulationRepository simulationRepository;

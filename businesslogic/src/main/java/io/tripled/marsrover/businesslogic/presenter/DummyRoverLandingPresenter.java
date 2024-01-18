@@ -1,5 +1,6 @@
-package io.tripled.marsrover.api.presenter;
+package io.tripled.marsrover.businesslogic.presenter;
 
+import io.tripled.marsrover.api.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.vocabulary.rover.Coordinate;
 
 public class DummyRoverLandingPresenter implements RoverLandingPresenter {

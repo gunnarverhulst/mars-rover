@@ -7,13 +7,10 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.tripled</groupId>
   <artifactId>Main</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <name>Main</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
   <dependencies>
     <dependency>
       <groupId>io.tripled.marsrover</groupId>
