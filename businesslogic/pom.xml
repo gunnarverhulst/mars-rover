@@ -30,12 +30,6 @@
         </dependency>
         <dependency>
             <groupId>io.tripled.marsrover</groupId>
-            <artifactId>businesslogicapi</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.tripled.marsrover</groupId>
             <artifactId>applicationapi</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
