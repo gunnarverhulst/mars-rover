@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 public interface ApplicationService {
     void handleCommand(Command command, Presenter presenter);
 
-
     SimulationState getSimulation();
-
 
     boolean hasSimulation();
 
