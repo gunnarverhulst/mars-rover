@@ -34,6 +34,5 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-        cache-dependency-path: 'applicationapi/pom.xml'
     - name: Build with Maven
       run: mvn clean install --file pom.xml
