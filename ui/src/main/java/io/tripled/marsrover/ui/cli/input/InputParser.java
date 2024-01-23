@@ -47,13 +47,11 @@ class InputParser {
         } else if (preparedInput.startsWith("r")) {
             parseDriveInput(preparedInput);
         } else if(preparedInput.equalsIgnoreCase("m")){
-            if(applicationService.hasRoverState()){
-                MapData mapData = new MapData(getSimulationSize(), applicationService.getRoverSate());
-                new MapConsolePresenterImpl().mapMessage(mapData);
-            } else{
-                MapData mapData = new MapData(getSimulationSize(), null);
-                new MapConsolePresenterImpl().mapMessage(mapData);
-            }
+
+            MapData mapData = applicationService.generateMapData();
+
+            new MapConsolePresenterImpl().mapMessage(mapData);
+
         } else
             new ApiConsolePresenterImpl().apiMessage();
     }
@@ -109,8 +107,8 @@ class InputParser {
     }
 
     private void parseState() {
-        if(applicationService.getRoverSate() != null)
-            new StateConsolePresenterImpl().stateMessage(getSimulationSize(), applicationService.getRoverSate());
+        if(applicationService.numberOfRovers() != 0)
+            new StateConsolePresenterImpl().stateMessage(getSimulationSize(), applicationService.getRoverSate(0));
         else
             new StateConsolePresenterImpl().stateErrorMessage(getSimulationSize());
 

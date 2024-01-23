@@ -7,13 +7,16 @@ import io.tripled.marsrover.api.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.api.presenter.SimCreationPresenter;
 import io.tripled.marsrover.businesslogic.command.commandhandler.CommandHandler;
 import io.tripled.marsrover.businesslogic.command.commandhandler.CommandHandlerFactory;
+import io.tripled.marsrover.businesslogic.rover.Rover;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
+import io.tripled.marsrover.vocabulary.message.MapData;
 import io.tripled.marsrover.vocabulary.rover.Coordinate;
 import io.tripled.marsrover.vocabulary.rover.Move;
 import io.tripled.marsrover.vocabulary.rover.RoverState;
 import io.tripled.marsrover.vocabulary.simulation.SimulationState;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -55,18 +58,39 @@ public class CommandController implements ApplicationService {
         return simulationRepository.getSimulation() != null;
     }
 
+
     @Override
-    public boolean hasRoverState() {
-        return simulationRepository.getSimulation().getRoverState() != null;
+    public boolean hasRoverState(int roverId) {
+        return simulationRepository.getSimulation().getRoverState(roverId) != null;
     }
 
     @Override
-    public RoverState getRoverSate() {
-        return simulationRepository.getSimulation().getRoverState();
+    public RoverState getRoverSate(int roverId) {
+        return simulationRepository.getSimulation().getRoverState(roverId);
     }
 
     @Override
     public int getSimulationSize() {
         return simulationRepository.getSimulation().getSimulationSize();
     }
+
+    @Override
+    public List<RoverState> createListOfRoverStates() {
+        List<RoverState> roverStates = new ArrayList<>();
+        for(Rover rover : simulationRepository.getSimulation().getRovers()){
+            roverStates.add(rover.getRoverState());
+        }
+        return roverStates;
+    }
+
+    @Override
+    public MapData generateMapData() {
+        return new MapData(getSimulationSize(), createListOfRoverStates());
+    }
+
+    @Override
+    public int numberOfRovers() {
+        return simulationRepository.getSimulation().getNumberOfRovers();
+    }
+
 }

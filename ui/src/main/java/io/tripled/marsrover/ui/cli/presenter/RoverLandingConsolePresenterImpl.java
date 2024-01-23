@@ -6,8 +6,8 @@ import io.tripled.marsrover.vocabulary.rover.Coordinate;
 
 public class RoverLandingConsolePresenterImpl implements RoverLandingPresenter {
     @Override
-    public void roverLandedMessage(Coordinate coordinate) {
-        System.out.println(new RoverLandingMessage(coordinate).messageToBePrinted());
+    public void roverLandedMessage(String roverId, Coordinate coordinate) {
+        System.out.println(new RoverLandingMessage(roverId, coordinate).messageToBePrinted());
     }
 
     @Override

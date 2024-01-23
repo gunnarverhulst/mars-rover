@@ -1,6 +1,7 @@
-package io.tripled.marsrover.businesslogic.command;
+package io.tripled.marsrover.businesslogic;
 
 import io.tripled.marsrover.api.command.ApplicationService;
+import io.tripled.marsrover.businesslogic.command.CommandController;
 import io.tripled.marsrover.businesslogic.repository.InMemorySimulationRepository;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 import org.springframework.context.annotation.Bean;

@@ -14,7 +14,7 @@ public final class SimCreationHandler implements CommandHandler<Integer, SimCrea
 
     @Override
     public void handle(Integer simulationSize, SimCreationPresenter simCreationPresenter) {
-        simulationRepository.addSimulation(new Simulation(simulationSize, simulationRepository));
+        simulationRepository.addSimulation(new Simulation(simulationSize));
         simCreationPresenter.simulationCreated(simulationSize);
     }
 }

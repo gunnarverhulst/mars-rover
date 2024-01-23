@@ -1,4 +1,4 @@
-package io.tripled.marsrover.businesslogic.rover;
+package io.tripled.marsrover.rover;
 
 import io.tripled.marsrover.vocabulary.rover.Direction;
 import org.junit.jupiter.api.Test;

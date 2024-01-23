@@ -6,9 +6,11 @@ import io.tripled.marsrover.vocabulary.rover.Coordinate;
 public class DummyRoverLandingPresenter implements RoverLandingPresenter {
 
     private Coordinate coordinate;
+    private String string;
 
     @Override
-    public void roverLandedMessage(Coordinate coordinate) {
+    public void roverLandedMessage(String roverId, Coordinate coordinate) {
+        string = roverId;
         this.coordinate = coordinate;
     }
 

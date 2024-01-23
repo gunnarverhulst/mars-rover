@@ -16,14 +16,12 @@ public final class RoverLandingHandler implements CommandHandler<Coordinate, Rov
 
     @Override
     public void handle(Coordinate coordinate,RoverLandingPresenter roverLandingPresenter) {
-        if (simulationRepository.getSimulation().getRoverState() == null) {
-            setRoverState(coordinate);
-            roverLandingPresenter.roverLandedMessage(coordinate);
-        } else
-            roverLandingPresenter.roverLandingErrorMessage(coordinate);
+            landRover(coordinate);
+            roverLandingPresenter.roverLandedMessage(simulationRepository.getSimulation().getNewestRoverId(), coordinate);
     }
-    private void setRoverState(Coordinate parsedInput) {
-        simulationRepository.getSimulation().setRover1State(new RoverState(parsedInput, Heading.NORTH));
+
+    private void landRover(Coordinate coordinate) {
+        simulationRepository.getSimulation().addNewRover(coordinate);
     }
 
 }

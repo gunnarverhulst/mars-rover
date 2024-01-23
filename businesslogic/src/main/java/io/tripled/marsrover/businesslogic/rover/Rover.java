@@ -2,18 +2,32 @@ package io.tripled.marsrover.businesslogic.rover;
 
 import io.tripled.marsrover.api.message.Message;
 import io.tripled.marsrover.api.message.TransientMessage;
-import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 import io.tripled.marsrover.vocabulary.rover.*;
 
 public class Rover {
 
     private RoverState roverState = null;
 
+    private final String id;
 
     private final int simulationSize;
 
     public Rover(int simulationSize) {
         this.simulationSize = simulationSize;
+        this.id = "R1";
+    }
+//
+//    public Rover(int simulationSize, int id) {
+//        this.simulationSize = simulationSize;
+//        this.id = "R"+id;
+
+//    }
+
+    public Rover(int simulationSize, int id, RoverState roverState) {
+
+        this.simulationSize = simulationSize;
+        this.id = "R"+id;
+        this.roverState = roverState;
     }
 
     public Message moveRover(Move move) {
@@ -41,7 +55,7 @@ public class Rover {
         switch (direction){
             case FORWARD, BACKWARD -> {
                 Coordinate coordinateToAdd = move(direction);
-                roverState = new RoverState(createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
+                roverState = new RoverState(id,createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
                 stringToConcat = createRoverMoveMessage(stringToConcat, direction);
             }
             case LEFT, RIGHT -> {
@@ -51,7 +65,7 @@ public class Rover {
                 else
                     newHeading = turnRight();
 
-                roverState = new RoverState(new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
+                roverState = new RoverState(id,new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
                 stringToConcat = createRoverTurnMessage(stringToConcat, direction);
             }
         }
@@ -107,4 +121,7 @@ public class Rover {
     }
 
 
+    public String getId() {
+        return  id;
+    }
 }

@@ -7,8 +7,8 @@ public class RoverLandingMessage implements Message {
 
     private final String message;
 
-    public RoverLandingMessage(Coordinate roverCoordinate) {
-        this.message = "Rover R1 landed at (" + roverCoordinate.x() + "," + roverCoordinate.y() + ") and is facing NORTH\n\n" +
+    public RoverLandingMessage(String roverId, Coordinate roverCoordinate) {
+        this.message = "Rover " + roverId + " landed at (" + roverCoordinate.x() + "," + roverCoordinate.y() + ") and is facing NORTH\n\n" +
                 "[Please enter a command]";
     }
 
