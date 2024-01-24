@@ -16,25 +16,20 @@ public class MapConsolePresenterImpl implements MapPresenter {
         List<RoverState> roverStates = new ArrayList<>();
         createVirtualMap(mapdata.simulationSize());
         if(!mapdata.roverStates().isEmpty()){
-             roverStates = mapdata.roverStates();
-             for(RoverState roverState : roverStates){
-                 int x = roverState.roverCoordinate().x();
-                 int y = roverState.roverCoordinate().y();
-                 String rover = "";
-                 if(roverState.heading() == Heading.NORTH){
-                     rover += "^R" + roverState.id();
-                 } else if(roverStates.get(0).heading() == Heading.EAST){
-                     rover += "R" + roverState.id() + ">";
-                 } else if(roverStates.get(0).heading() == Heading.WEST){
-                     rover += "< " + roverState.id() + "R";
-                 } else{
-                     rover += " R" + roverState.id();
-                 }
-                 virtualMap[y][x] = rover;
-             }
+            placeRoversOnVirtualMap(mapdata);
 
         }
         System.out.printf("%3s|%s|\n", "   ", "-".repeat((mapdata.simulationSize() + 1) * 3));
+        printVirtualMap(mapdata);
+        System.out.printf("%3s|%s|\n", "---", "-".repeat((mapdata.simulationSize() + 1) * 3));
+        System.out.printf("%3s|", "   ");
+        for(int i = 0; i <= mapdata.simulationSize(); i++){
+            System.out.printf("%3s", i);
+        }
+        System.out.print("|\n\n[Please enter a command] : ");
+    }
+
+    private void printVirtualMap(MapData mapdata) {
         for(int i = 0; i <= mapdata.simulationSize(); i++){
             System.out.printf("%3s|", i);
             for(int j = 0; j <= mapdata.simulationSize(); j++){
@@ -42,12 +37,26 @@ public class MapConsolePresenterImpl implements MapPresenter {
             }
             System.out.print("|\n");
         }
-        System.out.printf("%3s|%s|\n", "---", "-".repeat((mapdata.simulationSize() + 1) * 3));
-        System.out.printf("%3s|", "   ");
-        for(int i = 0; i <= mapdata.simulationSize(); i++){
-            System.out.printf("%3s", i);
+    }
+
+    private void placeRoversOnVirtualMap(MapData mapdata) {
+        List<RoverState> roverStates;
+        roverStates = mapdata.roverStates();
+        for(RoverState roverState : roverStates){
+            int x = roverState.roverCoordinate().x();
+            int y = roverState.roverCoordinate().y();
+            String rover = "";
+            if(roverState.heading() == Heading.NORTH){
+                rover += "^R" + roverState.id();
+            } else if(roverState.heading() == Heading.EAST){
+                rover += "R" + roverState.id() + ">";
+            } else if(roverState.heading() == Heading.WEST){
+                rover += "< " + roverState.id() + "R";
+            } else{
+                rover += " R" + roverState.id();
+            }
+            virtualMap[y][x] = rover;
         }
-        System.out.print("|\n\n[Please enter a command] : ");
     }
 
     private void createVirtualMap(int simulationSize) {

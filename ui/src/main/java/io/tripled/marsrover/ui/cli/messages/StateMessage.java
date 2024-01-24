@@ -17,6 +17,6 @@ public class StateMessage implements Message {
     }
 
     private static int calculateTotalNumberOfCoordinates(int simulationSize) {
-        return (simulationSize + 1) * (simulationSize + 1);
+        return (int) Math.pow((simulationSize+1), 2);
     }
 }
