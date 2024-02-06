@@ -12,7 +12,7 @@ public enum Direction {
             case "f", "forward" -> FORWARD;
             case "l", "left" -> LEFT;
             case "r", "right" -> RIGHT;
-            case "b", "backward" -> BACKWARD;
+            case "b", "backward", "back" -> BACKWARD;
             default -> FORWARD;
         };
     }

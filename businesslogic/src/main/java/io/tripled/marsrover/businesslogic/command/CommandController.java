@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.tripled.marsrover.businesslogic.command.commandhandler.CommandHandlerFactory.COMMAND_HANDLER_FACTORY;
 import static java.util.Objects.requireNonNull;
 
 @Component
@@ -39,15 +40,15 @@ public class CommandController implements ApplicationService {
     public void handleCommand(Command command, Presenter presenter) {
         switch (command) {
             case CreateSimulationCommand createSimulationCommand -> {
-                CommandHandler<Integer, SimCreationPresenter> commandHandler = CommandHandlerFactory.COMMAND_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
+                CommandHandler<Integer, SimCreationPresenter> commandHandler = COMMAND_HANDLER_FACTORY.createSimulationHandler(simulationRepository);
                 commandHandler.handle(createSimulationCommand.simulationSize(), (SimCreationPresenter) presenter);
             }
             case LandCommand landCommand -> {
-                CommandHandler<Coordinate, RoverLandingPresenter> commandHandler = CommandHandlerFactory.COMMAND_HANDLER_FACTORY.createRoverLandingHandler(simulationRepository);
+                CommandHandler<Coordinate, RoverLandingPresenter> commandHandler = COMMAND_HANDLER_FACTORY.createRoverLandingHandler(simulationRepository);
                 commandHandler.handle(landCommand.coordinate(), (RoverLandingPresenter) presenter);
             }
             case DriveCommand driveCommand -> {
-                CommandHandler<List<Move>, RoverDrivingPresenter> commandHandler = CommandHandlerFactory.COMMAND_HANDLER_FACTORY.createRoverDrivingHandler(simulationRepository);
+                CommandHandler<List<Move>, RoverDrivingPresenter> commandHandler = COMMAND_HANDLER_FACTORY.createRoverDrivingHandler(simulationRepository);
                 commandHandler.handle(driveCommand.moves(), (RoverDrivingPresenter) presenter);
             }
         }

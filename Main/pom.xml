@@ -7,6 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
+  <groupId>io.tripled.marsrover</groupId>
   <artifactId>Main</artifactId>
   <version>1.0-SNAPSHOT</version>
 

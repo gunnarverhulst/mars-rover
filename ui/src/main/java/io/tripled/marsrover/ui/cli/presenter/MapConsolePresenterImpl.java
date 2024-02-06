@@ -30,7 +30,7 @@ public class MapConsolePresenterImpl implements MapPresenter {
     }
 
     private void printVirtualMap(MapData mapdata) {
-        for(int i = 0; i <= mapdata.simulationSize(); i++){
+        for(int i = mapdata.simulationSize(); i >= 0; i--){
             System.out.printf("%3s|", i);
             for(int j = 0; j <= mapdata.simulationSize(); j++){
                 System.out.printf("%3s",virtualMap[j][i]);
@@ -47,15 +47,15 @@ public class MapConsolePresenterImpl implements MapPresenter {
             int y = roverState.roverCoordinate().y();
             String rover = "";
             if(roverState.heading() == Heading.NORTH){
-                rover += "^R" + roverState.id();
+                rover = "^" + roverState.id();
             } else if(roverState.heading() == Heading.EAST){
-                rover += "R" + roverState.id() + ">";
+                rover = roverState.id() + ">";
             } else if(roverState.heading() == Heading.WEST){
-                rover += "< " + roverState.id() + "R";
+                rover = "< " + roverState.id();
             } else{
-                rover += " R" + roverState.id();
+                rover = roverState.id();
             }
-            virtualMap[y][x] = rover;
+            virtualMap[x][y] = rover;
         }
     }
 

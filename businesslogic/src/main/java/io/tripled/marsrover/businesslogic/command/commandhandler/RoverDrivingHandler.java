@@ -21,11 +21,11 @@ public final class RoverDrivingHandler implements CommandHandler<List<Move>, Rov
 
         RoverDrivingMessage roverDrivingMessage = new RoverDrivingMessage();
         prepareRoverDrivingMessage(roverDrivingMessage);
-        //Get aggregate
+
         Rover rover = simulationRepository.getSimulation().getRover(0);
-        //Do stuff on aggregate
+
         drivingMoves.forEach(x -> roverDrivingMessage.concat(rover.moveRover(x).messageToBePrinted()));
-        //Save aggregate
+
         endRoverDrivingMessage(roverDrivingMessage);
 
         roverDrivingPresenter.roverDriving(drivingMoves, roverDrivingMessage);

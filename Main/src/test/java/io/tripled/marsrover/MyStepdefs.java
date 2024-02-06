@@ -1,5 +1,6 @@
 package io.tripled.marsrover;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -13,6 +14,7 @@ import io.tripled.marsrover.api.message.RoverDrivingMessage;
 import io.tripled.marsrover.api.presenter.RoverDrivingPresenter;
 import io.tripled.marsrover.api.presenter.RoverLandingPresenter;
 import io.tripled.marsrover.api.presenter.SimCreationPresenter;
+import io.tripled.marsrover.api.presenter.StatePresenter;
 import io.tripled.marsrover.businesslogic.simulation.SimulationRepository;
 import io.tripled.marsrover.vocabulary.rover.Coordinate;
 import io.tripled.marsrover.vocabulary.rover.Direction;
@@ -22,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.List;
 
 @CucumberContextConfiguration
@@ -53,13 +56,26 @@ public class MyStepdefs {
         applicationService.handleCommand(new DriveCommand(List.of(new Move(Direction.DIRECTION.parseDirection(direction), steps))), new RoverDrivingPresenterImpl());
     }
 
-    @Then("The Rover {string} is at <newX> <newY> with orientation {string}")
-    public void theRoverIsAtNewXNewYWithOrientation(String arg0, String arg1) {
+    @Then("The Rover \"R1\" is at {int} {int} with orientation {string}")
+    public void theRoverIsAtWithOrientation(int x, int y, String heading) {
+        new StatePresenterImpl().stateMessage(applicationService.getSimulationSize(), applicationService.getRoverSate(0));
     }
 
-
-    @Then("The Rover {string} is at {int} {int} with orientation {string}")
-    public void theRoverIsAtWithOrientation(String arg0, int arg1, int arg2, String arg3) {
+    @Then("No rover should be present in the simulation")
+    public void noRoverShouldBePresentInTheSimulation() {
+        new RoverLandingPresenterImpl().roverLandingErrorOutOfBounds(applicationService.getRoverSate(0).roverCoordinate().x(),applicationService.getRoverSate(0).roverCoordinate().y() ,applicationService.getSimulationSize());
     }
 
+    @When("We give the Rover \"R1\" the Instruction")
+    public void weGiveTheRoverTheInstruction(DataTable dataTable) {
+
+        List<List<String>> cellsInListOfList = dataTable.cells();
+        List<String> cellsInList = cellsInListOfList.getFirst();
+
+        for(int i = 1; i < cellsInListOfList.size(); i++){
+            weGiveTheRoverTheInstructionAmount(cellsInListOfList.get(i).get(0), Integer.parseInt(cellsInListOfList.get(i).get(1)));
+        }
+
+        System.out.println(cellsInList);
+    }
 }

@@ -41,6 +41,6 @@ public class RoverLandingPresenterImpl implements RoverLandingPresenter {
 
     @Override
     public void roverLandingErrorOutOfBounds(int xCoordinate, int yCoordinate, int simulationSize) {
-
+        System.out.println("No rover should be present in the simulation");
     }
 }
