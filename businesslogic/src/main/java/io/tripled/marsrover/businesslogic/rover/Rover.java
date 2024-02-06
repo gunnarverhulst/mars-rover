@@ -113,11 +113,11 @@ public class Rover {
     }
 
     private Heading turnLeft(){
-        return Heading.getHeading((roverState.heading().getHeadingNumber() + 1) % 4);
+        return Heading.getHeading((roverState.heading().getHeadingNumber() + 4 - 1) % 4);
     }
 
     private Heading turnRight(){
-        return Heading.getHeading((((roverState.heading().getHeadingNumber() - 1) % 4) + 4) % 4);
+        return Heading.getHeading((roverState.heading().getHeadingNumber() + 1) % 4);
     }
 
 

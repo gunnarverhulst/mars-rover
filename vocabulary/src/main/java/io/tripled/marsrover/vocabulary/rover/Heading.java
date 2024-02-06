@@ -2,9 +2,9 @@ package io.tripled.marsrover.vocabulary.rover;
 
 public enum Heading {
     NORTH(0),
-    WEST(3),
+    EAST(1),
     SOUTH(2),
-    EAST(2);
+    WEST(3);
 
     private final int headingNumber;
 

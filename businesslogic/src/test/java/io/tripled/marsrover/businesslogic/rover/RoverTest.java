@@ -35,24 +35,24 @@ class RoverTest {
     }
 
     @Test
-    void whenMoveRoverUp1WithinBounds_thenYMin1(){
+    void whenMoveRoverUp1WithinBounds_thenYPlus1(){
 
         simulationRepository.getSimulation().addNewRover(new Coordinate(5,5));
         rover = simulationRepository.getSimulation().getRover(0);
 
         String expectedString = "Rover R1 is moving forward\n" +
-                "Rover R1 is now located at [5,4]\n";
+                "Rover R1 is now located at [5,6]\n";
 
         assertEquals(new TransientMessage(expectedString).messageToBePrinted(), rover.moveRover(new Move(Direction.FORWARD, 1)).messageToBePrinted());
     }
 
     @Test
-    void whenMoveRoverDown1WithinBounds_thenYPlus1(){
+    void whenMoveRoverDown1WithinBounds_thenYMin1(){
         simulationRepository.getSimulation().addNewRover(new Coordinate(5,5));
         rover = simulationRepository.getSimulation().getRover(0);
 
         String expectedString = "Rover R1 is moving backward\n" +
-                "Rover R1 is now located at [5,6]\n";
+                "Rover R1 is now located at [5,4]\n";
 
         assertEquals(new TransientMessage(expectedString).messageToBePrinted(), rover.moveRover(new Move(Direction.BACKWARD, 1)).messageToBePrinted());
     }
@@ -81,55 +81,55 @@ class RoverTest {
     }
 
     @Test
-    void whenMoveRoverUp2WithinBounds_thenYMin2(){
+    void whenMoveRoverUp2WithinBounds_thenYPlus2(){
 
         simulationRepository.getSimulation().addNewRover(new Coordinate(5,5));
         rover = simulationRepository.getSimulation().getRover(0);
 
         String expectedString = "Rover R1 is moving forward\n" +
-                "Rover R1 is now located at [5,4]\n" +
+                "Rover R1 is now located at [5,6]\n" +
                 "Rover R1 is moving forward\n" +
-                "Rover R1 is now located at [5,3]\n";
+                "Rover R1 is now located at [5,7]\n";
 
         assertEquals(new TransientMessage(expectedString).messageToBePrinted(), rover.moveRover(new Move(Direction.FORWARD, 2)).messageToBePrinted());
     }
 
     @Test
-    void whenMoveRoverDown2WithinBounds_thenYPlus2(){
+    void whenMoveRoverDown2WithinBounds_thenYMin2(){
 
         simulationRepository.getSimulation().addNewRover(new Coordinate(5,5));
         rover = simulationRepository.getSimulation().getRover(0);
 
         String expectedString = "Rover R1 is moving backward\n" +
-                "Rover R1 is now located at [5,6]\n" +
+                "Rover R1 is now located at [5,4]\n" +
                 "Rover R1 is moving backward\n" +
-                "Rover R1 is now located at [5,7]\n";
+                "Rover R1 is now located at [5,3]\n";
 
         assertEquals(new TransientMessage(expectedString).messageToBePrinted(), rover.moveRover(new Move(Direction.BACKWARD, 2)).messageToBePrinted());
     }
 
     @Test
     void whenMoveRoverUp2OutOfBounds_thenYLeapsOver(){
-        simulationRepository.getSimulation().addNewRover(new Coordinate(5,1));
+        simulationRepository.getSimulation().addNewRover(new Coordinate(5,9));
         rover = simulationRepository.getSimulation().getRover(0);
 
         String expectedString = "Rover R1 is moving forward\n" +
-                "Rover R1 is now located at [5,0]\n" +
+                "Rover R1 is now located at [5,10]\n" +
                 "Rover R1 is moving forward\n" +
-                "Rover R1 is now located at [5,10]\n";
+                "Rover R1 is now located at [5,0]\n";
 
         assertEquals(new TransientMessage(expectedString).messageToBePrinted(), rover.moveRover(new Move(Direction.FORWARD, 2)).messageToBePrinted());
     }
 
     @Test
     void whenMoveRoverDown2OutOfBounds_thenYLeapsOver(){
-        simulationRepository.getSimulation().addNewRover(new Coordinate(5,9));
+        simulationRepository.getSimulation().addNewRover(new Coordinate(5,1));
         rover = simulationRepository.getSimulation().getRover(0);
 
         String expectedString = "Rover R1 is moving backward\n" +
-                "Rover R1 is now located at [5,10]\n" +
+                "Rover R1 is now located at [5,0]\n" +
                 "Rover R1 is moving backward\n" +
-                "Rover R1 is now located at [5,0]\n";
+                "Rover R1 is now located at [5,10]\n";
 
         assertEquals(new TransientMessage(expectedString).messageToBePrinted(), rover.moveRover(new Move(Direction.BACKWARD, 2)).messageToBePrinted());
     }

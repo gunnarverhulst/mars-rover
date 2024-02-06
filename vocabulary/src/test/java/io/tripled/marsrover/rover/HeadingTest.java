@@ -15,7 +15,7 @@ class HeadingTest {
     @Test
     void whenGetHeading1(){
 
-        assertEquals(Heading.WEST, Heading.getHeading(1));
+        assertEquals(Heading.EAST, Heading.getHeading(1));
     }
     @Test
     void whenGetHeading2(){
@@ -25,7 +25,7 @@ class HeadingTest {
     @Test
     void whenGetHeading3(){
 
-        assertEquals(Heading.EAST, Heading.getHeading(3));
+        assertEquals(Heading.WEST, Heading.getHeading(3));
     }
 
 }
