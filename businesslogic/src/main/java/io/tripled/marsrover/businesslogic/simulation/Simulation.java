@@ -57,7 +57,7 @@ public class Simulation {
 
     public void addNewRover(Coordinate coordinate) {
         roverCount++;
-        rovers.add(new Rover(simulationSize, roverCount, new RoverState(""+roverCount, coordinate, Heading.NORTH)));
+        rovers.add(new Rover(simulationSize, roverCount, new RoverState("R"+roverCount, coordinate, Heading.NORTH)));
     }
 
     public void resetCounter(){

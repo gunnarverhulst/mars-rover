@@ -14,7 +14,7 @@ public class MapConsolePresenterImpl implements MapPresenter {
 
     public void mapMessage(MapData mapdata) {
         List<RoverState> roverStates = new ArrayList<>();
-        createVirtualMap(mapdata.simulationSize());
+        createEmptyVirtualMap(mapdata.simulationSize());
         if(!mapdata.roverStates().isEmpty()){
             placeRoversOnVirtualMap(mapdata);
 
@@ -45,21 +45,26 @@ public class MapConsolePresenterImpl implements MapPresenter {
         for(RoverState roverState : roverStates){
             int x = roverState.roverCoordinate().x();
             int y = roverState.roverCoordinate().y();
-            String rover = "";
-            if(roverState.heading() == Heading.NORTH){
-                rover = "^" + roverState.id();
-            } else if(roverState.heading() == Heading.EAST){
-                rover = roverState.id() + ">";
-            } else if(roverState.heading() == Heading.WEST){
-                rover = "< " + roverState.id();
-            } else{
-                rover = roverState.id();
-            }
+            String rover = createRoverIdInformation(roverState);
             virtualMap[x][y] = rover;
         }
     }
 
-    private void createVirtualMap(int simulationSize) {
+    private static String createRoverIdInformation(RoverState roverState) {
+        String rover;
+        if(roverState.heading() == Heading.NORTH){
+            rover = "^" + roverState.id();
+        } else if(roverState.heading() == Heading.EAST){
+            rover = roverState.id() + ">";
+        } else if(roverState.heading() == Heading.WEST){
+            rover = "<" + roverState.id();
+        } else{
+            rover = roverState.id();
+        }
+        return rover;
+    }
+
+    private void createEmptyVirtualMap(int simulationSize) {
         virtualMap = new String[simulationSize + 1][simulationSize + 1];
         for(int i = 0; i <= simulationSize; i++){
             for(int j = 0; j <= simulationSize; j++){

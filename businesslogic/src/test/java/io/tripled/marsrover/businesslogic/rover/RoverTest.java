@@ -81,7 +81,7 @@ class RoverTest {
     }
 
     @Test
-    void whenMoveRoverUp2WithinBounds_thenYPlus2(){
+    void whenMoveRoverUp2WithinBounds_thenYPkus2(){
 
         simulationRepository.getSimulation().addNewRover(new Coordinate(5,5));
         rover = simulationRepository.getSimulation().getRover(0);

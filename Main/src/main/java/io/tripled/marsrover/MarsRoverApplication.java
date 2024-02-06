@@ -18,20 +18,17 @@ public class MarsRoverApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MarsRoverApplication.class);
-        ApplicationContext MarsroverContext = new AnnotationConfigApplicationContext("io.tripled.marsrover");
-        InputReader inputReader= MarsroverContext.getBean(InputReader.class);
+        if(args.length == 0 ){
+            ApplicationContext MarsroverContext = new AnnotationConfigApplicationContext("io.tripled.marsrover");
+            InputReader inputReader= MarsroverContext.getBean(InputReader.class);
 
-        ProgramPresenter programPresenter = new ProgramConsolePresenterImpl();
-        programPresenter.logo();
-        programPresenter.startupMessage();
+            ProgramPresenter programPresenter = new ProgramConsolePresenterImpl();
+            programPresenter.logo();
+            programPresenter.startupMessage();
 
-        inputReader.readInput();
+            inputReader.readInput();
 
-        programPresenter.endMessage();
-
+            programPresenter.endMessage();
+        }
     }
-
-
-
-
 }

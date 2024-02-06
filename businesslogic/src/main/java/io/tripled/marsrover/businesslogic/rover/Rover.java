@@ -51,12 +51,13 @@ public class Rover {
     }
 
     private Message singleStepMoveRover(Direction direction) {
-        String stringToConcat = "";
+        StringBuffer sb = new StringBuffer();
         switch (direction){
             case FORWARD, BACKWARD -> {
                 Coordinate coordinateToAdd = move(direction);
                 roverState = new RoverState(id,createNewRoverCoordinate(coordinateToAdd), getRoverHeading());
-                stringToConcat = createRoverMoveMessage(stringToConcat, direction);
+
+                createRoverMoveMessage(sb,direction);
             }
             case LEFT, RIGHT -> {
                 Heading newHeading;
@@ -66,16 +67,24 @@ public class Rover {
                     newHeading = turnRight();
 
                 roverState = new RoverState(id,new Coordinate(getRoverCoordinates().x(), (getRoverCoordinates().y())), newHeading);
-                stringToConcat = createRoverTurnMessage(stringToConcat, direction);
+                createRoverTurnMessage(sb, direction);
             }
         }
-        return new TransientMessage(stringToConcat);
+        return new TransientMessage(sb.toString());
     }
 
-    private String createRoverMoveMessage(String stringToConcat, Direction direction) {
-        stringToConcat += "Rover R1 is moving " + direction.parseDirectionAsText()+ "\n";
-        stringToConcat += "Rover R1 is now located at [" + getRoverCoordinates().x() + "," + getRoverCoordinates().y() + "]\n";
-        return stringToConcat;
+
+    private StringBuffer createRoverMoveMessage(StringBuffer sb, Direction direction){
+        sb.append("Rover R1 is moving ")
+                .append(direction.parseDirectionAsText())
+                .append("\n");
+        sb.append("Rover R1 is now located at [")
+                .append(getRoverCoordinates().x())
+                .append(",")
+                .append(getRoverCoordinates().y())
+                .append("]\n");
+
+        return sb;
     }
     private Coordinate move(Direction direction){
         int sign = 1;
@@ -100,24 +109,35 @@ public class Rover {
 
         int simulationSizeWithOffset = simulationSize + 1;
 
-        int x = (getRoverCoordinates().x() + coordinateToAdd.x() + simulationSizeWithOffset) % (simulationSizeWithOffset);
-        int y = (getRoverCoordinates().y() + coordinateToAdd.y() + simulationSizeWithOffset) % (simulationSizeWithOffset);
+        int x = normalizeCoordinateValue(getRoverCoordinates().x(),coordinateToAdd.x(), simulationSizeWithOffset);
+        int y = normalizeCoordinateValue(getRoverCoordinates().y(),coordinateToAdd.y(), simulationSizeWithOffset);
 
         return new Coordinate(x, y);
     }
 
-    private String createRoverTurnMessage(String stringToConcat, Direction direction) {
-        stringToConcat += "Rover R1 is turning " + direction.parseDirectionAsText() + "\n";
-        stringToConcat += "Rover R1 is now facing " + getRoverHeading() + "\n";
-        return stringToConcat;
+    private int normalizeCoordinateValue(int coordinateValue, int coordinateValueToAdd, int simulationSizeWithOffset) {
+        return (coordinateValue + coordinateValueToAdd + simulationSizeWithOffset) % simulationSizeWithOffset;
+    }
+
+    private StringBuffer createRoverTurnMessage(StringBuffer sb, Direction direction) {
+        sb.append("Rover R1 is turning ")
+                .append(direction.parseDirectionAsText())
+                .append("\n");
+        sb.append("Rover R1 is now facing ")
+                .append(getRoverHeading())
+                .append("\n");
+        return sb;
     }
 
     private Heading turnLeft(){
-        return Heading.getHeading((roverState.heading().getHeadingNumber() + 4 - 1) % 4);
+        int headingNumber = (roverState.heading().getHeadingNumber() + 4 - 1) % 4;
+        return Heading.getHeading(headingNumber);
     }
 
     private Heading turnRight(){
-        return Heading.getHeading((roverState.heading().getHeadingNumber() + 1) % 4);
+
+        int headingNumber = (roverState.heading().getHeadingNumber() + 1) % 4;
+        return Heading.getHeading(headingNumber);
     }
 
 
