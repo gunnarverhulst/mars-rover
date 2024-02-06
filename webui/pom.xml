@@ -13,7 +13,13 @@
 
   <name>webui</name>
 
-
+<dependencies>
+  <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+    <version>6.1.3</version>
+  </dependency>
+</dependencies>
 
   <build>
     <plugins>
