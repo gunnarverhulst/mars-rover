@@ -64,5 +64,6 @@
         <module>Main</module>
         <module>applicationapi</module>
         <module>vocabulary</module>
+        <module>webui</module>
     </modules>
 </project>
